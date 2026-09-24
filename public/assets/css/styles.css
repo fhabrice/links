@@ -382,5 +382,90 @@ p { margin: 0 0 1rem; }
   .apparait { opacity: 1; transform: none; }
 }
 
+
+/* =====================================================================
+   Page « À propos »
+   ===================================================================== */
+
+.page-entete {
+  position: relative; color: #fff; padding: 3rem 1.25rem 3.25rem;
+  background:
+    radial-gradient(900px 420px at 10% -20%, rgba(46, 158, 91, .3), transparent 60%),
+    linear-gradient(135deg, #0a1120 0%, var(--primaire-sombre) 50%, var(--primaire) 100%);
+}
+.page-entete__titre { font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 800; margin-bottom: .6rem; }
+.page-entete__texte { color: rgba(226, 232, 240, .88); margin: 0; max-width: 44rem; }
+.page-entete .section__sur { color: var(--accent-clair); }
+
+.fil-ariane { font-size: .8rem; color: var(--ardoise-300); margin-bottom: 1.1rem; letter-spacing: .04em; }
+.fil-ariane a { color: var(--ardoise-300); text-decoration: underline; text-underline-offset: 3px; }
+.fil-ariane a:hover { color: #fff; }
+.fil-ariane span { margin: 0 .35rem; }
+
+.grille-presentation { display: grid; grid-template-columns: 1.05fr .95fr; gap: 2.75rem; align-items: center; }
+@media (max-width: 900px) { .grille-presentation { grid-template-columns: 1fr; gap: 1.75rem; } }
+.grille-presentation p { font-size: 1.02rem; color: var(--ardoise-700); }
+.grille-presentation p:first-child::first-letter { font-size: 2.6rem; font-weight: 800; color: var(--primaire); float: left; line-height: .9; padding: .1rem .5rem 0 0; }
+
+.presentation-figure { margin: 0; }
+.presentation-figure img { border-radius: var(--rayon); box-shadow: var(--ombre); width: 100%; }
+.presentation-figure figcaption { font-size: .8rem; color: var(--ardoise-500); margin-top: .7rem; text-align: center; }
+
+.bande-chiffres { background: var(--primaire); color: #fff; padding: 2.75rem 1.25rem; }
+.grille-chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; text-align: center; }
+.chiffre strong { display: block; font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.1; }
+.chiffre span { font-size: .76rem; text-transform: uppercase; letter-spacing: .16em; color: rgba(226, 232, 240, .78); font-weight: 700; }
+
+.grille-piliers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.pilier { background: #fff; border: 1px solid var(--ardoise-200); border-top: 5px solid var(--accent); border-radius: var(--rayon); padding: 1.75rem; }
+.pilier__icone { width: 58px; height: 58px; border-radius: 16px; background: rgba(46,158,91,.12); color: var(--accent); display: grid; place-items: center; margin-bottom: 1.05rem; }
+.pilier__icone svg { width: 29px; height: 29px; }
+.pilier__titre { font-size: 1.22rem; font-weight: 800; text-transform: uppercase; }
+.pilier__texte { font-size: .93rem; color: var(--ardoise-500); margin: .4rem 0 0; }
+
+.grille-2-colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 800px) { .grille-2-colonnes { grid-template-columns: 1fr; } }
+.carte-mission { background: #fff; border: 1px solid var(--ardoise-200); border-left: 5px solid var(--primaire); border-radius: var(--rayon); padding: 1.75rem; }
+.carte-mission--accent { border-left-color: var(--accent); }
+.carte-mission__etiquette { display: block; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .16em; color: var(--ardoise-500); margin-bottom: .7rem; }
+.carte-mission p { margin: 0; font-size: 1rem; color: var(--ardoise-700); }
+
+.grille-valeurs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
+.valeur { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon); padding: 1.5rem; text-align: center; transition: transform var(--transition), box-shadow var(--transition); }
+.valeur:hover { transform: translateY(-4px); box-shadow: var(--ombre); }
+.valeur__icone { width: 54px; height: 54px; margin: 0 auto .9rem; border-radius: 50%; background: rgba(22,35,63,.06); color: var(--primaire); display: grid; place-items: center; }
+.valeur__icone svg { width: 26px; height: 26px; }
+.valeur__titre { font-size: 1.05rem; font-weight: 800; }
+.valeur__texte { font-size: .88rem; color: var(--ardoise-500); margin: 0; }
+
+.frise { position: relative; max-width: 760px; margin: 0 auto; padding-left: 2.25rem; }
+.frise::before { content: ""; position: absolute; left: .6rem; top: .4rem; bottom: .4rem; width: 2px; background: var(--ardoise-300); }
+.frise__item { position: relative; padding: 0 0 1.9rem 1rem; }
+.frise__item:last-child { padding-bottom: 0; }
+.frise__item::before {
+  content: ""; position: absolute; left: -1.72rem; top: .35rem; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--accent);
+}
+.frise__annee { font-size: .78rem; font-weight: 800; letter-spacing: .12em; color: var(--accent); }
+.frise__titre { font-size: 1.08rem; font-weight: 800; margin: .15rem 0 .25rem; }
+.frise__texte { font-size: .92rem; color: var(--ardoise-500); margin: 0; }
+
+.grille-raisons { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+.raison { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon-sm); padding: 1.4rem; box-shadow: var(--ombre-sm); }
+.raison__titre { font-size: 1.02rem; font-weight: 800; display: flex; align-items: center; gap: .55rem; }
+.raison__titre::before { content: "✓"; color: var(--accent); font-weight: 800; }
+.raison__texte { font-size: .89rem; color: var(--ardoise-500); margin: .35rem 0 0; }
+
+.appel {
+  background:
+    radial-gradient(700px 320px at 85% 0%, rgba(46, 158, 91, .35), transparent 65%),
+    linear-gradient(135deg, var(--primaire-sombre), var(--primaire));
+  color: #fff; padding: 3.25rem 1.25rem;
+}
+.appel__inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.appel__titre { font-size: clamp(1.5rem, 3.2vw, 2.1rem); font-weight: 800; margin-bottom: .4rem; }
+.appel__texte { color: rgba(226, 232, 240, .85); margin: 0; max-width: 40rem; }
+.appel__actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
 /* -------------------------------- Bandeau maintenance ---------------- */
 .bandeau-info { background: var(--accent); color: #fff; text-align: center; font-weight: 700; font-size: .86rem; padding: .5rem 1rem; }

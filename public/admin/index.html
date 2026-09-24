@@ -126,6 +126,7 @@
         <button data-vue="identite">🏷️ Identité &amp; logo</button>
         <button data-vue="hero">🖼️ Bannière d'accueil</button>
         <button data-vue="specialites">🎯 Spécialités</button>
+        <button data-vue="apropos">ℹ️ À propos</button>
         <button data-vue="produits">🛍️ Produits</button>
         <button data-vue="services">🧰 Services</button>
         <button data-vue="approche">🧭 Approche</button>
@@ -249,6 +250,74 @@
             </div>
           </div>
           <div class="barre-actions"><button class="btn" id="enregistrer-specialites">Enregistrer les spécialités</button></div>
+        </section>
+
+        <!-- ------------------------------ À PROPOS ----------------------------- -->
+        <section class="vue" id="vue-apropos">
+          <h2 class="admin-titre">Page « À propos »</h2>
+          <p class="admin-sous-titre">Présentation de l'entreprise, mission, valeurs et parcours.</p>
+
+          <div class="panneau">
+            <h3>En-tête de la page</h3>
+            <div class="grille-2">
+              <div class="champ"><label for="ap-sur">Sur-titre</label><input id="ap-sur" type="text"></div>
+              <div class="champ"><label for="ap-soustitre">Sous-titre</label><input id="ap-soustitre" type="text"></div>
+            </div>
+            <div class="champ"><label for="ap-titre">Titre de la page</label><input id="ap-titre" type="text"></div>
+            <div class="champ"><label for="ap-intro">Présentation (un paragraphe par ligne vide)</label><textarea id="ap-intro" rows="8"></textarea></div>
+            <div class="champ"><label for="ap-image">Image de présentation (URL ou téléversement ci-dessous)</label><input id="ap-image" type="text"></div>
+            <div class="champ"><label for="ap-fichier">… ou téléverser une image</label><input id="ap-fichier" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Mission &amp; vision</h3>
+            <div class="champ" style="margin-bottom:1rem"><label for="ap-mission">Notre mission</label><textarea id="ap-mission" rows="3"></textarea></div>
+            <div class="champ"><label for="ap-vision">Notre vision</label><textarea id="ap-vision" rows="3"></textarea></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Chiffres clés</h3>
+            <div id="zones-chiffres"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-chiffre">+ Ajouter un chiffre</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Les trois spécialités (page À propos)</h3>
+            <div id="zones-piliers-apropos"></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Valeurs</h3>
+            <div id="zones-valeurs"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-valeur">+ Ajouter une valeur</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Parcours</h3>
+            <div id="zones-histoire"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-histoire">+ Ajouter une étape</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Pourquoi nous choisir</h3>
+            <div id="zones-raisons"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-raison">+ Ajouter un argument</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Bandeau d'appel (bas de page)</h3>
+            <div class="grille-2">
+              <div class="champ"><label for="ap-cta-titre">Titre</label><input id="ap-cta-titre" type="text"></div>
+              <div class="champ"><label for="ap-cta-bouton">Texte du bouton</label><input id="ap-cta-bouton" type="text"></div>
+            </div>
+            <div class="champ" style="margin-bottom:1rem"><label for="ap-cta-texte">Texte</label><textarea id="ap-cta-texte" rows="2"></textarea></div>
+            <div class="champ"><label for="ap-cta-lien">Lien du bouton</label><input id="ap-cta-lien" type="text" placeholder="#contact"></div>
+          </div>
+
+          <div class="barre-actions">
+            <button class="btn" id="enregistrer-apropos">Enregistrer la page À propos</button>
+            <a class="btn btn--fantome" href="/a-propos.html" target="_blank" rel="noopener">Voir la page</a>
+          </div>
         </section>
 
         <!-- ------------------------------ PRODUITS ----------------------------- -->

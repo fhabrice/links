@@ -25,7 +25,11 @@
     electricite: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
     cloud:
       '<path d="M18 18.5a4.5 4.5 0 0 0-.6-8.96 6 6 0 0 0-11.2 1.6A3.75 3.75 0 0 0 7 18.5z"/><path d="M12 12v4.5M10 14.5 12 12l2 2.5"/>',
-    defaut: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'
+    defaut: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+    integrite: '<path d="M12 3l7 3v5.5c0 4.2-2.9 8-7 9.5-4.1-1.5-7-5.3-7-9.5V6z"/><path d="M9 12l2 2 4-4"/>',
+    qualite: '<circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.8L7 22l5-2.6L17 22l-1.5-8.2"/>',
+    proximite: '<path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+    innovation: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"/>'
   };
 
   function iconeSvg(cle, taille = 24) {
@@ -171,10 +175,20 @@
     activerSpecialite(hero.actif || hero.onglets[0]?.id, false);
   }
 
-  /** Active une spécialité : onglet du hero + carte vedette. */
+  /**
+   * Active une spécialité : onglet du hero + carte vedette.
+   * Sur une page sans bannière (ex. « À propos »), on renvoie vers l'accueil
+   * en transmettant la spécialité choisie.
+   */
   function activerSpecialite(id, defiler = true) {
     const hero = etat.contenu?.hero;
     if (!hero?.onglets) return;
+
+    if (!$('#onglets-hero') && !$('#hero-titre')) {
+      window.location.href = `/?specialite=${encodeURIComponent(id)}#accueil`;
+      return;
+    }
+
     const onglet = hero.onglets.find((o) => o.id === id) || hero.onglets[0];
 
     $$('#onglets-hero .onglet').forEach((b) => b.classList.toggle('actif', b.dataset.onglet === onglet.id));
@@ -259,6 +273,102 @@
     zone.querySelectorAll('[data-pied-specialite]').forEach((lien) =>
       lien.addEventListener('click', () => activerSpecialite(lien.dataset.piedSpecialite, true))
     );
+  }
+
+  /** Page « À propos » : le contenu vient de l'admin, la page s'adapte. */
+  function rendreAPropos() {
+    const apropos = etat.contenu?.apropos;
+    if (!apropos || !$('#apropos-titre')) return;
+
+    const poser = (selecteur, valeur) => {
+      const el = $(selecteur);
+      if (el && valeur) el.textContent = valeur;
+    };
+    poser('#apropos-sur', apropos.sur);
+    poser('#apropos-titre', apropos.titre);
+    poser('#apropos-soustitre', apropos.sousTitre);
+    if (apropos.titre) document.title = `${apropos.titre} | ${etat.contenu.identite?.nom || 'LK-TECH'}`;
+
+    const blocIntro = $('#apropos-intro');
+    if (blocIntro) {
+      blocIntro.innerHTML = (apropos.intro || []).map((paragraphe) => `<p>${echapper(paragraphe)}</p>`).join('');
+    }
+    if (apropos.image) $('#apropos-image').src = apropos.image;
+
+    const chiffres = $('#apropos-chiffres');
+    if (chiffres) {
+      chiffres.innerHTML = (apropos.chiffres || [])
+        .map((c) => `<div class="chiffre"><strong>${echapper(c.valeur)}</strong><span>${echapper(c.libelle)}</span></div>`)
+        .join('');
+    }
+
+    const piliers = $('#apropos-piliers');
+    if (piliers) {
+      piliers.innerHTML = (apropos.piliers || [])
+        .map(
+          (pilier) => `
+          <article class="pilier apparait">
+            <div class="pilier__icone">${iconeSvg(pilier.icone, 29)}</div>
+            <h3 class="pilier__titre">${echapper(pilier.titre)}</h3>
+            <p class="pilier__texte">${echapper(pilier.texte)}</p>
+          </article>`
+        )
+        .join('');
+    }
+
+    poser('#apropos-mission', apropos.mission);
+    poser('#apropos-vision', apropos.vision);
+
+    const valeurs = $('#apropos-valeurs');
+    if (valeurs) {
+      valeurs.innerHTML = (apropos.valeurs || [])
+        .map(
+          (valeur) => `
+          <article class="valeur apparait">
+            <div class="valeur__icone">${iconeSvg(valeur.icone, 26)}</div>
+            <h3 class="valeur__titre">${echapper(valeur.titre)}</h3>
+            <p class="valeur__texte">${echapper(valeur.texte)}</p>
+          </article>`
+        )
+        .join('');
+    }
+
+    const frise = $('#apropos-histoire');
+    if (frise) {
+      frise.innerHTML = (apropos.histoire || [])
+        .map(
+          (etape) => `
+          <div class="frise__item apparait">
+            <div class="frise__annee">${echapper(etape.annee)}</div>
+            <h3 class="frise__titre">${echapper(etape.titre)}</h3>
+            <p class="frise__texte">${echapper(etape.texte)}</p>
+          </div>`
+        )
+        .join('');
+    }
+
+    const raisons = $('#apropos-raisons');
+    if (raisons) {
+      raisons.innerHTML = (apropos.raisons || [])
+        .map(
+          (raison) => `
+          <article class="raison apparait">
+            <h3 class="raison__titre">${echapper(raison.titre)}</h3>
+            <p class="raison__texte">${echapper(raison.texte)}</p>
+          </article>`
+        )
+        .join('');
+    }
+
+    const cta = apropos.cta || {};
+    poser('#apropos-cta-titre', cta.titre);
+    poser('#apropos-cta-texte', cta.texte);
+    const boutonCta = $('#apropos-cta-bouton');
+    if (boutonCta && cta.boutonTexte) {
+      boutonCta.textContent = cta.boutonTexte;
+      const lien = cta.boutonLien || '#contact';
+      boutonCta.href = lien.startsWith('#') ? `/${lien}` : lien;
+    }
   }
 
   function rendreSpecialites() {
@@ -490,9 +600,11 @@
   }
 
   function ouvrirPanier(ouvert) {
-    $('#panier').classList.toggle('ouvert', ouvert);
-    $('#panier').setAttribute('aria-hidden', String(!ouvert));
-    $('#voile').classList.toggle('visible', ouvert);
+    const panier = $('#panier');
+    if (!panier) return; // page sans panier (ex. « À propos »)
+    panier.classList.toggle('ouvert', ouvert);
+    panier.setAttribute('aria-hidden', String(!ouvert));
+    $('#voile')?.classList.toggle('visible', ouvert);
   }
 
   /* ------------------------------- contact -------------------------------- */
@@ -585,6 +697,7 @@
       rendreRuban();
       rendreSpecialites();
       rendreSpecialitesPied();
+      rendreAPropos();
       rendreOngletsHero(donnees.contenu.hero);
       rendreServices(donnees.contenu.services);
       rendreEtapes(donnees.contenu.approche);
@@ -600,24 +713,33 @@
       if (contact.titre && $('#contact-titre')) $('#contact-titre').textContent = contact.titre;
       if (contact.sousTitre && $('#contact-soustitre')) $('#contact-soustitre').textContent = contact.sousTitre;
 
-      if (donnees.contenu.boutique?.titre) $('#boutique-titre').textContent = donnees.contenu.boutique.titre;
-      if (donnees.contenu.boutique?.sousTitre) $('#boutique-soustitre').textContent = donnees.contenu.boutique.sousTitre;
-      if (donnees.contenu.pied?.description) $('#pied-description').textContent = donnees.contenu.pied.description;
-      $('#pied-copyright').textContent = `© ${new Date().getFullYear()} ${
-        donnees.contenu.identite?.nom || 'LK-TECH'
-      } — ${donnees.contenu.pied?.mentions || 'Tous droits réservés.'}`;
+      // Ces éléments n'existent que sur la page d'accueil : on vérifie avant d'écrire.
+      if (donnees.contenu.boutique?.titre && $('#boutique-titre')) {
+        $('#boutique-titre').textContent = donnees.contenu.boutique.titre;
+      }
+      if (donnees.contenu.boutique?.sousTitre && $('#boutique-soustitre')) {
+        $('#boutique-soustitre').textContent = donnees.contenu.boutique.sousTitre;
+      }
+      if (donnees.contenu.pied?.description && $('#pied-description')) {
+        $('#pied-description').textContent = donnees.contenu.pied.description;
+      }
+      if ($('#pied-copyright')) {
+        $('#pied-copyright').textContent = `© ${new Date().getFullYear()} ${
+          donnees.contenu.identite?.nom || 'LK-TECH'
+        } — ${donnees.contenu.pied?.mentions || 'Tous droits réservés.'}`;
+      }
 
-      if (etat.reglages.portailClientActif === false) $('#btn-portail').hidden = true;
-      $('#bandeau-maintenance').hidden = etat.reglages.maintenance !== true;
+      if (etat.reglages.portailClientActif === false && $('#btn-portail')) $('#btn-portail').hidden = true;
+      if ($('#bandeau-maintenance')) $('#bandeau-maintenance').hidden = etat.reglages.maintenance !== true;
     }
 
     rendrePanier();
     brancherFormulaire();
 
-    $('#btn-panier').addEventListener('click', () => ouvrirPanier(true));
-    $('#panier-fermer').addEventListener('click', () => ouvrirPanier(false));
-    $('#voile').addEventListener('click', () => ouvrirPanier(false));
-    $('#panier-vider').addEventListener('click', () => {
+    $('#btn-panier')?.addEventListener('click', () => ouvrirPanier(true));
+    $('#panier-fermer')?.addEventListener('click', () => ouvrirPanier(false));
+    $('#voile')?.addEventListener('click', () => ouvrirPanier(false));
+    $('#panier-vider')?.addEventListener('click', () => {
       etat.panier = [];
       sauverPanier();
       rendrePanier();
@@ -639,6 +761,10 @@
         $('#burger').setAttribute('aria-expanded', 'false');
       })
     );
+
+    // Spécialité transmise par une autre page : /?specialite=energie#accueil
+    const specialiteDemandee = new URLSearchParams(window.location.search).get('specialite');
+    if (specialiteDemandee && $('#onglets-hero')) activerSpecialite(specialiteDemandee, false);
 
     brancherImagesSecours();
     observerApparitions();

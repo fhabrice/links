@@ -101,6 +101,7 @@
     remplirIdentite();
     remplirHero();
     remplirSpecialites();
+    remplirAPropos();
     remplirProduits();
     remplirServices();
     remplirApproche();
@@ -255,6 +256,183 @@
 
     await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
     toast('Spécialités enregistrées ✔');
+  }
+
+  /* ------------------------------ À propos ------------------------------- */
+
+  function lignesDepuisTexte(texte) {
+    return String(texte || '')
+      .split(/\n\s*\n/)
+      .map((bloc) => bloc.replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+  }
+
+  function panneauSimple(index, attribut, titre, champs) {
+    return `
+      <div class="panneau" data-bloc="${attribut}" data-index="${index}" style="padding:1.1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.75rem">
+          <strong style="font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ardoise-500)">${titre}</strong>
+          <button class="btn btn--petit btn--fantome" data-retirer="${attribut}:${index}" style="color:var(--danger)">Retirer</button>
+        </div>
+        ${champs}
+      </div>`;
+  }
+
+  function remplirAPropos() {
+    const apropos = etat.contenu.apropos;
+    if (!apropos) return;
+
+    $('#ap-sur').value = apropos.sur || '';
+    $('#ap-titre').value = apropos.titre || '';
+    $('#ap-soustitre').value = apropos.sousTitre || '';
+    $('#ap-intro').value = (apropos.intro || []).join('\n\n');
+    $('#ap-image').value = apropos.image || '';
+    $('#ap-mission').value = apropos.mission || '';
+    $('#ap-vision').value = apropos.vision || '';
+    const cta = apropos.cta || {};
+    $('#ap-cta-titre').value = cta.titre || '';
+    $('#ap-cta-texte').value = cta.texte || '';
+    $('#ap-cta-bouton').value = cta.boutonTexte || '';
+    $('#ap-cta-lien').value = cta.boutonLien || '#contact';
+
+    $('#zones-chiffres').innerHTML = (apropos.chiffres || [])
+      .map((chiffre, index) =>
+        panneauSimple(
+          index,
+          'chiffres',
+          `Chiffre ${index + 1}`,
+          `<div class="grille-2">
+             <div class="champ"><label>Valeur</label><input data-cle="valeur" value="${echapper(chiffre.valeur)}"></div>
+             <div class="champ"><label>Libellé</label><input data-cle="libelle" value="${echapper(chiffre.libelle)}"></div>
+           </div>`
+        )
+      )
+      .join('');
+
+    $('#zones-piliers-apropos').innerHTML = (apropos.piliers || [])
+      .map((pilier, index) =>
+        panneauSimple(
+          index,
+          'piliers',
+          `Spécialité ${index + 1}`,
+          `<div class="grille-2">
+             <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(pilier.titre)}"></div>
+             <div class="champ"><label>Icône</label>
+               <select data-cle="icone">
+                 ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Construction'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
+                   .map(([v, l]) => `<option value="${v}"${pilier.icone === v ? ' selected' : ''}>${l}</option>`)
+                   .join('')}
+               </select>
+             </div>
+           </div>
+           <div class="champ"><label>Texte</label><textarea data-cle="texte" rows="3">${echapper(pilier.texte)}</textarea></div>`
+        )
+      )
+      .join('');
+
+    $('#zones-valeurs').innerHTML = (apropos.valeurs || [])
+      .map((valeur, index) =>
+        panneauSimple(
+          index,
+          'valeurs',
+          `Valeur ${index + 1}`,
+          `<div class="grille-2">
+             <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(valeur.titre)}"></div>
+             <div class="champ"><label>Icône</label>
+               <select data-cle="icone">
+                 ${[['integrite', 'Intégrité (bouclier)'], ['qualite', 'Qualité (médaille)'], ['proximite', 'Proximité (repère)'], ['innovation', 'Innovation (ampoule)'], ['defaut', 'Autre']]
+                   .map(([v, l]) => `<option value="${v}"${valeur.icone === v ? ' selected' : ''}>${l}</option>`)
+                   .join('')}
+               </select>
+             </div>
+           </div>
+           <div class="champ"><label>Texte</label><textarea data-cle="texte" rows="2">${echapper(valeur.texte)}</textarea></div>`
+        )
+      )
+      .join('');
+
+    $('#zones-histoire').innerHTML = (apropos.histoire || [])
+      .map((etape, index) =>
+        panneauSimple(
+          index,
+          'histoire',
+          `Étape ${index + 1}`,
+          `<div class="grille-2">
+             <div class="champ"><label>Année</label><input data-cle="annee" value="${echapper(etape.annee)}"></div>
+             <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(etape.titre)}"></div>
+           </div>
+           <div class="champ"><label>Texte</label><textarea data-cle="texte" rows="2">${echapper(etape.texte)}</textarea></div>`
+        )
+      )
+      .join('');
+
+    $('#zones-raisons').innerHTML = (apropos.raisons || [])
+      .map((raison, index) =>
+        panneauSimple(
+          index,
+          'raisons',
+          `Argument ${index + 1}`,
+          `<div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(raison.titre)}"></div>
+           <div class="champ"><label>Texte</label><textarea data-cle="texte" rows="2">${echapper(raison.texte)}</textarea></div>`
+        )
+      )
+      .join('');
+
+    brancherRetraits();
+  }
+
+  /** Boutons « Retirer » communs à toutes les listes de la page À propos. */
+  function brancherRetraits() {
+    $$('#vue-apropos [data-retirer]').forEach((bouton) =>
+      bouton.addEventListener('click', () => {
+        const [attribut, index] = bouton.dataset.retirer.split(':');
+        collecterAPropos();
+        etat.contenu.apropos[attribut].splice(Number(index), 1);
+        remplirAPropos();
+      })
+    );
+  }
+
+  function collecterAPropos() {
+    const apropos = etat.contenu.apropos;
+    apropos.sur = $('#ap-sur').value.trim();
+    apropos.titre = $('#ap-titre').value.trim();
+    apropos.sousTitre = $('#ap-soustitre').value.trim();
+    apropos.intro = lignesDepuisTexte($('#ap-intro').value);
+    apropos.image = $('#ap-image').value.trim();
+    apropos.mission = $('#ap-mission').value.trim();
+    apropos.vision = $('#ap-vision').value.trim();
+    apropos.cta = {
+      titre: $('#ap-cta-titre').value.trim(),
+      texte: $('#ap-cta-texte').value.trim(),
+      boutonTexte: $('#ap-cta-bouton').value.trim(),
+      boutonLien: $('#ap-cta-lien').value.trim() || '#contact'
+    };
+
+    $$('#vue-apropos [data-bloc]').forEach((panneau) => {
+      const attribut = panneau.dataset.bloc;
+      const index = Number(panneau.dataset.index);
+      if (!Array.isArray(apropos[attribut]) || !apropos[attribut][index]) return;
+      panneau.querySelectorAll('[data-cle]').forEach((champ) => {
+        apropos[attribut][index][champ.dataset.cle] = champ.value;
+      });
+    });
+  }
+
+  async function enregistrerAPropos() {
+    collecterAPropos();
+    await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
+    toast('Page À propos enregistrée ✔');
+  }
+
+  async function televerserImageAPropos(fichier) {
+    if (!fichier) return;
+    if (fichier.size > 4 * 1024 * 1024) return toast("L'image dépasse 4 Mo.");
+    const url = await televerser(fichier);
+    $('#ap-image').value = url;
+    etat.contenu.apropos.image = url;
+    await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
+    toast('Image mise à jour ✔');
   }
 
   /* ------------------------------ produits ------------------------------- */
@@ -578,6 +756,21 @@
     $('#fichier-logo').addEventListener('change', (e) => televerserLogo(e.target.files[0], 'principal').catch((err) => toast(err.message)));
     $('#fichier-logo-clair').addEventListener('change', (e) => televerserLogo(e.target.files[0], 'clair').catch((err) => toast(err.message)));
     $('#enregistrer-specialites').addEventListener('click', () => enregistrerSpecialites().catch((e) => toast(e.message)));
+
+    // Page À propos
+    $('#enregistrer-apropos').addEventListener('click', () => enregistrerAPropos().catch((e) => toast(e.message)));
+    $('#ap-fichier').addEventListener('change', (e) => televerserImageAPropos(e.target.files[0]).catch((err) => toast(err.message)));
+    const ajouterBloc = (bouton, attribut, modele) => {
+      $(bouton).addEventListener('click', () => {
+        collecterAPropos();
+        etat.contenu.apropos[attribut].push(modele);
+        remplirAPropos();
+      });
+    };
+    ajouterBloc('#ajouter-chiffre', 'chiffres', { valeur: '0', libelle: 'Nouveau chiffre' });
+    ajouterBloc('#ajouter-valeur', 'valeurs', { icone: 'defaut', titre: 'Nouvelle valeur', texte: '' });
+    ajouterBloc('#ajouter-histoire', 'histoire', { annee: '2026', titre: 'Nouvelle étape', texte: '' });
+    ajouterBloc('#ajouter-raison', 'raisons', { titre: 'Nouvel argument', texte: '' });
 
     // Hero
     const zoneHero = $('#zones-hero');

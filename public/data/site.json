@@ -256,6 +256,125 @@
         "actif": true
       }
     ],
+    "apropos": {
+      "sur": "Notre entreprise",
+      "titre": "À propos de LK-TECH",
+      "sousTitre": "Trois spécialités, une même exigence de qualité",
+      "intro": [
+        "LK-TECH (Linksmartech) est une entreprise congolaise basée à Goma, au Nord-Kivu. Née de la rencontre entre des ingénieurs informaticiens, des professionnels du bâtiment et des techniciens en énergie, elle réunit sous un même toit trois compétences complémentaires : l'informatique, la construction et l'énergie renouvelable.",
+        "Nous accompagnons les institutions publiques, les organisations humanitaires, les entreprises et les particuliers, de l'étude technique jusqu'à la maintenance. Chaque projet est traité comme une responsabilité : comprendre le besoin réel, proposer la solution la plus juste, la réaliser dans les délais et rester disponibles après la livraison.",
+        "Notre ancrage local est une force : nous connaissons les contraintes du terrain — accès, climat, disponibilité de l'énergie — et nous concevons des solutions qui y répondent réellement."
+      ],
+      "image": "/assets/img/vedette-construction.jpg",
+      "chiffres": [
+        {
+          "valeur": "10+",
+          "libelle": "Années d'expérience"
+        },
+        {
+          "valeur": "150+",
+          "libelle": "Projets livrés"
+        },
+        {
+          "valeur": "3",
+          "libelle": "Pôles d'expertise"
+        },
+        {
+          "valeur": "98%",
+          "libelle": "Clients satisfaits"
+        }
+      ],
+      "mission": "Rendre accessibles, au Nord-Kivu et partout en RDC, des solutions numériques, des bâtiments et des installations énergétiques de qualité professionnelle, adaptées aux réalités locales.",
+      "vision": "Devenir la référence congolaise de l'ingénierie intégrée : une entreprise capable de concevoir, construire et équiper un site de bout en bout.",
+      "piliers": [
+        {
+          "id": "informatique",
+          "icone": "code",
+          "titre": "Informatique",
+          "texte": "Développement d'applications et de sites web, câblage réseau, serveurs, cybersécurité, cloud et infogérance : nous équipons, sécurisons et connectons vos activités."
+        },
+        {
+          "id": "construction",
+          "icone": "btp",
+          "titre": "Construction",
+          "texte": "Constructeur général : études techniques, plans, gros œuvre, second œuvre, électricité du bâtiment et réhabilitation. Nous livrons des ouvrages conformes aux normes."
+        },
+        {
+          "id": "energie",
+          "icone": "solaire",
+          "titre": "Énergie renouvelable",
+          "texte": "Étude de consommation, dimensionnement, installation et maintenance de kits solaires, de systèmes hybrides et de pompage solaire pour votre autonomie énergétique."
+        }
+      ],
+      "valeurs": [
+        {
+          "icone": "integrite",
+          "titre": "Intégrité",
+          "texte": "Des devis clairs, sans coûts cachés, et des engagements tenus."
+        },
+        {
+          "icone": "qualite",
+          "titre": "Qualité",
+          "texte": "Du matériel éprouvé et une mise en œuvre soignée, contrôlée à chaque étape."
+        },
+        {
+          "icone": "proximite",
+          "titre": "Proximité",
+          "texte": "Des équipes basées à Goma, disponibles et réactives après la livraison."
+        },
+        {
+          "icone": "innovation",
+          "titre": "Innovation",
+          "texte": "Nous suivons les technologies utiles et formons vos équipes à leur usage."
+        }
+      ],
+      "histoire": [
+        {
+          "annee": "2016",
+          "titre": "Premiers pas",
+          "texte": "Création de l'activité informatique : dépannage, réseaux et fourniture de matériel à Goma."
+        },
+        {
+          "annee": "2019",
+          "titre": "Pôle construction",
+          "texte": "Ouverture du pôle construction : études, gros œuvre et réhabilitation de bâtiments."
+        },
+        {
+          "annee": "2022",
+          "titre": "Pôle énergie",
+          "texte": "Lancement du pôle énergie renouvelable : kits solaires et systèmes hybrides."
+        },
+        {
+          "annee": "2024",
+          "titre": "Ingénierie intégrée",
+          "texte": "LK-TECH réunit les trois pôles et conduit des projets de bout en bout."
+        }
+      ],
+      "raisons": [
+        {
+          "titre": "Un interlocuteur unique",
+          "texte": "Un seul partenaire pour vos besoins informatiques, de construction et d'énergie : moins de coordination, plus de cohérence."
+        },
+        {
+          "titre": "Un devis détaillé",
+          "texte": "Chaque prestation est chiffrée ligne par ligne, avec le matériel et les délais annoncés."
+        },
+        {
+          "titre": "Une équipe technique",
+          "texte": "Ingénieurs, développeurs, techniciens solaires et chefs de chantier travaillent ensemble."
+        },
+        {
+          "titre": "Un suivi durable",
+          "texte": "Maintenance, formation et assistance après la mise en service."
+        }
+      ],
+      "cta": {
+        "titre": "Un projet en tête ?",
+        "texte": "Décrivez-nous votre besoin : nous revenons vers vous avec une proposition claire et un délai d'intervention.",
+        "boutonTexte": "Demander un devis",
+        "boutonLien": "#contact"
+      }
+    },
     "vedetteDevis": {
       "icone": "btp",
       "image": "/assets/img/vedette-construction.jpg",
@@ -305,6 +424,6 @@
     "portailClientActif": true,
     "maintenance": false
   },
-  "genereLe": "2026-09-24T10:51:23.076Z",
+  "genereLe": "2026-09-24T10:54:23.017Z",
   "note": "Fichier de secours statique généré par tools/build-fallback.js."
 }

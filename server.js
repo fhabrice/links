@@ -153,6 +153,11 @@ async function demarrer() {
         return servirFichier(res, cible, { cache: true });
       }
 
+      /* ------------------ Pages statiques nommées ---------------- */
+      if (chemin === '/a-propos' || chemin === '/a-propos/') {
+        return servirFichier(res, path.join(PUBLIC, 'a-propos.html'));
+      }
+
       /* --------------------- Espace admin ---------------------- */
       if (chemin === '/admin' || chemin === '/admin/' || chemin === '/admin/index.html') {
         return servirFichier(res, path.join(PUBLIC, 'admin', 'index.html'));

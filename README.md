@@ -27,8 +27,10 @@ node server.js
 | Adresse | Description |
 | --- | --- |
 | https://www.linksmartec.com | Site public (en production) |
+| https://www.linksmartec.com/a-propos.html | Page « À propos » |
 | https://www.linksmartec.com/admin | Espace d'administration |
 | http://localhost:3000 | Site public (en local) |
+| http://localhost:3000/a-propos | Page « À propos » (en local) |
 | http://localhost:3000/admin | Administration (en local) |
 
 **Identifiants par défaut :** `admin` / `linksmartech`
@@ -83,7 +85,27 @@ Elles structurent toute la navigation et le contenu :
 
 ---
 
-## 4. Ce que l'on peut gérer depuis l'admin
+## 4. La page « À propos »
+
+Accessible depuis le menu (**À propos**) et à l'adresse `/a-propos`
+(ou `/a-propos.html`). Elle présente l'entreprise en huit blocs :
+
+1. **En-tête** — sur-titre, titre, sous-titre et fil d'Ariane ;
+2. **Présentation** — trois paragraphes et une image de votre choix ;
+3. **Chiffres clés** — expérience, projets livrés, pôles, satisfaction ;
+4. **Les trois spécialités** — informatique, construction, énergie renouvelable ;
+5. **Mission & vision** ;
+6. **Valeurs** — intégrité, qualité, proximité, innovation ;
+7. **Parcours** — une frise chronologique (2016 → 2024) ;
+8. **Pourquoi nous choisir** + bandeau d'appel au devis.
+
+Tout ce contenu se modifie dans l'admin, onglet **À propos** (ajout et retrait
+d'éléments inclus). Les boutons de spécialité de cette page renvoient vers
+l'accueil en activant l'onglet correspondant.
+
+---
+
+## 5. Ce que l'on peut gérer depuis l'admin
 
 | Onglet | Contenu modifiable |
 | --- | --- |
@@ -91,6 +113,7 @@ Elles structurent toute la navigation et le contenu :
 | **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, **site web**, horaires, **logos (principal + clair)**, couleurs, texte du pied de page |
 | **Bannière d'accueil** | Les trois onglets de spécialité et leur produit vedette |
 | **Spécialités** | Les trois pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
+| **À propos** | Toute la page : présentation, image, mission, vision, chiffres, spécialités, valeurs, parcours, arguments et bandeau d'appel |
 | **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité |
 | **Services** | Les six prestations (titre, icône ou image, description) |
 | **Approche** | Les étapes de la méthode de travail |
@@ -103,7 +126,7 @@ Chaque enregistrement est immédiatement visible sur le site public.
 
 ---
 
-## 5. Où sont stockées les données ?
+## 6. Où sont stockées les données ?
 
 Le site choisit **tout seul**, dans cet ordre :
 
@@ -126,7 +149,7 @@ Le site choisit **tout seul**, dans cet ordre :
 
 ---
 
-## 6. Images
+## 7. Images
 
 Toutes les images du site sont **hébergées localement** dans `public/assets/img/`
 (produits, chantier, logo) : le site s'affiche correctement même avec une connexion
@@ -137,7 +160,7 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ---
 
-## 7. Sauvegarde
+## 8. Sauvegarde
 
 - **Export complet** : onglet *Stockage & sauvegarde* → *Exporter mes données (JSON)*.
 - **Sauvegarde manuelle** : copiez le dossier `data/` (il contient tout).
@@ -145,7 +168,7 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ---
 
-## 8. Structure du projet
+## 9. Structure du projet
 
 ```
 links/
@@ -156,7 +179,8 @@ links/
 │   ├── security.js            Hachage scrypt + sessions signées
 │   └── store.js               Stockage auto-configuré (local / MySQL détecté)
 ├── public/
-│   ├── index.html             Site public
+│   ├── index.html             Site public (accueil)
+│   ├── a-propos.html          Page « À propos »
 │   ├── admin/                 Espace d'administration
 │   ├── assets/css/styles.css  Design complet (aucun CDN)
 │   ├── assets/js/site.js      Comportements du site (panier, spécialités, contact…)
@@ -175,7 +199,7 @@ renseigné dans l'admin (*Identité & logo* → *Téléphone principal*).
 
 ---
 
-## 9. Déploiement
+## 10. Déploiement
 
 **Hébergement Node.js (VPS, Render, Railway, cPanel Node…)**
 
@@ -198,7 +222,7 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 
 ---
 
-## 10. Sécurité
+## 11. Sécurité
 
 - Mots de passe hachés en **scrypt** (jamais stockés en clair).
 - Sessions signées HMAC, valables 12 h, cookie `HttpOnly` + `SameSite=Lax`.
