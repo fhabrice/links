@@ -25,6 +25,10 @@ DirectoryIndex index.php index.html
 
     # Version Node.js (facultative, dossier node/) et outils : jamais servis
     RewriteRule ^(node|tools)/ - [F,L]
+
+    # Fichiers cachés (.git, .env, .htaccess…) : jamais servis
+    # (.well-known reste accessible pour les certificats HTTPS)
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
 </IfModule>
 
 # Empêche l'affichage du contenu des dossiers

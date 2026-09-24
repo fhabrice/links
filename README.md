@@ -46,9 +46,9 @@ node server.js      # http://localhost:3000
 | Adresse | Description |
 | --- | --- |
 | https://www.linksmartec.com | Site public (en production) |
-| https://www.linksmartec.com/a-propos.html | Page « À propos » |
+| https://www.linksmartec.com/a-propos | Page « À propos » |
 | https://www.linksmartec.com/admin | Espace d'administration |
-| http://localhost:3000 | Site public (en local) |
+| http://localhost:3000 | Site public (en local, version Node.js) |
 | http://localhost:3000/a-propos | Page « À propos » (en local) |
 | http://localhost:3000/admin | Administration (en local) |
 
