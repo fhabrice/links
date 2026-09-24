@@ -1,0 +1,43 @@
+# =====================================================================
+# Déploiement en un clic sur Render (https://render.com)
+#
+# 1. Poussez ce dépôt sur GitHub (déjà fait).
+# 2. Sur Render : « New » → « Blueprint » → choisissez ce dépôt.
+# 3. Render applique ce fichier, installe le site et vous demande
+#    seulement le mot de passe d'administration.
+# 4. Ajoutez le domaine www.linksmartec.com dans « Settings → Custom Domains ».
+# =====================================================================
+
+services:
+  - type: web
+    name: linksmartec
+    runtime: node
+    plan: starter            # « free » fonctionne aussi (voir la note sur le disque)
+    region: frankfurt        # au plus près de la RDC (latence la plus faible)
+    branch: main
+    buildCommand: node tools/build-fallback.js
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      # Clé de signature des sessions : générée automatiquement
+      - key: SESSION_SECRET
+        generateValue: true
+      # Mot de passe de l'admin : à saisir dans le tableau de bord Render
+      - key: ADMIN_PASSWORD
+        sync: false
+
+    # Disque persistant : indispensable pour conserver contenu, messages
+    # et images téléversées entre deux redéploiements.
+    # (Sur l'offre gratuite, le disque n'est pas disponible → voir DEPLOIEMENT.md)
+    disk:
+      name: donnees-linksmartec
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
+
+    domains:
+      - www.linksmartec.com
+      - linksmartec.com

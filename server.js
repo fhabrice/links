@@ -180,7 +180,15 @@ async function demarrer() {
   serveur.listen(PORT, HOTE, () => {
     console.log(`   Site public      : http://localhost:${PORT}`);
     console.log(`   Administration   : http://localhost:${PORT}/admin`);
-    console.log('   Identifiants par défaut : admin / linksmartech (modifiables dans l\'admin)\n');
+
+    if (process.env.ADMIN_PASSWORD) {
+      console.log('   Compte admin     : admin — mot de passe défini par ADMIN_PASSWORD');
+    } else {
+      console.log('   Compte admin     : admin / linksmartech');
+      console.log('   ⚠️  Mot de passe par défaut : à changer dès la mise en ligne');
+      console.log('      (admin → Sécurité, ou variable ADMIN_PASSWORD)');
+    }
+    console.log(`   Données          : ${process.env.NODE_ENV === 'production' ? 'dossier data/ — prévoir un disque persistant' : 'dossier data/'}\n`);
   });
 
   return { serveur, stockage, pilote };

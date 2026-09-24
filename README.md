@@ -187,7 +187,10 @@ links/
 │   ├── assets/img/            Logos SVG + visuels produits
 │   └── data/site.json         Contenu statique de secours
 ├── config/                    Configuration MySQL optionnelle (exemple fourni)
+├── deploy/                    Fichiers prêts à l'emploi : systemd, Nginx, cPanel
 ├── tools/build-fallback.js    Regénère le contenu statique de secours
+├── Dockerfile · Procfile · render.yaml    Déploiement (Docker, Railway, Render)
+├── DEPLOIEMENT.md             Guide d'hébergement pas-à-pas
 └── data/                      Données enregistrées automatiquement (non versionnées)
 ```
 
@@ -199,7 +202,24 @@ renseigné dans l'admin (*Identité & logo* → *Téléphone principal*).
 
 ---
 
-## 10. Déploiement
+## 10. Déploiement — hébergement
+
+> 📘 **Guide pas-à-pas complet : [DEPLOIEMENT.md](DEPLOIEMENT.md)**
+> Il couvre quatre scénarios (mutualisé cPanel, VPS, Render/Railway, site statique),
+> les enregistrements DNS, HTTPS, la sauvegarde et les dépannages courants.
+
+Les fichiers de déploiement sont déjà fournis dans le dépôt :
+
+| Fichier | Pour quel hébergement |
+| --- | --- |
+| `render.yaml` | Render (déploiement en un clic, disque persistant et nom de domaine pré-remplis) |
+| `Procfile` | Railway, Heroku et compatibles |
+| `Dockerfile` | Docker, Fly.io, Koyeb, VPS, Kubernetes… |
+| `deploy/linksmartec.service` | Service systemd (VPS Linux : démarrage automatique) |
+| `deploy/nginx-linksmartec.conf` | Nginx + HTTPS Let's Encrypt (VPS) |
+| `deploy/cpanel-passenger.txt` | Hébergement mutualisé cPanel avec Node.js |
+
+
 
 **Hébergement Node.js (VPS, Render, Railway, cPanel Node…)**
 

@@ -424,6 +424,6 @@
     "portailClientActif": true,
     "maintenance": false
   },
-  "genereLe": "2026-09-24T10:54:23.017Z",
+  "genereLe": "2026-09-24T10:59:31.029Z",
   "note": "Fichier de secours statique généré par tools/build-fallback.js."
 }

@@ -1,0 +1,44 @@
+# =====================================================================
+# cPanel — hébergement mutualisé avec Node.js (Phusion Passenger)
+#
+# Sur la plupart des cPanel (Hostinger, Namecheap, OVH, cPanel local…),
+# l'outil « Setup Node.js App » génère LUI-MÊME le fichier .htaccess.
+# Ce fichier est donné à titre de référence / dépannage.
+# =====================================================================
+
+# --- Réglages à renseigner (remplacez VOTRECOMPTE par votre identifiant cPanel)
+
+PassengerAppRoot       /home/VOTRECOMPTE/linksmartec
+PassengerBaseURI       /
+PassengerNodejs        /home/VOTRECOMPTE/nodevenv/linksmartec/20/bin/node
+PassengerAppType       node
+PassengerStartupFile   server.js
+PassengerAppLogFile    /home/VOTRECOMPTE/logs/linksmartec.log
+
+# ---------------------------------------------------------------------
+# Étapes dans cPanel :
+#
+# 1) « Setup Node.js App » → Create Application
+#      Node.js version : 18 ou 20
+#      Application root : linksmartec      (le dossier du site)
+#      Application URL  : linksmartec.com  (ou www)
+#      Application startup file : server.js
+#
+# 2) Téléversez les fichiers du site dans /home/VOTRECOMPTE/linksmartec
+#    (gestionnaire de fichiers, FTP, ou « Git Version Control » de cPanel).
+#
+# 3) Cliquez sur « Run NPM Install » : même s'il n'y a aucune dépendance,
+#    cPanel crée ainsi l'environnement Node du dossier.
+#
+# 4) Dans « Environment variables », ajoutez :
+#      SESSION_SECRET  = une longue chaîne aléatoire
+#      ADMIN_PASSWORD  = votre mot de passe d'administration
+#
+# 5) Cliquez sur « Restart ». Le site est en ligne sur votre domaine.
+#
+# 6) Activez le SSL gratuit : cPanel → « SSL/TLS Status » → Run AutoSSL
+#
+# ⚠️ IMPORTANT — le dossier « data » doit être accessible en écriture :
+#    Gestionnaire de fichiers → clic droit sur le dossier « data »
+#    → Change Permissions → 0755 (ou 0775 si le site n'arrive pas à écrire).
+# ---------------------------------------------------------------------
