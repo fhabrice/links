@@ -15,6 +15,8 @@ const { URL } = require('url');
 const { creerStockage, DOSSIER_DATA } = require('./src/store');
 const api = require('./src/api');
 const securite = require('./src/security');
+const { trouverProduit } = require('./src/slug');
+const { rendrePageProduit } = require('./src/produitPage');
 
 const RACINE = __dirname;
 const PUBLIC = path.join(RACINE, 'public');
@@ -154,8 +156,38 @@ async function demarrer() {
       }
 
       /* ------------------ Pages statiques nommées ---------------- */
-      if (chemin === '/a-propos' || chemin === '/a-propos/') {
+      if (chemin === '/a-propos' || chemin === '/a-propos/' || chemin === '/a-propos.html') {
         return servirFichier(res, path.join(PUBLIC, 'a-propos.html'));
+      }
+
+      /* ---------------------- Fiches produit --------------------- */
+      if (chemin === '/produit' || chemin === '/produit/') {
+        res.writeHead(302, { Location: '/#boutique' });
+        return res.end();
+      }
+
+      if (chemin.startsWith('/produit/')) {
+        const segment = chemin.slice('/produit/'.length).replace(/\/+$/, '');
+        const contenu = await stockage.lireContenu();
+        const produit = trouverProduit(contenu.produits, segment);
+        const similaires = produit
+          ? (contenu.produits || [])
+              .filter(
+                (p) =>
+                  p &&
+                  p.actif !== false &&
+                  p.id !== produit.id &&
+                  (p.filtre || p.categorie) === (produit.filtre || produit.categorie)
+              )
+              .slice(0, 4)
+          : [];
+
+        const html = rendrePageProduit({ contenu, produit, similaires });
+        res.writeHead(produit ? 200 : 404, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-cache'
+        });
+        return res.end(html);
       }
 
       /* --------------------- Espace admin ---------------------- */

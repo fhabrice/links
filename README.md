@@ -47,9 +47,11 @@ node server.js      # http://localhost:3000
 | --- | --- |
 | https://www.linksmartec.com | Site public (en production) |
 | https://www.linksmartec.com/a-propos | Page « À propos » |
+| https://www.linksmartec.com/produit/kit-solaire-hybride-5-kva | Exemple de fiche produit |
 | https://www.linksmartec.com/admin | Espace d'administration |
 | http://localhost:3000 | Site public (en local, version Node.js) |
 | http://localhost:3000/a-propos | Page « À propos » (en local) |
+| http://localhost:3000/produit/serveur-rack-edge-pro | Fiche produit (en local) |
 | http://localhost:3000/admin | Administration (en local) |
 
 **Identifiants par défaut :** `admin` / `linksmartech`
@@ -124,7 +126,37 @@ l'accueil en activant l'onglet correspondant.
 
 ---
 
-## 5. Ce que l'on peut gérer depuis l'admin
+## 5. Les fiches produit (/produit/…)
+
+Chaque produit de la boutique possède sa **propre page détaillée**, accessible
+en cliquant sur sa carte ou son nom. L'adresse est déduite automatiquement du
+nom du produit (le *slug*) : `/produit/kit-solaire-hybride-5-kva`. Aucun
+réglage n'est nécessaire — et un identifiant interne (`/produit/p-kit-solaire`)
+fonctionne aussi.
+
+Une fiche comprend :
+
+- **galerie d'images** (image principale + photos complémentaires, cliquables) ;
+- prix, devise, disponibilité (en stock / sur commande), badge et référence ;
+- boutons **« Ajouter au panier »** et **« Commander sur WhatsApp »**
+  (message pré-rempli avec le produit et son prix) ;
+- **description longue** (un paragraphe par ligne saisie dans l'admin) ;
+- **caractéristiques techniques** en tableau (ex. processeur, garantie, puissance) ;
+- **produits similaires** de la même spécialité.
+
+Le contenu est rendu par le serveur (SEO) avec données structurées
+**Schema.org Product** (prix, disponibilité), fil d'Ariane, balises Open Graph
+et lien canonique. Les adresses des fiches sont également listées dans
+`sitemap.xml`. Un produit masqué ou supprimé renvoie une page d'erreur 404
+propre.
+
+Tout se renseigne dans l'admin → *Produits* : description longue,
+caractéristiques (lignes libres), galerie (URL ou téléversement multiple) et
+slug personnalisé éventuel.
+
+---
+
+## 6. Ce que l'on peut gérer depuis l'admin
 
 | Onglet | Contenu modifiable |
 | --- | --- |
@@ -133,7 +165,7 @@ l'accueil en activant l'onglet correspondant.
 | **Bannière d'accueil** | Les trois onglets de spécialité et leur produit vedette |
 | **Spécialités** | Les trois pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
 | **À propos** | Toute la page : présentation, image, mission, vision, chiffres, spécialités, valeurs, parcours, arguments et bandeau d'appel |
-| **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité |
+| **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité, **fiche complète** (description longue, caractéristiques, galerie, slug) |
 | **Services** | Les six prestations (titre, icône ou image, description) |
 | **Approche** | Les étapes de la méthode de travail |
 | **Messages** | Boîte de réception du formulaire de contact (lu / non lu, réponse, suppression) |
@@ -145,7 +177,7 @@ Chaque enregistrement est immédiatement visible sur le site public.
 
 ---
 
-## 6. Où sont stockées les données ?
+## 7. Où sont stockées les données ?
 
 Le site choisit **tout seul**, dans cet ordre :
 
@@ -168,7 +200,7 @@ Le site choisit **tout seul**, dans cet ordre :
 
 ---
 
-## 7. Images
+## 8. Images
 
 Toutes les images du site sont **hébergées localement** dans `public/assets/img/`
 (produits, chantier, logo) : le site s'affiche correctement même avec une connexion
@@ -179,7 +211,7 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ---
 
-## 8. Sauvegarde
+## 9. Sauvegarde
 
 - **Export complet** : onglet *Stockage & sauvegarde* → *Exporter mes données (JSON)*.
 - **Sauvegarde manuelle** : copiez le dossier `data/` (il contient tout).
@@ -187,12 +219,13 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ---
 
-## 9. Structure du projet
+## 10. Structure du projet
 
 ```
 links/
 ├── index.php                  ⬅︎ VERSION PHP (hébergement classique) — accueil
 ├── a-propos.php               Page « À propos »
+├── produit.php                Fiches produit (/produit/{slug})
 ├── admin/                     Espace d'administration
 ├── api/                       API JSON
 ├── app/                       Code de l'application + contenu par défaut (protégé)
@@ -203,7 +236,7 @@ links/
 ├── LISEZ-MOI.md               Mode d'emploi PHP (3 étapes)
 ├── node/                      Version Node.js (serveur dédié / VPS)
 │   ├── server.js              Serveur HTTP + routage (sans dépendance)
-│   ├── src/                   API JSON, contenu par défaut, hachage, stockage
+│   ├── src/                   API JSON, contenu par défaut, hachage, stockage, slugs
 │   ├── public/                Pages HTML, design, JavaScript, images
 │   ├── deploy/                Fichiers prêts à l'emploi : systemd, Nginx, cPanel
 │   └── data/ · config/        Données et configuration MySQL (non versionnées)
@@ -216,12 +249,14 @@ links/
 ### Panier & commandes
 
 Le panier est conservé dans le navigateur du visiteur (aucun compte à créer).
-La commande se termine par un message WhatsApp pré-rempli envoyé au numéro
-renseigné dans l'admin (*Identité & logo* → *Téléphone principal*).
+Depuis une fiche produit, le bouton « Commander sur WhatsApp » pré-remplit le
+message avec le produit et son prix. Depuis le panier, la commande se termine
+par un message WhatsApp récapitulatif envoyé au numéro renseigné dans l'admin
+(*Identité & logo* → *Téléphone principal*).
 
 ---
 
-## 10. Déploiement — hébergement
+## 11. Déploiement — hébergement
 
 > 📘 **Guide pas-à-pas complet : [DEPLOIEMENT.md](DEPLOIEMENT.md)**
 > Il couvre quatre scénarios (mutualisé cPanel, VPS, Render/Railway, site statique),
@@ -261,7 +296,7 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 
 ---
 
-## 11. Sécurité
+## 12. Sécurité
 
 - Mots de passe hachés en **scrypt** (jamais stockés en clair).
 - Sessions signées HMAC, valables 12 h, cookie `HttpOnly` + `SameSite=Lax`.

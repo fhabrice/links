@@ -16,6 +16,11 @@ DirectoryIndex index.php index.html
     RewriteRule ^a-propos/?$ a-propos.php [L,QSA]
     RewriteRule ^admin/?$ admin/index.php [L,QSA]
 
+    # Fiches produit : /produit/{slug} → produit.php
+    # (/produit seul renvoie simplement à la page d'accueil, section boutique)
+    RewriteRule ^produit/?$ index.php [L,QSA]
+    RewriteRule ^produit/([A-Za-z0-9._-]+)/?$ produit.php?slug=$1 [L,QSA]
+
     # API : /api/... → api/index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^api/(.*)$ api/index.php [L,QSA]

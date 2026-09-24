@@ -48,6 +48,39 @@
     return BASE + valeur;
   }
 
+  /* --------------------------- slugs produit ------------------------------ */
+
+  // Même translittération que site.js et le serveur (app/helpers.php).
+  const TRANSLIT = {
+    à: 'a', á: 'a', â: 'a', ã: 'a', ä: 'a', å: 'a',
+    è: 'e', é: 'e', ê: 'e', ë: 'e',
+    ì: 'i', í: 'i', î: 'i', ï: 'i',
+    ò: 'o', ó: 'o', ô: 'o', õ: 'o', ö: 'o',
+    ù: 'u', ú: 'u', û: 'u', ü: 'u',
+    ç: 'c', ñ: 'n', ý: 'y', ÿ: 'y',
+    œ: 'oe', æ: 'ae', ß: 'ss'
+  };
+
+  function slugifier(texte, longueurMax = 90) {
+    let valeur = String(texte || '').trim().toLowerCase();
+    valeur = valeur.replace(/[àáâãäåèéêëìíîïòóôõöùúûüçñýÿœæß]/g, (c) => TRANSLIT[c] || '-');
+    valeur = valeur.replace(/[^a-z0-9]+/g, '-');
+    valeur = valeur.replace(/^-+|-+$/g, '').slice(0, longueurMax);
+    valeur = valeur.replace(/-+$/g, '');
+    return valeur || 'produit';
+  }
+
+  /** Slug d'un produit : champ « slug » personnalisé, sinon déduit du nom. */
+  function slugProduit(produit) {
+    const personnalise = String(produit?.slug || '').trim();
+    return personnalise || slugifier(produit?.nom || '');
+  }
+
+  /** Adresse publique de la fiche d'un produit. */
+  function urlProduit(produit) {
+    return `${BASE}/produit/${encodeURIComponent(slugProduit(produit))}`;
+  }
+
   function fichierEnDataUrl(fichier) {
     return new Promise((resolve, reject) => {
       const lecteur = new FileReader();
@@ -463,7 +496,8 @@
           <td><img src="${echapper(cheminImage(produit.image))}" alt=""></td>
           <td>
             <strong>${echapper(produit.nom)}</strong><br>
-            <span style="font-size:.78rem;color:var(--ardoise-500)">${echapper(produit.description || '')}</span>
+            <span style="font-size:.78rem;color:var(--ardoise-500)">${echapper(produit.description || '')}</span><br>
+            <a class="lien-fiche" href="${echapper(urlProduit(produit))}" target="_blank" rel="noopener">Voir la fiche ↗</a>
           </td>
           <td><span class="puce puce--info">${
             { informatique: 'Informatique', energie: 'Énergie', terroir: 'Terroir' }[produit.filtre] ||
@@ -512,7 +546,82 @@
     $('#p-badge').value = produit?.badge || '';
     $('#p-image').value = produit?.image || '';
     $('#p-actif').checked = produit?.actif !== false;
+    $('#p-slug').value = produit?.slug || '';
+    $('#p-description-longue').value = produit?.descriptionLongue || '';
+    remplirSpecs(produit?.specifications || []);
+    remplirImages(produit?.images || []);
+    $('#p-fichier').value = '';
+    $('#p-fichiers-galerie').value = '';
+
+    // Lien vers la fiche publique déjà en ligne.
+    const note = $('#p-lien-public');
+    if (produit) {
+      const adresse = urlProduit(produit);
+      note.innerHTML = `Fiche publique : <a href="${echapper(adresse)}" target="_blank" rel="noopener">${echapper(adresse)}</a>`;
+      note.hidden = false;
+    } else {
+      note.hidden = true;
+    }
+
     $('#panneau-produit').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  /* -------------------- caractéristiques (spécifications) ------------------ */
+
+  function ajouterLigneSpec(label = '', valeur = '') {
+    $('#p-specs').insertAdjacentHTML(
+      'beforeend',
+      `
+      <div class="ligne-editeur" data-ligne-spec>
+        <div class="champ"><label>Caractéristique</label><input data-spec-label type="text" value="${echapper(label)}" placeholder="Ex. Garantie"></div>
+        <div class="champ"><label>Valeur</label><input data-spec-valeur type="text" value="${echapper(valeur)}" placeholder="Ex. 12 mois"></div>
+        <button type="button" class="btn btn--petit btn--fantome ligne-editeur__retirer" data-spec-retirer aria-label="Retirer cette ligne">✕</button>
+      </div>`
+    );
+  }
+
+  function remplirSpecs(liste) {
+    $('#p-specs').innerHTML = '';
+    (Array.isArray(liste) ? liste : []).forEach((ligne) => ajouterLigneSpec(ligne?.label || '', ligne?.valeur || ''));
+    if (!$('#p-specs').children.length) ajouterLigneSpec();
+  }
+
+  function collecterSpecs() {
+    return $$('#p-specs [data-ligne-spec]')
+      .map((ligne) => ({
+        label: ligne.querySelector('[data-spec-label]')?.value.trim() || '',
+        valeur: ligne.querySelector('[data-spec-valeur]')?.value.trim() || ''
+      }))
+      .filter((ligne) => ligne.label || ligne.valeur);
+  }
+
+  /* ----------------------------- galerie images ---------------------------- */
+
+  function ajouterLigneImage(url = '') {
+    $('#p-images').insertAdjacentHTML(
+      'beforeend',
+      `
+      <div class="ligne-editeur ligne-editeur--image" data-ligne-image>
+        <img class="ligne-editeur__miniature" src="${echapper(url ? cheminImage(url) : '')}" alt="" data-image-apercu>
+        <div class="champ"><label>Adresse de l'image</label><input data-image-url type="text" value="${echapper(url)}" placeholder="https://… ou /uploads/…"></div>
+        <button type="button" class="btn btn--petit btn--fantome ligne-editeur__retirer" data-image-retirer aria-label="Retirer cette image">✕</button>
+      </div>`
+    );
+    const ligne = $('#p-images').lastElementChild;
+    const champ = ligne.querySelector('[data-image-url]');
+    const apercu = ligne.querySelector('[data-image-apercu]');
+    champ.addEventListener('input', () => { apercu.src = champ.value.trim() ? cheminImage(champ.value.trim()) : ''; });
+  }
+
+  function remplirImages(liste) {
+    $('#p-images').innerHTML = '';
+    (Array.isArray(liste) ? liste : []).forEach((url) => ajouterLigneImage(String(url || '')));
+  }
+
+  function collecterImages() {
+    return $$('#p-images [data-ligne-image]')
+      .map((ligne) => ligne.querySelector('[data-image-url]')?.value.trim() || '')
+      .filter((url) => url !== '');
   }
 
   async function enregistrerProduit() {
@@ -521,6 +630,10 @@
       nom: $('#p-nom').value.trim(),
       prix: Number($('#p-prix').value) || 0,
       description: $('#p-description').value.trim(),
+      descriptionLongue: $('#p-description-longue').value.trim(),
+      specifications: collecterSpecs(),
+      images: collecterImages(),
+      slug: $('#p-slug').value.trim(),
       filtre: $('#p-filtre').value,
       // La catégorie technique découle de la spécialité choisie.
       categorie: $('#p-filtre').value === 'terroir' ? 'local' : 'intl',
@@ -537,11 +650,22 @@
       $('#p-image').value = donnees.image;
     }
 
+    // Galerie : les fichiers téléversés s'ajoutent aux adresses saisies.
+    const fichiers = Array.from($('#p-fichiers-galerie').files || []);
+    for (const fichierGalerie of fichiers) {
+      if (fichierGalerie.size > 4 * 1024 * 1024) {
+        toast(`« ${fichierGalerie.name} » dépasse 4 Mo : image ignorée.`);
+        continue;
+      }
+      donnees.images.push(await televerser(fichierGalerie));
+    }
+
     if (idProduit) await api(`/api/admin/produits/${idProduit}`, { method: 'PUT', body: donnees });
     else await api('/api/admin/produits', { method: 'POST', body: donnees });
 
     $('#panneau-produit').hidden = true;
     $('#p-fichier').value = '';
+    $('#p-fichiers-galerie').value = '';
     await chargerEtat();
     toast('Produit enregistré ✔');
   }
@@ -797,6 +921,22 @@
     $('#rafraichir-produits').addEventListener('click', () => chargerEtat().then(() => toast('Liste actualisée')));
     $('#enregistrer-produit').addEventListener('click', () => enregistrerProduit().catch((e) => toast(e.message)));
     $('#annuler-produit').addEventListener('click', () => { $('#panneau-produit').hidden = true; });
+
+    // Éditeurs du formulaire produit : caractéristiques et galerie
+    $('#p-spec-ajouter').addEventListener('click', () => ajouterLigneSpec());
+    $('#p-specs').addEventListener('click', (e) => {
+      const bouton = e.target.closest('[data-spec-retirer]');
+      if (bouton) bouton.closest('[data-ligne-spec]')?.remove();
+    });
+    $('#p-image-ajouter').addEventListener('click', () => ajouterLigneImage());
+    $('#p-images').addEventListener('click', (e) => {
+      const bouton = e.target.closest('[data-image-retirer]');
+      if (bouton) bouton.closest('[data-ligne-image]')?.remove();
+    });
+    $('#p-nom').addEventListener('input', () => {
+      // Aide : montre l'adresse que prendra la fiche si aucun slug n'est saisi.
+      if (!$('#p-slug').value) $('#p-slug').placeholder = `auto : /produit/${slugifier($('#p-nom').value)}`;
+    });
 
     // Services
     $('#ajouter-service').addEventListener('click', () => {

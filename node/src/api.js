@@ -53,6 +53,37 @@ function nettoyer(texte, longueurMax = 400) {
     .slice(0, longueurMax);
 }
 
+/** Comme nettoyer(), mais préserve les sauts de ligne (description longue). */
+function nettoyerMultiligne(texte, longueurMax = 4000) {
+  return String(texte ?? '')
+    .replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g, ' ')
+    .replace(/\r\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+    .slice(0, longueurMax);
+}
+
+/** Nettoie une liste de spécifications [{label, valeur}] venant de l'admin. */
+function nettoyerSpecifications(brut) {
+  if (!Array.isArray(brut)) return [];
+  return brut
+    .map((ligne) => ({
+      label: nettoyer(ligne?.label, 100),
+      valeur: nettoyer(ligne?.valeur, 200)
+    }))
+    .filter((ligne) => ligne.label || ligne.valeur)
+    .slice(0, 30);
+}
+
+/** Nettoie une liste d'images (galerie produit) : 12 URL maximum. */
+function nettoyerImages(brut) {
+  if (!Array.isArray(brut)) return [];
+  return brut
+    .map((image) => nettoyer(image, 500))
+    .filter((image) => image !== '')
+    .slice(0, 12);
+}
+
 function emailValide(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
@@ -229,6 +260,10 @@ async function traiter(requete) {
       id: `p-${crypto.randomBytes(5).toString('hex')}`,
       nom: nettoyer(corps.nom, 140) || 'Nouveau produit',
       description: nettoyer(corps.description, 600),
+      descriptionLongue: nettoyerMultiligne(corps.descriptionLongue, 4000),
+      specifications: nettoyerSpecifications(corps.specifications),
+      images: nettoyerImages(corps.images),
+      slug: nettoyer(corps.slug, 120),
       prix: Number(corps.prix) || 0,
       devise: nettoyer(corps.devise, 8) || 'USD',
       categorie: corps.categorie === 'intl' ? 'intl' : 'local',

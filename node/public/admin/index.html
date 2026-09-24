@@ -58,6 +58,16 @@
     .note { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; border-radius: var(--rayon-sm); padding: .9rem 1rem; font-size: .86rem; }
     .note--succes { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
 
+    /* Éditeurs de listes du formulaire produit (caractéristiques, galerie) */
+    .sous-titre-formulaire { font-size: .78rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ardoise-500); margin: 1.4rem 0 .6rem; border-top: 1px dashed var(--ardoise-200); padding-top: 1.1rem; }
+    .ligne-editeur { display: grid; grid-template-columns: 1fr 1fr auto; gap: .6rem; align-items: end; margin-bottom: .55rem; }
+    .ligne-editeur--image { grid-template-columns: 64px 1fr auto; }
+    .ligne-editeur__miniature { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; background: var(--ardoise-100); border: 1px solid var(--ardoise-200); }
+    .ligne-editeur__retirer { color: var(--danger); align-self: end; }
+    @media (max-width: 720px) { .ligne-editeur { grid-template-columns: 1fr auto; } .ligne-editeur .champ:nth-child(2) { grid-column: 1 / -1; } .ligne-editeur--image { grid-template-columns: 64px 1fr auto; } }
+    .lien-fiche { font-size: .76rem; color: var(--primaire); text-decoration: underline; text-underline-offset: 2px; }
+    .lien-fiche:hover { color: var(--accent); }
+
     /* Écran de connexion */
     .connexion-fond { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
       background: radial-gradient(900px 460px at 15% 0%, rgba(46,158,91,.28), transparent 60%), linear-gradient(135deg,#0a1120,#0d1729 45%,#16233F); }
@@ -332,13 +342,14 @@
 
           <div class="panneau" id="panneau-produit" hidden>
             <h3 id="titre-panneau-produit">Nouveau produit</h3>
+            <p class="note" id="p-lien-public" hidden></p>
             <div class="formulaire" style="border:0;padding:0;box-shadow:none">
               <input type="hidden" id="p-id">
               <div class="grille-2">
                 <div class="champ"><label for="p-nom">Nom *</label><input id="p-nom" type="text"></div>
                 <div class="champ"><label for="p-prix">Prix</label><input id="p-prix" type="number" step="0.01" min="0"></div>
               </div>
-              <div class="champ"><label for="p-description">Description</label><textarea id="p-description" rows="2"></textarea></div>
+              <div class="champ"><label for="p-description">Description courte</label><textarea id="p-description" rows="2" placeholder="Affichée sur les cartes de la boutique et en tête de la fiche (environ 120 caractères)."></textarea></div>
               <div class="grille-2">
                 <div class="champ"><label for="p-filtre">Spécialité (filtre boutique)</label>
                   <select id="p-filtre">
@@ -352,12 +363,31 @@
               </div>
               <div class="grille-2">
                 <div class="champ"><label for="p-badge">Badge (ex. Nouveau)</label><input id="p-badge" type="text"></div>
-                <div class="champ"><label for="p-image">Image (URL)</label><input id="p-image" type="text" placeholder="https://… ou /uploads/…"></div>
+                <div class="champ"><label for="p-slug">Adresse de la fiche (slug)</label><input id="p-slug" type="text" placeholder="auto : déduit du nom"></div>
               </div>
-              <div class="champ">
-                <label for="p-fichier">… ou téléverser une image</label>
-                <input id="p-fichier" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+              <div class="grille-2">
+                <div class="champ"><label for="p-image">Image principale (URL)</label><input id="p-image" type="text" placeholder="https://… ou /uploads/…"></div>
+                <div class="champ">
+                  <label for="p-fichier">… ou téléverser une image</label>
+                  <input id="p-fichier" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                </div>
               </div>
+
+              <h4 class="sous-titre-formulaire">Fiche produit</h4>
+              <div class="champ"><label for="p-description-longue">Description longue</label><textarea id="p-description-longue" rows="5" placeholder="Un paragraphe par ligne : affiché sur la fiche du produit."></textarea></div>
+
+              <h4 class="sous-titre-formulaire">Caractéristiques techniques</h4>
+              <div id="p-specs"></div>
+              <button type="button" class="btn btn--petit btn--fantome" id="p-spec-ajouter" style="justify-self:start;margin-bottom:1rem">+ Ajouter une caractéristique</button>
+
+              <h4 class="sous-titre-formulaire">Galerie d'images</h4>
+              <div id="p-images"></div>
+              <button type="button" class="btn btn--petit btn--fantome" id="p-image-ajouter" style="justify-self:start">+ Ajouter une image</button>
+              <div class="champ" style="margin-top:.75rem">
+                <label for="p-fichiers-galerie">… ou téléverser des images</label>
+                <input id="p-fichiers-galerie" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" multiple>
+              </div>
+
               <div class="champ"><label><input id="p-actif" type="checkbox" checked> Visible sur le site</label></div>
             </div>
             <div class="barre-actions" style="margin:1.25rem 0 0">

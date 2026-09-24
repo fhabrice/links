@@ -33,6 +33,7 @@ de votre téléversement sans rien casser.
 | --- | --- |
 | `index.php` | Page d'accueil (bannière, spécialités, boutique, services, contact) |
 | `a-propos.php` | Page « À propos » |
+| `produit.php` | Fiches produit détaillées (`/produit/kit-solaire-hybride-5-kva`) |
 | `admin/index.php` | Espace d'administration (interface complète) |
 | `api/index.php` | API JSON (contenu, messages, produits, téléversements) |
 | `app/` | Code de l'application (protégé, non accessible depuis le web) |
@@ -51,6 +52,10 @@ de votre téléversement sans rien casser.
 - **Aucune base de données obligatoire** : tout est enregistré dans `data/`
   (fichiers JSON). Si votre hébergeur fournit déjà MySQL, le site le détecte
   automatiquement via des variables d'environnement ou `config/database.php`.
+- **Fiches produit** : chaque produit a sa page détaillée (`/produit/…`),
+  avec galerie, description longue, caractéristiques techniques, produits
+  similaires et commande WhatsApp directe. L'adresse est déduite du nom du
+  produit ; le contenu se gère dans l'admin → *Produits*.
 - **PHP 8.0 ou supérieur** requis (PHP 7.4 fonctionne également).
   Aucune extension particulière : les fonctions `json` et `hash` de base suffisent
   (`mbstring` est utilisé s'il est présent, sinon une solution de repli prend le relais).
@@ -104,6 +109,7 @@ index index.php;
 # Adresses propres
 location = /a-propos { rewrite ^ /a-propos.php last; }
 location = /admin    { rewrite ^ /admin/index.php last; }
+location ~ ^/produit/(?<slug>[\w.-]+)/?$ { rewrite ^ /produit.php?slug=$slug last; }
 location /api/       { rewrite ^/api/(.*)$ /api/index.php last; }
 
 # Données, code et configuration : jamais accessibles

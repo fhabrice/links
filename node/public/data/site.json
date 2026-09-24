@@ -155,6 +155,34 @@
         "id": "p-ordinateur-pro",
         "nom": "Ordinateur portable professionnel",
         "description": "Core i5 / 16 Go / SSD 512 Go — configuré et garanti 1 an.",
+        "descriptionLongue": "Un portable pensé pour durer dans les conditions réelles des bureaux et des chantiers congolais : châssis renforcé, clavier résistant aux poussières et batterie longue autonomie pour travailler même lors des coupures de courant.\nChaque machine est configurée, testée et mise à jour par nos techniciens avant la livraison : suite bureautique, outils de sécurité et sauvegarde prêts à l'emploi.\nVous bénéficiez d'un an de garantie assurée localement par LK-TECH, avec prêt de matériel possible pendant la réparation.",
+        "specifications": [
+          {
+            "label": "Processeur",
+            "valeur": "Intel Core i5 — 12e génération"
+          },
+          {
+            "label": "Mémoire vive",
+            "valeur": "16 Go DDR4"
+          },
+          {
+            "label": "Stockage",
+            "valeur": "SSD NVMe 512 Go"
+          },
+          {
+            "label": "Écran",
+            "valeur": "15,6\" Full HD antireflet"
+          },
+          {
+            "label": "Système",
+            "valeur": "Windows 11 Pro + suite bureautique"
+          },
+          {
+            "label": "Garantie",
+            "valeur": "12 mois pièces et main-d'œuvre"
+          }
+        ],
+        "images": [],
         "prix": 780,
         "devise": "USD",
         "filtre": "informatique",
@@ -168,6 +196,34 @@
         "id": "p-serveur-rack",
         "nom": "Serveur Rack Edge Pro",
         "description": "Haute performance pour déploiement réseau et virtualisation.",
+        "descriptionLongue": "Un serveur rack 1U conçu pour la virtualisation, les bases de données et les services réseau exigeants. Idéal pour les entreprises, ONG et institutions qui hébergent leurs propres outils.\nNos ingénieurs assurent l'installation en rack, la configuration RAID, la mise en réseau et la supervision. Une offre de maintenance mensuelle est disponible pour garantir la disponibilité de vos services.",
+        "specifications": [
+          {
+            "label": "Processeur",
+            "valeur": "Intel Xeon E-2300 (6 cœurs)"
+          },
+          {
+            "label": "Mémoire vive",
+            "valeur": "32 Go ECC"
+          },
+          {
+            "label": "Stockage",
+            "valeur": "2 × 2 To en RAID 1"
+          },
+          {
+            "label": "Alimentation",
+            "valeur": "Redondante 500 W"
+          },
+          {
+            "label": "Format",
+            "valeur": "Rack 1U"
+          },
+          {
+            "label": "Installation",
+            "valeur": "Configuration et mise en service comprises"
+          }
+        ],
+        "images": [],
         "prix": 1450,
         "devise": "USD",
         "filtre": "informatique",
@@ -181,6 +237,36 @@
         "id": "p-kit-solaire",
         "nom": "Kit solaire hybride 5 kVA",
         "description": "Onduleur hybride, panneaux et batteries lithium pour un foyer ou un petit commerce.",
+        "descriptionLongue": "Un kit complet pour produire et stocker votre propre électricité : onduleur hybride 5 kVA, huit panneaux monocristallins de 450 W et batterie lithium LiFePO4 de 5 kWh.\nLe dimensionnement est adapté à un foyer ou un petit commerce : éclairage, télévision, réfrigérateur, informatique et pompage ponctuel. Nos équipes réalisent l'étude de votre consommation, l'installation et la formation à l'usage.\nSuivi et maintenance préventive assurés partout dans le Nord-Kivu.",
+        "specifications": [
+          {
+            "label": "Onduleur",
+            "valeur": "Hybride 5 kVA avec régulateur MPPT"
+          },
+          {
+            "label": "Panneaux",
+            "valeur": "8 × 450 Wc monocristallins"
+          },
+          {
+            "label": "Batteries",
+            "valeur": "Lithium LiFePO4 — 5 kWh"
+          },
+          {
+            "label": "Autonomie",
+            "valeur": "8 à 12 h selon la consommation"
+          },
+          {
+            "label": "Garantie",
+            "valeur": "5 ans (onduleur) · 10 ans (batteries)"
+          },
+          {
+            "label": "Installation",
+            "valeur": "Posée par nos équipes, formation incluse"
+          }
+        ],
+        "images": [
+          "/assets/img/produits/panneau-solaire.jpg"
+        ],
         "prix": 3200,
         "devise": "USD",
         "filtre": "energie",
@@ -194,6 +280,32 @@
         "id": "p-panneau-solaire",
         "nom": "Panneau solaire 450 W",
         "description": "Monocristallin haute rendement, garantie 12 ans, pose comprise.",
+        "descriptionLongue": "Un panneau monocristallin haute performance, idéal pour compléter une installation existante ou démarrer un petit système solaire.\nVendu avec sa structure de montage et ses câbles ; la pose est réalisée par nos techniciens à Goma et dans tout le Nord-Kivu.",
+        "specifications": [
+          {
+            "label": "Technologie",
+            "valeur": "Monocristallin PERC"
+          },
+          {
+            "label": "Puissance",
+            "valeur": "450 Wc"
+          },
+          {
+            "label": "Rendement",
+            "valeur": "21,3 %"
+          },
+          {
+            "label": "Garantie",
+            "valeur": "12 ans produit · 25 ans performance"
+          },
+          {
+            "label": "Pose",
+            "valeur": "Comprise (Goma et Nord-Kivu)"
+          }
+        ],
+        "images": [
+          "/assets/img/produits/kit-solaire.jpg"
+        ],
         "prix": 185,
         "devise": "USD",
         "filtre": "energie",
@@ -207,6 +319,30 @@
         "id": "p-vsat",
         "nom": "Terminal satellite VSAT",
         "description": "Connectivité haut débit pour les sites isolés et les chantiers.",
+        "descriptionLongue": "Une liaison satellite haute performance pour les sites non desservis par la fibre ou les réseaux mobiles : chantiers, mines, missions, ONG et établissements isolés.\nLe terminal comprend l'antenne, le modem et l'installation complète. Bande passante garantie, adresse IP fixe et accompagnement technique par nos ingénieurs réseau.",
+        "specifications": [
+          {
+            "label": "Débit",
+            "valeur": "Jusqu'à 50 Mb/s en réception"
+          },
+          {
+            "label": "Antenne",
+            "valeur": "Parabole 1,2 m stabilisée"
+          },
+          {
+            "label": "Modem",
+            "valeur": "Bi-bande Ka/Ku"
+          },
+          {
+            "label": "Adresse IP",
+            "valeur": "Fixe, option réseau privé virtuel"
+          },
+          {
+            "label": "Installation",
+            "valeur": "Comprise, avec formation des équipes"
+          }
+        ],
+        "images": [],
         "prix": 890,
         "devise": "USD",
         "filtre": "informatique",
@@ -220,6 +356,26 @@
         "id": "p-miel-turunga",
         "nom": "Miel pur de Turunga",
         "description": "Récolté artisanalement dans le Nord-Kivu, non pasteurisé.",
+        "descriptionLongue": "Un miel brut récolté par les apiculteurs du groupement de Turunga, au pied des collines du Nord-Kivu. Non chauffé et non filtré, il conserve tous ses arômes et ses propriétés.\nConditionné en pot d'un kilogramme. Chaque achat soutient directement les coopératives locales.",
+        "specifications": [
+          {
+            "label": "Origine",
+            "valeur": "Turunga, Nord-Kivu, RDC"
+          },
+          {
+            "label": "Conditionnement",
+            "valeur": "Pot d'1 kg"
+          },
+          {
+            "label": "Traitement",
+            "valeur": "Brut — non pasteurisé"
+          },
+          {
+            "label": "Producteurs",
+            "valeur": "Coopérative apicole locale"
+          }
+        ],
+        "images": [],
         "prix": 15,
         "devise": "USD",
         "filtre": "terroir",
@@ -233,6 +389,30 @@
         "id": "p-cafe-kivu",
         "nom": "Café arabica du Kivu",
         "description": "Grains torréfiés, 1 kg, traçabilité complète.",
+        "descriptionLongue": "Un arabica de haute altitude cultivé sur les sols volcaniques du Kivu, torréfié artisanalement à Goma. Notes de fruits rouges et de cacao, acidité vive et équilibrée.\nLes grains sont issus de coopératives partenaires avec une traçabilité complète, de la parcelle au sachet d'un kilogramme.",
+        "specifications": [
+          {
+            "label": "Variété",
+            "valeur": "Arabica — Bourbon & Katimor"
+          },
+          {
+            "label": "Altitude",
+            "valeur": "1 500 – 1 900 m"
+          },
+          {
+            "label": "Torréfaction",
+            "valeur": "Artisanale, moyenne"
+          },
+          {
+            "label": "Conditionnement",
+            "valeur": "Sachet 1 kg, grains entiers"
+          },
+          {
+            "label": "Traçabilité",
+            "valeur": "Coopérative identifiée"
+          }
+        ],
+        "images": [],
         "prix": 22,
         "devise": "USD",
         "filtre": "terroir",
@@ -246,6 +426,26 @@
         "id": "p-the-bukavu",
         "nom": "Thé vert de Bukavu",
         "description": "Feuilles sélectionnées, séchage lent, sachet de 500 g.",
+        "descriptionLongue": "Un thé vert cueilli à la main sur les hauteurs de Bukavu, au sud du Kivu. Séchage lent à faible température pour préserver les notes végétales et la fraîcheur en tasse.\nSachet de 500 g, récolte de la saison.",
+        "specifications": [
+          {
+            "label": "Type",
+            "valeur": "Thé vert, feuilles entières"
+          },
+          {
+            "label": "Origine",
+            "valeur": "Bukavu, Sud-Kivu, RDC"
+          },
+          {
+            "label": "Séchage",
+            "valeur": "Lent, basse température"
+          },
+          {
+            "label": "Conditionnement",
+            "valeur": "Sachet de 500 g"
+          }
+        ],
+        "images": [],
         "prix": 12,
         "devise": "USD",
         "filtre": "terroir",
@@ -424,6 +624,6 @@
     "portailClientActif": true,
     "maintenance": false
   },
-  "genereLe": "2026-09-24T13:12:32.473Z",
+  "genereLe": "2026-09-24T23:24:21.427Z",
   "note": "Fichier de secours statique généré par tools/build-fallback.js."
 }

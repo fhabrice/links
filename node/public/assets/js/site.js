@@ -106,6 +106,40 @@
     return BASE + valeur;
   }
 
+  /* --------------------------- slugs produit ------------------------------ */
+
+  // Même translittération que côté serveur (app/helpers.php, node/src/slug.js)
+  // pour que « Kit solaire hybride 5 kVA » produise le même slug partout.
+  const TRANSLIT = {
+    à: 'a', á: 'a', â: 'a', ã: 'a', ä: 'a', å: 'a',
+    è: 'e', é: 'e', ê: 'e', ë: 'e',
+    ì: 'i', í: 'i', î: 'i', ï: 'i',
+    ò: 'o', ó: 'o', ô: 'o', õ: 'o', ö: 'o',
+    ù: 'u', ú: 'u', û: 'u', ü: 'u',
+    ç: 'c', ñ: 'n', ý: 'y', ÿ: 'y',
+    œ: 'oe', æ: 'ae', ß: 'ss'
+  };
+
+  function slugifier(texte, longueurMax = 90) {
+    let valeur = String(texte || '').trim().toLowerCase();
+    valeur = valeur.replace(/[àáâãäåèéêëìíîïòóôõöùúûüçñýÿœæß]/g, (c) => TRANSLIT[c] || '-');
+    valeur = valeur.replace(/[^a-z0-9]+/g, '-');
+    valeur = valeur.replace(/^-+|-+$/g, '').slice(0, longueurMax);
+    valeur = valeur.replace(/-+$/g, '');
+    return valeur || 'produit';
+  }
+
+  /** Slug d'un produit : champ « slug » personnalisé, sinon déduit du nom. */
+  function slugProduit(produit) {
+    const personnalise = String(produit?.slug || '').trim();
+    return personnalise || slugifier(produit?.nom || '');
+  }
+
+  /** Adresse publique de la fiche d'un produit. */
+  function urlProduit(produit) {
+    return `${BASE}/produit/${encodeURIComponent(slugProduit(produit))}`;
+  }
+
   function toast(message) {
     const el = $('#toast');
     el.textContent = message;
@@ -231,7 +265,7 @@
     if (produit) {
       $('#vedette-img').src = cheminImage(produit.image) || IMAGE_SECOURS;
       $('#vedette-img').alt = produit.nom;
-      $('#vedette-nom').textContent = produit.nom;
+      $('#vedette-nom').innerHTML = `<a href="${echapper(urlProduit(produit))}">${echapper(produit.nom)}</a>`;
       $('#vedette-desc').textContent = produit.description || '';
       $('#vedette-prix').textContent = prix(produit.prix);
       $('#vedette-prix').hidden = false;
@@ -496,13 +530,13 @@
       .map(
         (produit) => `
         <article class="carte-produit apparait">
-          <div class="carte-produit__media">
+          <a class="carte-produit__media" href="${echapper(urlProduit(produit))}" aria-label="Voir la fiche : ${echapper(produit.nom)}">
             <img src="${echapper(cheminImage(produit.image) || IMAGE_SECOURS)}" alt="${echapper(produit.nom)}" loading="lazy">
             ${produit.badge ? `<span class="carte-produit__badge">${echapper(produit.badge)}</span>` : ''}
-          </div>
+          </a>
           <div class="carte-produit__corps">
             <span class="carte-produit__cat">${echapper(libelleCategorie(produit))}</span>
-            <h3 class="carte-produit__titre">${echapper(produit.nom)}</h3>
+            <h3 class="carte-produit__titre"><a href="${echapper(urlProduit(produit))}">${echapper(produit.nom)}</a></h3>
             <p class="carte-produit__desc">${echapper(produit.description)}</p>
             <div class="carte-produit__pied">
               <div>
@@ -624,6 +658,49 @@
     panier.classList.toggle('ouvert', ouvert);
     panier.setAttribute('aria-hidden', String(!ouvert));
     $('#voile')?.classList.toggle('visible', ouvert);
+  }
+
+  /* ----------------------------- page produit ------------------------------ */
+
+  /**
+   * Fiche produit (/produit/{slug}) : le contenu est déjà rendu par le serveur
+   * (SEO, partage, affichage sans JavaScript) ; on branche ici les interactions :
+   * galerie, boutons « Ajouter au panier » et lien de commande WhatsApp.
+   */
+  function brancherPageProduit() {
+    const fiche = $('#produit-fiche');
+    if (!fiche) return;
+
+    // Boutons « Ajouter au panier » : fiche + produits similaires.
+    $$('[data-ajouter]').forEach((bouton) => {
+      bouton.addEventListener('click', () => ajouterAuPanier(bouton.dataset.ajouter));
+    });
+
+    // Galerie : les miniatures remplacent l'image principale.
+    const principale = $('#produit-image');
+    const miniatures = $$('#produit-miniatures [data-miniature]');
+    if (principale && miniatures.length) {
+      miniatures.forEach((bouton) => {
+        bouton.addEventListener('click', () => {
+          principale.src = bouton.dataset.miniature;
+          miniatures.forEach((b) => b.classList.toggle('actif', b === bouton));
+        });
+      });
+    }
+
+    // Lien de commande directe : recalculé avec l'identité enregistrée.
+    const boutonWhatsApp = $('#produit-whatsapp');
+    const produit = (etat.contenu?.produits || []).find((p) => p.id === fiche.dataset.id);
+    if (boutonWhatsApp && produit) {
+      const telephone = String(etat.contenu?.identite?.telephone || '').replace(/[^\d]/g, '');
+      const nom = etat.contenu?.identite?.nom || 'LK-TECH';
+      if (telephone) {
+        const texte = encodeURIComponent(
+          `Bonjour ${nom}, je suis intéressé(e) par « ${produit.nom} » (${prix(produit.prix)}). Est-il disponible ?`
+        );
+        boutonWhatsApp.href = `https://wa.me/${telephone}?text=${texte}`;
+      }
+    }
   }
 
   /* ------------------------------- contact -------------------------------- */
@@ -785,6 +862,7 @@
     const specialiteDemandee = new URLSearchParams(window.location.search).get('specialite');
     if (specialiteDemandee && $('#onglets-hero')) activerSpecialite(specialiteDemandee, false);
 
+    brancherPageProduit();
     brancherImagesSecours();
     observerApparitions();
   }
