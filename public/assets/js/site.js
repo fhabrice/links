@@ -546,6 +546,15 @@
       rendreFiltres();
       rendreProduits();
 
+      // Bloc contact : adresse, horaires et libellés pilotés par l'admin
+      const contact = donnees.contenu.contact || {};
+      $$('[data-champ="adresse"]').forEach((el) => {
+        el.textContent = contact.adresse || donnees.contenu.identite?.ville || '';
+      });
+      $$('[data-champ="horaires"]').forEach((el) => { el.textContent = contact.horaires || ''; });
+      if (contact.titre && $('#contact-titre')) $('#contact-titre').textContent = contact.titre;
+      if (contact.sousTitre && $('#contact-soustitre')) $('#contact-soustitre').textContent = contact.sousTitre;
+
       if (donnees.contenu.boutique?.titre) $('#boutique-titre').textContent = donnees.contenu.boutique.titre;
       if (donnees.contenu.boutique?.sousTitre) $('#boutique-soustitre').textContent = donnees.contenu.boutique.sousTitre;
       if (donnees.contenu.pied?.description) $('#pied-description').textContent = donnees.contenu.pied.description;
