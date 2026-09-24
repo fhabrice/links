@@ -1,0 +1,33 @@
+[Unit]
+Description=LK-TECH (Linksmartech) — site web
+Documentation=https://www.linksmartec.com
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/linksmartec
+ExecStart=/usr/bin/node node/server.js
+Restart=always
+RestartSec=5
+
+# Réglages (le fichier .env est facultatif)
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOST=127.0.0.1
+EnvironmentFile=-/var/www/linksmartec/.env
+
+# Journalisation
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=linksmartec
+
+# Sécurité : l'application n'a besoin d'aucun privilège particulier
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/www/linksmartec/node/data
+
+[Install]
+WantedBy=multi-user.target

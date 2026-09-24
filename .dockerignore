@@ -1,0 +1,12 @@
+# Éléments inutiles dans l'image de production (version Node.js)
+.git
+.gitignore
+node_modules
+node/node_modules
+data
+uploads
+*.log
+*.md
+!README.md
+.DS_Store
+Thumbs.db

@@ -1,0 +1,27 @@
+# Dépendances
+node_modules/
+package-lock.json
+
+# Données locales générées à l'exécution (contenu, messages, images téléversées)
+# — version PHP (à la racine) et version Node.js (dossier node/)
+data/*
+!data/.htaccess
+uploads/*
+!uploads/.htaccess
+node/data/*
+!node/data/.gitkeep
+
+# Configuration réelle d'une éventuelle base (jamais versionnée)
+config/database.php
+node/config/database.json
+
+# Environnement
+.env
+.env.local
+
+# Divers
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.tmp/
