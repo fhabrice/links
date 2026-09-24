@@ -134,6 +134,11 @@
       el.textContent = identite.email || '';
       if (el.dataset.lien === 'mailto') el.href = `mailto:${identite.email || ''}`;
     });
+    $$('[data-champ="siteWeb"]').forEach((el) => {
+      const adresse = String(identite.siteWeb || '').replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+      el.textContent = adresse;
+      if (el.dataset.lien === 'web') el.href = `https://${adresse}`;
+    });
 
     if (identite.couleurPrimaire) {
       document.documentElement.style.setProperty('--primaire', identite.couleurPrimaire);
@@ -535,7 +540,7 @@
         formulaire.reset();
         toast('Message envoyé ✔');
       } catch (e) {
-        const email = etat.contenu?.identite?.email || 'contact@linkstech.cd';
+        const email = etat.contenu?.identite?.email || 'contact@linksmartec.com';
         erreur.innerHTML = `${echapper(e.message)} Vous pouvez aussi nous écrire à <a href="mailto:${echapper(email)}"><strong>${echapper(email)}</strong></a>.`;
         erreur.classList.add('visible');
       } finally {

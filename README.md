@@ -4,6 +4,13 @@ Site web de **LK-TECH** (Linksmartech, Goma, Nord-Kivu, RDC), spécialiste en
 **informatique**, **construction** et **énergie renouvelable** : vitrine institutionnelle,
 boutique en ligne, services, formulaire de contact et **espace d'administration complet**.
 
+| | |
+| --- | --- |
+| 🌐 Site officiel | **[www.linksmartec.com](https://www.linksmartec.com)** |
+| ✉️ E-mail | **[contact@linksmartec.com](mailto:contact@linksmartec.com)** |
+| 📞 Téléphone | +243 976 459 970 |
+| 📍 Adresse | Avenue du Lac, Goma, Nord-Kivu, RDC |
+
 > ### 🔑 L'essentiel
 > **Aucune base de données à configurer.** Le site et l'administration démarrent
 > immédiatement, sans écran d'installation et **sans jamais demander de coordonnées MySQL**.
@@ -19,8 +26,10 @@ node server.js
 
 | Adresse | Description |
 | --- | --- |
-| http://localhost:3000 | Site public |
-| http://localhost:3000/admin | Espace d'administration |
+| https://www.linksmartec.com | Site public (en production) |
+| https://www.linksmartec.com/admin | Espace d'administration |
+| http://localhost:3000 | Site public (en local) |
+| http://localhost:3000/admin | Administration (en local) |
 
 **Identifiants par défaut :** `admin` / `linksmartech`
 (à changer dès la première connexion, onglet **Sécurité**).
@@ -79,7 +88,7 @@ Elles structurent toute la navigation et le contenu :
 | Onglet | Contenu modifiable |
 | --- | --- |
 | **Tableau de bord** | Statistiques, derniers messages reçus |
-| **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, horaires, **logos (principal + clair)**, couleurs, texte du pied de page |
+| **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, **site web**, horaires, **logos (principal + clair)**, couleurs, texte du pied de page |
 | **Bannière d'accueil** | Les trois onglets de spécialité et leur produit vedette |
 | **Spécialités** | Les trois pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
 | **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité |
@@ -177,6 +186,10 @@ PORT=3000 node server.js
 
 Pensez à définir `SESSION_SECRET` (chaîne aléatoire longue) et `ADMIN_PASSWORD`
 pour un déploiement public, ainsi qu'un proxy HTTPS.
+
+Le domaine **www.linksmartec.com** est déjà renseigné dans le site :
+balise `canonical`, `og:url`, `robots.txt`, `sitemap.xml` et données structurées
+`LocalBusiness` (nom, e-mail, téléphone, spécialités) pour les moteurs de recherche.
 
 **Hébergement 100 % statique (sans Node)**
 Le contenu de `public/` s'affiche seul, grâce à `public/data/site.json`

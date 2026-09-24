@@ -9,7 +9,8 @@
       "ville": "Goma, Nord-Kivu, RDC",
       "telephone": "+243 976 459 970",
       "telephoneSecondaire": "",
-      "email": "contact@linkstech.cd",
+      "email": "contact@linksmartec.com",
+      "siteWeb": "www.linksmartec.com",
       "logo": "/assets/img/logo.svg",
       "logoClair": "/assets/img/logo-clair.svg",
       "favicon": "/assets/img/favicon.svg",
@@ -304,6 +305,6 @@
     "portailClientActif": true,
     "maintenance": false
   },
-  "genereLe": "2026-09-24T10:46:55.018Z",
+  "genereLe": "2026-09-24T10:51:23.076Z",
   "note": "Fichier de secours statique généré par tools/build-fallback.js."
 }

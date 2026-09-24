@@ -119,6 +119,7 @@
     $('#i-tel').value = i.telephone || '';
     $('#i-tel2').value = i.telephoneSecondaire || '';
     $('#i-email').value = i.email || '';
+    $('#i-site').value = i.siteWeb || '';
     $('#i-horaires').value = etat.contenu.contact?.horaires || '';
     $('#i-couleur').value = i.couleurPrimaire || '#1e3a8a';
     $('#i-accent').value = i.couleurAccent || '#eab308';
@@ -137,6 +138,7 @@
       telephone: $('#i-tel').value.trim(),
       telephoneSecondaire: $('#i-tel2').value.trim(),
       email: $('#i-email').value.trim(),
+      siteWeb: $('#i-site').value.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, ''),
       couleurPrimaire: $('#i-couleur').value,
       couleurAccent: $('#i-accent').value
     };
