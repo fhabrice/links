@@ -1,0 +1,14 @@
+{
+  "_commentaire": [
+    "Fichier OPTIONNEL. À renommer en config/database.json UNIQUEMENT si vous voulez",
+    "utiliser une base MySQL déjà existante. L'admin ne demande jamais ces informations :",
+    "si ce fichier (ou les variables MYSQL_*) est absent, le site utilise automatiquement",
+    "son stockage local data/ et tout fonctionne normalement."
+  ],
+  "enabled": true,
+  "host": "localhost",
+  "port": 3306,
+  "user": "utilisateur",
+  "password": "motdepasse",
+  "database": "linksmartech"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "linksmartech",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site institutionnel et e-commerce Linksmartech (Goma, Nord-Kivu, RDC). Aucune configuration MySQL obligatoire : le site et l'admin démarrent sans rien saisir.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node tools/build-fallback.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "mysql2": "^3.11.0"
+  },
+  "keywords": [
+    "linksmartech",
+    "goma",
+    "ecommerce",
+    "vitrine"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linksmartech | Portail Institutionnel &amp; E-Commerce — Goma, RDC</title>
+  <meta name="description" content="Linksmartech : construction, numérique, énergie et WASH à Goma, Nord-Kivu. Boutique de produits locaux premium et solutions technologiques internationales.">
+  <meta name="theme-color" content="#1e3a8a">
+  <meta property="og:title" content="Linksmartech | Portail Institutionnel &amp; E-Commerce">
+  <meta property="og:description" content="Construction, numérique, énergie et WASH en République Démocratique du Congo.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" id="favicon">
+  <link rel="apple-touch-icon" href="/assets/img/logo.svg">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+  <div class="bandeau-info" id="bandeau-maintenance" hidden>
+    Site en cours de maintenance — certaines fonctions peuvent être momentanément indisponibles.
+  </div>
+
+  <!-- ============================== TOPBAR ============================== -->
+  <div class="topbar">
+    <div class="conteneur topbar__inner">
+      <span class="topbar__rccm" data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+      <div class="topbar__infos">
+        <span data-champ="ville">📍 Goma, RDC</span>
+        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">📞 +243 976 459 970</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== ENTÊTE ============================= -->
+  <header class="entete">
+    <div class="conteneur entete__inner">
+      <a class="marque" href="#" aria-label="Accueil Linksmartech">
+        <img class="marque__logo" id="logo-entete" src="/assets/img/logo.svg" alt="Logo Linksmartech">
+        <span class="marque__texte">
+          <span class="marque__nom" id="nom-entete">LINKS<span>MARTECH</span></span>
+          <span class="marque__slogan" id="slogan-entete">Portail Institutionnel &amp; E-Commerce</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a class="nav__lien" href="#accueil">Accueil</a>
+        <a class="nav__lien" href="#boutique">Boutique</a>
+        <a class="nav__lien" href="#services">Services</a>
+        <a class="nav__lien" href="#approche">Approche</a>
+        <a class="nav__lien" href="#contact">Contact</a>
+      </nav>
+
+      <div class="entete__actions">
+        <button class="btn btn--fantome btn--petit panier-btn" id="btn-panier" aria-label="Ouvrir le panier">
+          🛒 Panier
+          <span class="panier-btn__compteur" id="panier-compteur" hidden>0</span>
+        </button>
+        <a class="btn btn--petit" id="btn-portail" href="#contact">Portail Client</a>
+        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================================ HERO ============================== -->
+  <section class="hero" id="accueil">
+    <div class="conteneur hero__inner">
+      <div class="onglets" id="onglets-hero" role="tablist"></div>
+
+      <div class="hero__grille">
+        <div>
+          <span class="badge-pilule" id="hero-badge">Nouveauté Nationale</span>
+          <h1 class="hero__titre" id="hero-titre">Valorisons le savoir-faire <span class="accent">du Kivu</span>.</h1>
+          <p class="hero__texte" id="hero-texte">Découvrez notre sélection de produits locaux premium, certifiés et distribués par Linksmartech.</p>
+          <div class="hero__boutons">
+            <a class="btn btn--accent" id="hero-bouton" href="#boutique">Découvrir la gamme</a>
+            <a class="btn btn--fantome" href="#contact" style="--btn-texte:#fff;border-color:rgba(255,255,255,.35)">Demander un devis</a>
+          </div>
+          <div class="hero__stats">
+            <div class="hero__stat"><strong>10+</strong><span>Années d'expérience</span></div>
+            <div class="hero__stat"><strong>150+</strong><span>Projets livrés</span></div>
+            <div class="hero__stat"><strong>100%</strong><span>Qualité certifiée</span></div>
+          </div>
+        </div>
+
+        <div>
+          <article class="fiche-produit" id="fiche-vedette">
+            <img class="fiche-produit__img" id="vedette-img" src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800" alt="Produit vedette">
+            <div class="fiche-produit__corps">
+              <h3 class="fiche-produit__titre" id="vedette-nom">Miel pur de Turunga</h3>
+              <p class="fiche-produit__desc" id="vedette-desc">Récolté artisanalement dans le Nord-Kivu.</p>
+              <div class="fiche-produit__pied">
+                <span class="fiche-produit__prix" id="vedette-prix">$15.00</span>
+                <button class="btn btn--accent btn--petit" id="vedette-ajouter">Ajouter au panier</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== BOUTIQUE ============================ -->
+  <section class="section" id="boutique">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">Notre offre</p>
+        <h2 class="section__titre" id="boutique-titre">Boutique</h2>
+        <p class="section__texte" id="boutique-soustitre">Produits nationaux et solutions internationales</p>
+      </div>
+
+      <div class="filtres" id="filtres-boutique"></div>
+      <div class="grille-produits" id="grille-produits"></div>
+    </div>
+  </section>
+
+  <!-- ============================== SERVICES ============================ -->
+  <section class="section section--gris" id="services">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">Nos expertises</p>
+        <h2 class="section__titre">Piliers d'Infrastructure &amp; Tech</h2>
+      </div>
+      <div class="grille-services" id="grille-services"></div>
+    </div>
+  </section>
+
+  <!-- ============================== APPROCHE ============================ -->
+  <section class="section" id="approche">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">Méthode</p>
+        <h2 class="section__titre" id="approche-titre">Notre Approche</h2>
+      </div>
+      <div class="grille-etapes" id="grille-etapes"></div>
+    </div>
+  </section>
+
+  <!-- =============================== CONTACT ============================ -->
+  <section class="section section--gris" id="contact">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">Écrivez-nous</p>
+        <h2 class="section__titre" id="contact-titre">Contact</h2>
+        <p class="section__texte" id="contact-soustitre">Parlons de votre projet</p>
+      </div>
+
+      <div class="grille-contact">
+        <div class="contact-infos">
+          <div class="info-bloc">
+            <div class="info-bloc__icone">📍</div>
+            <div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur" data-champ="adresse">Avenue du Lac, Goma, Nord-Kivu, RDC</div></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">📞</div>
+            <div><div class="info-bloc__titre">Téléphone</div><div class="info-bloc__valeur" data-champ="telephone">+243 976 459 970</div></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">✉️</div>
+            <div><div class="info-bloc__titre">E-mail</div><div class="info-bloc__valeur" data-champ="email">contact@linksmartech.com</div></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">🕒</div>
+            <div><div class="info-bloc__titre">Horaires</div><div class="info-bloc__valeur" data-champ="horaires">Lundi – Samedi : 08h00 – 18h00</div></div>
+          </div>
+        </div>
+
+        <form class="formulaire" id="formulaire-contact" novalidate>
+          <div class="alerte alerte--succes" id="contact-succes"></div>
+          <div class="alerte alerte--erreur" id="contact-erreur"></div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="c-nom">Nom complet *</label>
+              <input id="c-nom" name="nom" type="text" required placeholder="Ex. Fabrice Nzarubara">
+            </div>
+            <div class="champ">
+              <label for="c-email">E-mail *</label>
+              <input id="c-email" name="email" type="email" required placeholder="vous@exemple.com">
+            </div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="c-tel">Téléphone</label>
+              <input id="c-tel" name="telephone" type="tel" placeholder="+243 …">
+            </div>
+            <div class="champ">
+              <label for="c-sujet">Sujet</label>
+              <select id="c-sujet" name="sujet">
+                <option>Demande de devis</option>
+                <option>Commande boutique</option>
+                <option>Partenariat</option>
+                <option>Support technique</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="champ">
+            <label for="c-message">Message *</label>
+            <textarea id="c-message" name="message" rows="5" required placeholder="Décrivez votre besoin…"></textarea>
+          </div>
+
+          <button class="btn btn--bloc" type="submit" id="contact-envoyer">Envoyer le message</button>
+          <p style="margin:0;font-size:.78rem;color:var(--ardoise-500)">Vos données servent uniquement à vous répondre.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================== PIED =============================== -->
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div>
+          <img class="pied__logo" id="logo-pied" src="/assets/img/logo.svg" alt="Logo Linksmartech">
+          <h3 style="color:#fff;font-size:1.15rem;font-weight:800" id="nom-pied">LINKS<span style="color:#3b82f6">MARTECH</span></h3>
+          <p class="pied__texte" id="pied-description">Linksmartech accompagne les institutions, les entreprises et les particuliers dans la construction, le numérique et l'énergie en République Démocratique du Congo.</p>
+        </div>
+        <div>
+          <h4 class="pied__titre">Navigation</h4>
+          <div class="pied__liens">
+            <a href="#accueil">Accueil</a>
+            <a href="#boutique">Boutique</a>
+            <a href="#services">Services</a>
+            <a href="#approche">Approche</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="pied__titre">Coordonnées</h4>
+          <div class="pied__liens">
+            <span data-champ="ville">Goma, Nord-Kivu, RDC</span>
+            <a data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+            <a data-champ="email" data-lien="mailto" href="mailto:contact@linksmartech.com">contact@linksmartech.com</a>
+            <span data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+          </div>
+          <div class="pied__liens" id="reseaux-sociaux" style="margin-top:1rem"></div>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span id="pied-copyright">© 2026 Linksmartech — Tous droits réservés.</span>
+        <span>Conçu à Goma 🇨🇩</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================== PANIER ============================= -->
+  <div class="voile" id="voile"></div>
+  <aside class="panier" id="panier" aria-label="Panier" aria-hidden="true">
+    <div class="panier__entete">
+      <h2 class="panier__titre">Votre panier</h2>
+      <button class="panier__fermer" id="panier-fermer" aria-label="Fermer le panier">×</button>
+    </div>
+    <div class="panier__liste" id="panier-liste"></div>
+    <div class="panier__pied">
+      <div class="panier__total"><span>Total</span><span id="panier-total">$0.00</span></div>
+      <a class="btn btn--accent btn--bloc" id="panier-commander" href="#contact">Commander via WhatsApp</a>
+      <button class="btn btn--fantome btn--bloc btn--petit" id="panier-vider">Vider le panier</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/assets/js/site.js"></script>
+</body>
+</html>
