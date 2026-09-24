@@ -1,7 +1,8 @@
 /* =====================================================================
    LK-TECH (Linksmartech) — logique du site public
    Récupère le contenu depuis /api/site (aucune base à configurer côté client)
-   et, en secours, depuis /data/site.json pour un hébergement 100 % statique.
+   et, en secours, depuis un fichier statique (window.LK_SECOURS) pour un
+   hébergement sans serveur applicatif.
    ===================================================================== */
 (function () {
   'use strict';
@@ -9,6 +10,9 @@
   // Chemin de base de l'application : '' à la racine, '/sous-dossier' sinon.
   // Défini par les pages PHP ; vide avec la version Node.js.
   const BASE = (typeof window !== 'undefined' && window.LK_BASE) || '';
+
+  // Fichier statique de secours : les pages PHP le placent avec les ressources.
+  const FICHIER_SECOURS = (typeof window !== 'undefined' && window.LK_SECOURS) || `${BASE}/data/site.json`;
 
   const CLE_PANIER = 'linkstech-panier';
   const IMAGE_SECOURS = `${BASE}/assets/img/photo-manquante.svg`;
@@ -119,7 +123,7 @@
     } catch { /* on tente le fichier statique */ }
 
     try {
-      const reponse = await fetch(`${BASE}/data/site.json`, { cache: 'no-store' });
+      const reponse = await fetch(FICHIER_SECOURS, { cache: 'no-store' });
       if (reponse.ok) return reponse.json();
     } catch { /* on garde le contenu par défaut du serveur */ }
 

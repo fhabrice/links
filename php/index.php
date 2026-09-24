@@ -332,6 +332,7 @@ $reglages = lk_store()->reglages();
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>window.LK_BASE = "<?= $base ?>";</script>
+  <script>window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
   <script src="<?= $base ?>/assets/js/site.js"></script>
 </body>
 </html>

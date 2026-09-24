@@ -11,8 +11,13 @@ const path = require('path');
 const { CONTENU_DEFAUT, REGLAGES_DEFAUT } = require('../src/defaults');
 
 const RACINE = path.join(__dirname, '..');
-const DOSSIER = path.join(RACINE, 'public', 'data');
-const CIBLE = path.join(DOSSIER, 'site.json');
+// Deux emplacements : la version Node.js (public/) et la version PHP (php/assets/).
+// Dans la version PHP, le dossier data/ est protégé, le fichier de secours vit
+// donc avec les ressources publiques.
+const CIBLES = [
+  path.join(RACINE, 'public', 'data', 'site.json'),
+  path.join(RACINE, 'php', 'assets', 'data', 'site.json')
+];
 
 function construire() {
   const charge = {
@@ -26,9 +31,11 @@ function construire() {
     note: 'Fichier de secours statique généré par tools/build-fallback.js.'
   };
 
-  fs.mkdirSync(DOSSIER, { recursive: true });
-  fs.writeFileSync(CIBLE, JSON.stringify(charge, null, 2), 'utf8');
-  console.log(`   Contenu statique écrit dans ${path.relative(RACINE, CIBLE)}`);
+  for (const cible of CIBLES) {
+    fs.mkdirSync(path.dirname(cible), { recursive: true });
+    fs.writeFileSync(cible, JSON.stringify(charge, null, 2), 'utf8');
+    console.log(`   Contenu statique écrit dans ${path.relative(RACINE, cible)}`);
+  }
 }
 
 construire();
