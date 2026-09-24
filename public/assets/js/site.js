@@ -219,6 +219,43 @@
     };
   }
 
+  /** Ruban affiché juste sous l'en-tête : les trois spécialités, cliquables. */
+  function rendreRuban() {
+    const zone = $('#ruban-specialites');
+    if (!zone) return;
+
+    zone.innerHTML = (etat.contenu.specialites || [])
+      .map(
+        (specialite) => `
+        <button class="ruban__item" data-ruban="${echapper(specialite.id)}">
+          ${iconeSvg(specialite.icone, 18)}
+          <span>${echapper(specialite.titre)}</span>
+        </button>`
+      )
+      .join('');
+
+    zone.querySelectorAll('[data-ruban]').forEach((bouton) =>
+      bouton.addEventListener('click', () => activerSpecialite(bouton.dataset.ruban, true))
+    );
+  }
+
+  /** Rappel des spécialités dans le pied de page. */
+  function rendreSpecialitesPied() {
+    const zone = $('#pied-specialites');
+    if (!zone) return;
+    zone.innerHTML = [
+      '<a href="#specialites">Toutes nos spécialités</a>',
+      ...(etat.contenu.specialites || []).map(
+        (specialite) =>
+          `<a href="#services" data-pied-specialite="${echapper(specialite.id)}">${echapper(specialite.titre)}</a>`
+      )
+    ].join('');
+
+    zone.querySelectorAll('[data-pied-specialite]').forEach((lien) =>
+      lien.addEventListener('click', () => activerSpecialite(lien.dataset.piedSpecialite, true))
+    );
+  }
+
   function rendreSpecialites() {
     const grille = $('#grille-specialites');
     if (!grille) return;
@@ -229,6 +266,7 @@
           <div class="specialite__icone">${iconeSvg(specialite.icone)}</div>
           <h3 class="specialite__titre">${echapper(specialite.titre)}</h3>
           <p class="specialite__texte">${echapper(specialite.texte)}</p>
+          <span class="specialite__lien">Découvrir <span aria-hidden="true">→</span></span>
         </article>`
       )
       .join('');
@@ -539,7 +577,9 @@
       etat.contenu = donnees.contenu;
       etat.reglages = donnees.reglages || {};
       appliquerIdentite(donnees.contenu.identite);
+      rendreRuban();
       rendreSpecialites();
+      rendreSpecialitesPied();
       rendreOngletsHero(donnees.contenu.hero);
       rendreServices(donnees.contenu.services);
       rendreEtapes(donnees.contenu.approche);

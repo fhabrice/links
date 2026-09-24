@@ -87,7 +87,7 @@ const CONTENU_DEFAUT = {
       icone: 'btp',
       titre: 'Construction',
       texte:
-        "Études techniques, gros œuvre et réhabilitation : des bâtiments solides, livrés dans les délais et aux normes."
+        "Constructeur : études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments solides, livrés dans les délais et aux normes."
     },
     {
       id: 'energie',
@@ -116,7 +116,7 @@ const CONTENU_DEFAUT = {
     {
       titre: 'Construction & BTP',
       description:
-        "Études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments résidentiels et institutionnels.",
+        "Constructeur général : études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments résidentiels et institutionnels.",
       icone: 'btp',
       image: ''
     },
