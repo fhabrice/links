@@ -20,6 +20,18 @@ boutique en ligne, services, formulaire de contact et **espace d'administration 
 
 ## 1. Démarrage
 
+> **Deux versions équivalentes dans ce dépôt**
+> | Version | Où | Pour qui |
+> | --- | --- | --- |
+> | **PHP 8** | dossier `php/` | hébergement mutualisé classique (cPanel, FTP) — *rien à installer* |
+> | Node.js 18+ | racine du dépôt | serveur dédié, VPS, Render/Railway, Docker |
+>
+> Les deux servent **les mêmes pages, la même administration et la même API JSON**,
+> et partagent le même contenu par défaut (`src/defaults.js` / `php/app/defaults.json`).
+> Guide PHP : **`php/LISEZ-MOI.md`**.
+
+### Version Node.js
+
 ```bash
 node server.js
 ```
@@ -186,6 +198,12 @@ links/
 │   ├── assets/js/site.js      Comportements du site (panier, spécialités, contact…)
 │   ├── assets/img/            Logos SVG + visuels produits
 │   └── data/site.json         Contenu statique de secours
+├── php/                       Version PHP 8 autonome (mêmes pages, même admin)
+│   ├── index.php · a-propos.php · admin/ · api/   Pages et API
+│   ├── app/                   Code de l'application (protégé)
+│   ├── assets/                Design, JavaScript, logo, images
+│   ├── data/ · uploads/       Données et images (créés automatiquement)
+│   └── LISEZ-MOI.md           Mode d'emploi PHP (3 étapes)
 ├── config/                    Configuration MySQL optionnelle (exemple fourni)
 ├── deploy/                    Fichiers prêts à l'emploi : systemd, Nginx, cPanel
 ├── tools/build-fallback.js    Regénère le contenu statique de secours

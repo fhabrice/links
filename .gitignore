@@ -6,6 +6,13 @@ package-lock.json
 data/*
 !data/.gitkeep
 
+# Version PHP : mêmes données, dans php/data et php/uploads
+php/data/*
+!php/data/.htaccess
+php/uploads/*
+!php/uploads/.htaccess
+php/config/database.php
+
 # Configuration réelle d'une éventuelle base (jamais versionnée)
 config/database.json
 

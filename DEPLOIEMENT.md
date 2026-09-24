@@ -21,6 +21,27 @@ complète. Choisissez **une seule** option selon votre budget et vos compétence
 
 ---
 
+## Option 0 — Héberger la **version PHP** *(sans Node.js, sans base de données)*
+
+Si votre hébergeur ne propose que du PHP (cPanel, Hostinger, OVH, Namecheap…),
+utilisez le dossier **`php/`** : c'est exactement le même site (mêmes pages, même
+administration, même API), écrit en PHP 8.
+
+1. Téléversez **le contenu du dossier `php/`** dans `public_html/` (FTP ou
+   gestionnaire de fichiers).
+2. Vérifiez que `data/` est accessible en écriture (`0755`).
+3. Ouvrez votre domaine → le site s'affiche, l'administration est sur `/admin`
+   (`admin` / `linksmartech`).
+
+Aucune commande à taper, aucun écran d'installation, aucun champ MySQL.
+Le détail complet est dans **`php/LISEZ-MOI.md`** (sous-dossier, Nginx, sauvegarde,
+passage à MySQL, migration depuis la version Node.js).
+
+> ⚠️ Ne mélangez pas les deux : le dossier `php/` est autonome. La version Node.js
+> (racine du dépôt) reste disponible et fonctionne à l'identique.
+
+---
+
 ## Option 1 — Hébergement mutualisé cPanel *(le plus simple)*
 
 **Pour qui ?** Vous avez déjà un hébergement web classique (Hostinger, Namecheap, OVH,
