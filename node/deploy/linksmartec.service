@@ -8,7 +8,7 @@ Type=simple
 User=www-data
 Group=www-data
 WorkingDirectory=/var/www/linksmartec
-ExecStart=/usr/bin/node server.js
+ExecStart=/usr/bin/node node/server.js
 Restart=always
 RestartSec=5
 
@@ -27,7 +27,7 @@ SyslogIdentifier=linksmartec
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=full
-ReadWritePaths=/var/www/linksmartec/data
+ReadWritePaths=/var/www/linksmartec/node/data
 
 [Install]
 WantedBy=multi-user.target

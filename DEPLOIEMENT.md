@@ -4,8 +4,11 @@ Ce guide couvre les quatre façons d'héberger le site, de la plus simple à la 
 complète. Choisissez **une seule** option selon votre budget et vos compétences.
 
 > **Rappel important** : le site n'utilise aucune base de données obligatoire.
-> Il n'y a **rien à installer ni à configurer** : on copie les fichiers, on lance
-> `node server.js`, et c'est en ligne.
+> Il n'y a **rien à installer ni à configurer** : on copie les fichiers, et c'est
+> en ligne. La façon la plus simple est la **version PHP** (Option 1) : quelques
+> fichiers à téléverser, aucun logiciel à installer. Les options suivantes
+> concernent la version Node.js (dossier `node/`), pour un VPS ou une plateforme
+> managée.
 
 ---
 
@@ -14,35 +17,41 @@ complète. Choisissez **une seule** option selon votre budget et vos compétence
 | Point | À retenir |
 | --- | --- |
 | **Le domaine** | Enregistrez `linksmartec.com` chez un registraire (Namecheap, OVH, Google Domains, ou un prestataire local) puis faites pointer son DNS vers votre hébergeur. |
-| **Les données** | Le contenu (textes, produits, messages) est enregistré dans le dossier `data/`. **Il doit donc être conservé entre deux redémarrages.** Chaque option ci-dessous explique comment. |
+| **Les données** | Le contenu (textes, produits, messages) est enregistré dans un dossier `data/` (à la racine pour la version PHP, dans `node/` pour la version Node.js). **Il doit donc être conservé entre deux redémarrages.** Chaque option ci-dessous explique comment. |
 | **Le mot de passe admin** | Par défaut : `admin` / `linksmartech`. Changez-le dès la mise en ligne (admin → *Sécurité*) **et** en définissant `ADMIN_PASSWORD`. |
 | **HTTPS** | Indispensable. Toutes les options ci-dessous permettent le certificat gratuit (Let's Encrypt / AutoSSL). |
 | **Coût** | De 0 € (offres gratuites, avec limites) à ~5 €/mois (VPS ou mutualisé). |
 
 ---
 
-## Option 0 — Héberger la **version PHP** *(sans Node.js, sans base de données)*
+## Option 1 — **Version PHP** *(le plus simple : aucun logiciel à installer)*
 
-Si votre hébergeur ne propose que du PHP (cPanel, Hostinger, OVH, Namecheap…),
-utilisez le dossier **`php/`** : c'est exactement le même site (mêmes pages, même
-administration, même API), écrit en PHP 8.
+C'est la voie recommandée si vous avez un hébergement classique (cPanel, Hostinger,
+OVH, Namecheap…), même sans « Setup Node.js App ». Le site PHP **est à la racine du
+dépôt** : c'est exactement le même site que la version Node.js (mêmes pages, même
+administration, même API JSON).
 
-1. Téléversez **le contenu du dossier `php/`** dans `public_html/` (FTP ou
-   gestionnaire de fichiers).
+1. Téléversez **tout le contenu du dépôt** dans `public_html/` (FTP ou
+   gestionnaire de fichiers). Le dossier `node/` (version Node.js) est inutile
+   sur un hébergement PHP : vous pouvez le sauter ou le supprimer après coup.
 2. Vérifiez que `data/` est accessible en écriture (`0755`).
 3. Ouvrez votre domaine → le site s'affiche, l'administration est sur `/admin`
    (`admin` / `linksmartech`).
 
+**Prérequis :** PHP 7.4 ou supérieur (8 conseillé) et Apache avec `mod_rewrite`
+(le cas par défaut partout). Sur Nginx, la configuration équivalente est donnée
+dans `LISEZ-MOI.md`.
+
 Aucune commande à taper, aucun écran d'installation, aucun champ MySQL.
-Le détail complet est dans **`php/LISEZ-MOI.md`** (sous-dossier, Nginx, sauvegarde,
+Le détail complet est dans **`LISEZ-MOI.md`** (sous-dossier, Nginx, sauvegarde,
 passage à MySQL, migration depuis la version Node.js).
 
-> ⚠️ Ne mélangez pas les deux : le dossier `php/` est autonome. La version Node.js
-> (racine du dépôt) reste disponible et fonctionne à l'identique.
+> ⚠️ Les deux versions ne partagent pas leurs données : la version PHP écrit dans
+> `data/` et `uploads/` à la racine, la version Node.js dans `node/data/`.
 
 ---
 
-## Option 1 — Hébergement mutualisé cPanel *(le plus simple)*
+## Option 2 — **Version Node.js** sur cPanel / Plesk *(Passenger)*
 
 **Pour qui ?** Vous avez déjà un hébergement web classique (Hostinger, Namecheap, OVH,
 un hébergeur local…). C'est l'option la plus courante et la moins chère.
@@ -53,7 +62,7 @@ un hébergeur local…). C'est l'option la plus courante et la moins chère.
    - **Node.js version** : 18 ou 20
    - **Application root** : `linksmartec`
    - **Application URL** : `linksmartec.com` (ou `www.linksmartec.com`)
-   - **Application startup file** : `server.js`
+   - **Application startup file** : `node/server.js`
 2. Téléversez tout le contenu du dépôt dans le dossier `linksmartec`
    (Gestionnaire de fichiers, FTP, ou *Git Version Control* de cPanel).
 3. Cliquez sur **Run NPM Install** (même sans dépendance : cPanel prépare l'environnement).
@@ -63,16 +72,16 @@ un hébergeur local…). C'est l'option la plus courante et la moins chère.
 5. **Restart** → le site est en ligne.
 6. Onglet **SSL/TLS Status** → **Run AutoSSL** (HTTPS gratuit).
 
-📄 Un modèle de `.htaccess` et la procédure détaillée : `deploy/cpanel-passenger.txt`
+📄 Un modèle de `.htaccess` et la procédure détaillée : `node/deploy/cpanel-passenger.txt`
 
-> ⚠️ Vérifiez que le dossier `data` est accessible en écriture
-> (Gestionnaire de fichiers → clic droit sur `data` → *Change Permissions* → `0755`).
+> ⚠️ Vérifiez que le dossier `node/data` est accessible en écriture
+> (Gestionnaire de fichiers → clic droit sur `node/data` → *Change Permissions* → `0755`).
 
 **Coût :** souvent déjà inclus dans votre hébergement mutualisé.
 
 ---
 
-## Option 2 — VPS *(recommandé pour la production)*
+## Option 3 — **Version Node.js** sur VPS *(Nginx + systemd)*
 
 **Pour qui ?** Vous voulez la maîtrise totale, de bonnes performances et un coût fixe.
 Un VPS d'entrée de gamme suffit largement (1 vCPU / 1 Go de RAM).
@@ -94,22 +103,22 @@ git clone https://github.com/fhabrice/links.git linksmartec
 cd linksmartec
 
 # 4) Créer les réglages
-cat > .env <<'EOF'
+cat > node/.env <<'EOF'
 SESSION_SECRET=remplacez-par-une-longue-chaine-aleatoire
 ADMIN_PASSWORD=votre-mot-de-passe-admin
 PORT=3000
 EOF
 
 # 5) Créer le dossier de données accessible en écriture
-mkdir -p data/uploads && chown -R www-data:www-data /var/www/linksmartec
+mkdir -p node/data/uploads && chown -R www-data:www-data /var/www/linksmartec
 
 # 6) Installer le service (démarrage automatique + redémarrage en cas de plantage)
-cp deploy/linksmartec.service /etc/systemd/system/
+cp node/deploy/linksmartec.service /etc/systemd/system/
 systemctl daemon-reload && systemctl enable --now linksmartec
 systemctl status linksmartec     # doit afficher « active (running) »
 
 # 7) Configurer Nginx (nom de domaine → site)
-cp deploy/nginx-linksmartec.conf /etc/nginx/sites-available/linksmartec
+cp node/deploy/nginx-linksmartec.conf /etc/nginx/sites-available/linksmartec
 ln -s /etc/nginx/sites-available/linksmartec /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 
@@ -135,7 +144,7 @@ cd /var/www/linksmartec && git pull && systemctl restart linksmartec
 
 ---
 
-## Option 3 — Plateforme managée (Render, Railway, Koyeb…)
+## Option 4 — **Version Node.js** sur plateforme managée (Render, Railway, Koyeb…)
 
 **Pour qui ?** Vous voulez déployer en quelques minutes sans administrer de serveur.
 Le fichier `render.yaml` est déjà prêt dans le dépôt.
@@ -165,7 +174,7 @@ Le fichier `render.yaml` est déjà prêt dans le dépôt.
 ### Railway
 
 1. [railway.app](https://railway.app) → **New Project** → *Deploy from GitHub repo*.
-2. Railway détecte Node.js et utilise `Procfile` (`web: node server.js`).
+2. Railway détecte Node.js et utilise `Procfile` (`web: cd node && node server.js`).
 3. **Settings → Volumes** → ajoutez un volume monté sur `/app/data`
    (indispensable pour conserver vos données).
 4. **Variables** : `SESSION_SECRET`, `ADMIN_PASSWORD`.
@@ -175,7 +184,7 @@ Le fichier `render.yaml` est déjà prêt dans le dépôt.
 
 ---
 
-## Option 4 — Base MySQL fournie par l'hébergeur *(facultatif)*
+## Option 5 — Base MySQL fournie par l'hébergeur *(facultatif, les deux versions)*
 
 Si votre hébergeur vous a attribué une base MySQL (fréquent en mutualisé), vous pouvez
 l'utiliser **sans rien saisir dans l'interface** : renseignez simplement les variables
@@ -196,7 +205,7 @@ local — aucune page d'erreur, aucune configuration à refaire.
 
 ---
 
-## Option 5 — Site 100 % statique *(sans admin)*
+## Option 6 — Site 100 % statique *(sans admin)*
 
 **Pour qui ?** Vous ne voulez qu'une vitrine en ligne, sans administration ni formulaire
 enregistré côté serveur. Fonctionne sur **Netlify, Vercel, GitHub Pages ou tout espace
@@ -221,11 +230,12 @@ modifications nécessitent de regénérer `site.json` puis de republier.
 
 | | Coût | Difficulté | Admin en ligne | Données conservées |
 | --- | --- | --- | --- | --- |
-| **1. cPanel mutualisé** | inclus | ⭐ facile | ✅ | ✅ (disque du serveur) |
-| **2. VPS** | 4–8 €/mois | ⭐⭐⭐ technique | ✅ | ✅ (disque du serveur) |
-| **3. Render / Railway** | 0–5 $/mois | ⭐⭐ simple | ✅ | ⚠️ avec disque persistant |
-| **4. + MySQL** | selon hébergeur | ⭐ facile | ✅ | ✅ |
-| **5. Statique** | 0 € | ⭐ facile | ❌ | — |
+| **1. PHP (mutualisé)** | inclus | ⭐ facile | ✅ | ✅ (disque du serveur) |
+| **2. Node sur cPanel** | inclus | ⭐⭐ facile | ✅ | ✅ (disque du serveur) |
+| **3. Node sur VPS** | 4–8 €/mois | ⭐⭐⭐ technique | ✅ | ✅ (disque du serveur) |
+| **4. Render / Railway** | 0–5 $/mois | ⭐⭐ simple | ✅ | ⚠️ avec disque persistant |
+| **5. + MySQL** | selon hébergeur | ⭐ facile | ✅ | ✅ |
+| **6. Statique** | 0 € | ⭐ facile | ❌ | — |
 
 ---
 
@@ -249,7 +259,8 @@ modifications nécessitent de regénérer `site.json` puis de republier.
 
 ```bash
 # A) Copie complète (recommandé) : tout est dans le dossier data
-tar czf sauvegarde-linksmartec-$(date +%F).tar.gz data/
+tar czf sauvegarde-linksmartec-$(date +%F).tar.gz data/            # version PHP
+tar czf sauvegarde-linksmartec-node-$(date +%F).tar.gz node/data/  # version Node.js
 
 # B) Depuis l'interface : admin → Stockage & sauvegarde → « Exporter mes données »
 ```
@@ -275,12 +286,13 @@ crontab -e
 
 | Symptôme | Cause probable | Solution |
 | --- | --- | --- |
-| Page blanche / 502 | Le processus Node n'a pas démarré | Vérifiez les journaux (`journalctl -u linksmartec -n 50`), puis `node server.js` à la main pour voir l'erreur |
+| Page blanche / 502 | Le processus Node n'a pas démarré | Vérifiez les journaux (`journalctl -u linksmartec -n 50`), puis `cd node && node server.js` à la main pour voir l'erreur |
+| Erreur 500 en PHP | Droits ou version de PHP | Vérifiez que `data/` est en `0755`, et consultez le journal d'erreurs de l'hébergeur (cPanel → *Errors*) |
 | Les modifications ne s'enregistrent pas | Dossier `data` non accessible en écriture | `chown -R www-data:www-data /var/www/linksmartec/data` (VPS) ou permissions `0755` (cPanel) |
 | Données perdues après un redéploiement | Pas de disque persistant | Ajoutez un disque (Render/Railway) ou passez au VPS, puis restaurez votre sauvegarde |
 | Image trop lourde refusée | Limite de 4 Mo par image | Compressez l'image (`convert photo.jpg -resize 1200x -quality 82 photo.jpg`) |
 | Le domaine affiche l'ancien site | DNS en cours de propagation | Patientez de 1 à 24 h, videz le cache du navigateur |
-| Connexion admin impossible | Mot de passe perdu | Supprimez `data/security.json` puis redémarrez : le compte `admin` / `linksmartech` est recréé (vous ne perdez que le mot de passe) |
+| Connexion admin impossible | Mot de passe perdu | Supprimez `data/security.json` (PHP) ou `node/data/security.json` (Node), rechargez : le compte `admin` / `linksmartech` est recréé (vous ne perdez que le mot de passe) |
 
 ---
 

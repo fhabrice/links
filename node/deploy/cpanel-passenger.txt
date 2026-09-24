@@ -12,7 +12,7 @@ PassengerAppRoot       /home/VOTRECOMPTE/linksmartec
 PassengerBaseURI       /
 PassengerNodejs        /home/VOTRECOMPTE/nodevenv/linksmartec/20/bin/node
 PassengerAppType       node
-PassengerStartupFile   server.js
+PassengerStartupFile   node/server.js
 PassengerAppLogFile    /home/VOTRECOMPTE/logs/linksmartec.log
 
 # ---------------------------------------------------------------------
@@ -22,7 +22,7 @@ PassengerAppLogFile    /home/VOTRECOMPTE/logs/linksmartec.log
 #      Node.js version : 18 ou 20
 #      Application root : linksmartec      (le dossier du site)
 #      Application URL  : linksmartec.com  (ou www)
-#      Application startup file : server.js
+#      Application startup file : node/server.js
 #
 # 2) Téléversez les fichiers du site dans /home/VOTRECOMPTE/linksmartec
 #    (gestionnaire de fichiers, FTP, ou « Git Version Control » de cPanel).
@@ -38,7 +38,7 @@ PassengerAppLogFile    /home/VOTRECOMPTE/logs/linksmartec.log
 #
 # 6) Activez le SSL gratuit : cPanel → « SSL/TLS Status » → Run AutoSSL
 #
-# ⚠️ IMPORTANT — le dossier « data » doit être accessible en écriture :
-#    Gestionnaire de fichiers → clic droit sur le dossier « data »
+# ⚠️ IMPORTANT — le dossier « node/data » doit être accessible en écriture :
+#    Gestionnaire de fichiers → clic droit sur le dossier « node/data »
 #    → Change Permissions → 0755 (ou 0775 si le site n'arrive pas à écrire).
 # ---------------------------------------------------------------------

@@ -23,17 +23,24 @@ boutique en ligne, services, formulaire de contact et **espace d'administration 
 > **Deux versions équivalentes dans ce dépôt**
 > | Version | Où | Pour qui |
 > | --- | --- | --- |
-> | **PHP 8** | dossier `php/` | hébergement mutualisé classique (cPanel, FTP) — *rien à installer* |
-> | Node.js 18+ | racine du dépôt | serveur dédié, VPS, Render/Railway, Docker |
+> | **PHP 8** *(la version principale)* | **racine du dépôt** | hébergement mutualisé classique (cPanel, FTP) — *rien à installer* |
+> | Node.js 18+ | dossier `node/` | serveur dédié, VPS, Render/Railway, Docker |
 >
 > Les deux servent **les mêmes pages, la même administration et la même API JSON**,
-> et partagent le même contenu par défaut (`src/defaults.js` / `php/app/defaults.json`).
-> Guide PHP : **`php/LISEZ-MOI.md`**.
+> et partagent le même contenu par défaut (`node/src/defaults.js` / `app/defaults.json`).
+> Guide PHP : **`LISEZ-MOI.md`**.
+
+### Version PHP (racine)
+
+Téléversez le contenu du dépôt dans `public_html/` : c'est tout.
+L'administration est sur `/admin` (`admin` / `linksmartech`).
+Détail : **`LISEZ-MOI.md`**.
 
 ### Version Node.js
 
 ```bash
-node server.js
+cd node
+node server.js      # http://localhost:3000
 ```
 
 | Adresse | Description |
@@ -51,7 +58,7 @@ node server.js
 Node.js 18 ou supérieur est requis. Aucune commande `npm install` n'est nécessaire :
 le projet ne dépend d'aucun paquet externe.
 
-Pour changer le port : `PORT=8080 node server.js`.
+Pour changer le port : `PORT=8080 node node/server.js`.
 
 ---
 
@@ -184,32 +191,26 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ```
 links/
-├── server.js                  Serveur HTTP + routage (sans dépendance)
-├── src/
-│   ├── api.js                 API JSON (site public + administration)
-│   ├── defaults.js            Contenu par défaut (3 spécialités, produits, services)
-│   ├── security.js            Hachage scrypt + sessions signées
-│   └── store.js               Stockage auto-configuré (local / MySQL détecté)
-├── public/
-│   ├── index.html             Site public (accueil)
-│   ├── a-propos.html          Page « À propos »
-│   ├── admin/                 Espace d'administration
-│   ├── assets/css/styles.css  Design complet (aucun CDN)
-│   ├── assets/js/site.js      Comportements du site (panier, spécialités, contact…)
-│   ├── assets/img/            Logos SVG + visuels produits
-│   └── data/site.json         Contenu statique de secours
-├── php/                       Version PHP 8 autonome (mêmes pages, même admin)
-│   ├── index.php · a-propos.php · admin/ · api/   Pages et API
-│   ├── app/                   Code de l'application (protégé)
-│   ├── assets/                Design, JavaScript, logo, images
-│   ├── data/ · uploads/       Données et images (créés automatiquement)
-│   └── LISEZ-MOI.md           Mode d'emploi PHP (3 étapes)
+├── index.php                  ⬅︎ VERSION PHP (hébergement classique) — accueil
+├── a-propos.php               Page « À propos »
+├── admin/                     Espace d'administration
+├── api/                       API JSON
+├── app/                       Code de l'application + contenu par défaut (protégé)
+├── assets/                    Design, JavaScript, logo, images, contenu de secours
+├── data/ · uploads/           Données et images (créés automatiquement, protégés)
 ├── config/                    Configuration MySQL optionnelle (exemple fourni)
-├── deploy/                    Fichiers prêts à l'emploi : systemd, Nginx, cPanel
-├── tools/build-fallback.js    Regénère le contenu statique de secours
-├── Dockerfile · Procfile · render.yaml    Déploiement (Docker, Railway, Render)
+├── .htaccess                  Adresses propres, sécurité, cache (Apache)
+├── LISEZ-MOI.md               Mode d'emploi PHP (3 étapes)
+├── node/                      Version Node.js (serveur dédié / VPS)
+│   ├── server.js              Serveur HTTP + routage (sans dépendance)
+│   ├── src/                   API JSON, contenu par défaut, hachage, stockage
+│   ├── public/                Pages HTML, design, JavaScript, images
+│   ├── deploy/                Fichiers prêts à l'emploi : systemd, Nginx, cPanel
+│   └── data/ · config/        Données et configuration MySQL (non versionnées)
+├── tools/build-fallback.js    Regénère le contenu statique de secours (2 versions)
+├── Dockerfile · Procfile · render.yaml    Déploiement Node (Docker, Railway, Render)
 ├── DEPLOIEMENT.md             Guide d'hébergement pas-à-pas
-└── data/                      Données enregistrées automatiquement (non versionnées)
+└── README.md                  Ce fichier
 ```
 
 ### Panier & commandes
@@ -242,7 +243,7 @@ Les fichiers de déploiement sont déjà fournis dans le dépôt :
 **Hébergement Node.js (VPS, Render, Railway, cPanel Node…)**
 
 ```bash
-git clone <votre-dépôt> && cd links
+git clone <votre-dépôt> && cd links/node
 PORT=3000 node server.js
 ```
 

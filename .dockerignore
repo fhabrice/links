@@ -1,10 +1,10 @@
-# Éléments inutiles dans l'image de production
+# Éléments inutiles dans l'image de production (version Node.js)
 .git
 .gitignore
 node_modules
+node/node_modules
 data
-.env
-.env.local
+uploads
 *.log
 *.md
 !README.md

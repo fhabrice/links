@@ -16,7 +16,7 @@ services:
     region: frankfurt        # au plus près de la RDC (latence la plus faible)
     branch: main
     buildCommand: node tools/build-fallback.js
-    startCommand: node server.js
+    startCommand: node node/server.js
     healthCheckPath: /api/health
     autoDeploy: true
 
@@ -35,7 +35,7 @@ services:
     # (Sur l'offre gratuite, le disque n'est pas disponible → voir DEPLOIEMENT.md)
     disk:
       name: donnees-linksmartec
-      mountPath: /opt/render/project/src/data
+      mountPath: /opt/render/project/src/node/data
       sizeGB: 1
 
     domains:

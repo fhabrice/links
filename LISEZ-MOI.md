@@ -4,6 +4,11 @@ Site complet (vitrine + boutique + administration) écrit en **PHP 8**, conçu p
 fonctionner sur **n'importe quel hébergement classique** : cPanel, Hostinger, OVH,
 Namecheap, un serveur Apache ou Nginx… **Aucune base de données à configurer.**
 
+Le site PHP **est à la racine du dépôt** : `index.php`, `a-propos.php`, `admin/`,
+`api/`, `app/`, `assets/`. Le dossier `node/` contient une seconde version
+équivalente (Node.js, pour un VPS) : il est inutile ici et **peut être supprimé**
+de votre téléversement sans rien casser.
+
 ---
 
 ## Installation en 3 étapes
@@ -37,6 +42,7 @@ Namecheap, un serveur Apache ou Nginx… **Aucune base de données à configurer
 | `data/` | **Vos données** : contenu, messages, comptes (protégé) |
 | `config/` | Configuration MySQL facultative |
 | `.htaccess` | Adresses propres, sécurité, compression, mise en cache |
+| `node/` | Version Node.js équivalente (facultative — supprimable en ligne) |
 
 ---
 

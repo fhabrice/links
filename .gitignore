@@ -3,18 +3,17 @@ node_modules/
 package-lock.json
 
 # Données locales générées à l'exécution (contenu, messages, images téléversées)
+# — version PHP (à la racine) et version Node.js (dossier node/)
 data/*
-!data/.gitkeep
-
-# Version PHP : mêmes données, dans php/data et php/uploads
-php/data/*
-!php/data/.htaccess
-php/uploads/*
-!php/uploads/.htaccess
-php/config/database.php
+!data/.htaccess
+uploads/*
+!uploads/.htaccess
+node/data/*
+!node/data/.gitkeep
 
 # Configuration réelle d'une éventuelle base (jamais versionnée)
-config/database.json
+config/database.php
+node/config/database.json
 
 # Environnement
 .env

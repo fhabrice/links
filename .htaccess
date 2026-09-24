@@ -1,5 +1,5 @@
 # =====================================================================
-# LK-TECH (Linksmartech) — configuration Apache
+# LK-TECH (Linksmartech) — version PHP
 # À placer à la racine du site (public_html). Rien à modifier.
 # =====================================================================
 
@@ -22,10 +22,22 @@ DirectoryIndex index.php index.html
 
     # Sécurité : on n'accède jamais directement aux données ni au code
     RewriteRule ^(app|data|config)/ - [F,L]
+
+    # Version Node.js (facultative, dossier node/) et outils : jamais servis
+    RewriteRule ^(node|tools)/ - [F,L]
 </IfModule>
 
 # Empêche l'affichage du contenu des dossiers
 Options -Indexes
+
+# Fichiers de documentation et de déploiement : inutiles en ligne
+<FilesMatch "^(README|DEPLOIEMENT|LISEZ-MOI)\.md$|^(package\.json|render\.yaml|Dockerfile|Procfile|\.env\.example|\.dockerignore|\.gitignore)$">
+    Require all denied
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
 
 # --------------------------- En-têtes de sécurité --------------------------
 <IfModule mod_headers.c>
