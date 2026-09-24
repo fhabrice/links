@@ -1,15 +1,17 @@
 /* =====================================================================
-   Linksmartech — feuille de style principale
-   Aucune dépendance externe : tout est embarqué, le site s'affiche même
-   hors ligne et sans CDN.
+   LK-TECH (Linksmartech) — feuille de style principale
+   Charte : bleu marine #16233F · vert #2E9E5B · gris #8A9099
+   Aucune dépendance externe : le site s'affiche même hors ligne.
    ===================================================================== */
 
 :root {
-  --primaire: #1e3a8a;
-  --primaire-clair: #2b52c4;
-  --primaire-sombre: #14265c;
-  --accent: #eab308;
-  --accent-sombre: #ca8a04;
+  --primaire: #16233F;
+  --primaire-clair: #24406e;
+  --primaire-sombre: #0d1729;
+  --accent: #2E9E5B;
+  --accent-clair: #3FBF74;
+  --accent-sombre: #237a46;
+  --gris-marque: #8A9099;
   --encre: #0f172a;
   --ardoise-900: #0f172a;
   --ardoise-700: #334155;
@@ -69,9 +71,9 @@ p { margin: 0 0 1rem; }
   cursor: pointer; transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
   white-space: nowrap;
 }
-.btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: var(--ombre); }
+.btn:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: var(--ombre); }
 .btn:active { transform: translateY(0); }
-.btn--accent { --btn-fond: var(--accent); --btn-texte: var(--encre); }
+.btn--accent { --btn-fond: var(--accent); --btn-texte: #fff; }
 .btn--fantome { --btn-fond: transparent; --btn-texte: var(--ardoise-900); border-color: var(--ardoise-300); }
 .btn--fantome:hover { border-color: var(--primaire); color: var(--primaire); }
 .btn--bloc { width: 100%; }
@@ -81,25 +83,25 @@ p { margin: 0 0 1rem; }
 /* -------------------------------- Topbar ------------------------------ */
 
 .topbar {
-  background: var(--ardoise-900); color: var(--ardoise-300);
-  font-size: .76rem; border-bottom: 1px solid #1e293b;
+  background: var(--primaire-sombre); color: var(--ardoise-300);
+  font-size: .76rem; border-bottom: 1px solid rgba(255,255,255,.08);
 }
 .topbar__inner { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; align-items: center; padding: .55rem 1.25rem; }
 .topbar__rccm { font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
 .topbar__infos { display: flex; gap: 1.25rem; flex-wrap: wrap; }
-.topbar__tel { color: var(--accent); font-weight: 700; }
+.topbar__tel { color: var(--accent-clair); font-weight: 700; }
 
 /* --------------------------------- Nav -------------------------------- */
 
-.entete { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--ardoise-200); }
+.entete { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--ardoise-200); }
 .entete__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem 1.25rem; }
 
 .marque { display: flex; align-items: center; gap: .7rem; }
 .marque__logo { width: 44px; height: 44px; border-radius: 12px; object-fit: contain; flex: none; }
 .marque__texte { display: flex; flex-direction: column; line-height: 1.05; }
-.marque__nom { font-weight: 800; font-size: 1.22rem; letter-spacing: -.04em; text-transform: uppercase; }
-.marque__nom span { color: var(--primaire); }
-.marque__slogan { font-size: .62rem; text-transform: uppercase; letter-spacing: .18em; color: var(--ardoise-500); font-weight: 600; }
+.marque__nom { font-weight: 800; font-size: 1.32rem; letter-spacing: -.03em; text-transform: uppercase; color: var(--primaire); }
+.marque__nom .tiret { color: var(--accent); }
+.marque__slogan { font-size: .58rem; text-transform: uppercase; letter-spacing: .16em; color: var(--gris-marque); font-weight: 600; }
 
 .nav { display: flex; align-items: center; gap: 1.9rem; }
 .nav__lien { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ardoise-700); padding: .35rem 0; position: relative; }
@@ -112,12 +114,12 @@ p { margin: 0 0 1rem; }
 .panier-btn { position: relative; }
 .panier-btn__compteur {
   position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; padding: 0 5px;
-  background: var(--accent); color: var(--encre); border-radius: 999px;
+  background: var(--accent); color: #fff; border-radius: 999px;
   font-size: .7rem; font-weight: 800; display: grid; place-items: center; border: 2px solid #fff;
 }
 .burger { display: none; background: none; border: 1px solid var(--ardoise-200); border-radius: 10px; padding: .5rem .7rem; cursor: pointer; }
 
-@media (max-width: 980px) {
+@media (max-width: 1080px) {
   .nav { display: none; }
   .burger { display: inline-flex; }
   .nav.ouvert {
@@ -128,14 +130,15 @@ p { margin: 0 0 1rem; }
   }
   .nav.ouvert .nav__lien { padding: .75rem 0; border-bottom: 1px solid var(--ardoise-100); }
 }
+@media (max-width: 620px) { .marque__slogan { display: none; } }
 
 /* -------------------------------- Hero -------------------------------- */
 
 .hero {
   position: relative; overflow: hidden; color: #fff;
   background:
-    radial-gradient(1000px 500px at 12% -10%, rgba(43, 82, 196, .55), transparent 60%),
-    linear-gradient(135deg, #0b1220 0%, var(--primaire-sombre) 45%, var(--primaire) 100%);
+    radial-gradient(1000px 500px at 12% -10%, rgba(46, 158, 91, .28), transparent 60%),
+    linear-gradient(135deg, #0a1120 0%, var(--primaire-sombre) 45%, var(--primaire) 100%);
 }
 .hero::after {
   content: ""; position: absolute; inset: 0;
@@ -152,18 +155,18 @@ p { margin: 0 0 1rem; }
   transition: color var(--transition), border-color var(--transition);
 }
 .onglet:hover { color: #fff; }
-.onglet.actif { color: #fff; border-bottom-color: var(--accent); }
+.onglet.actif { color: #fff; border-bottom-color: var(--accent-clair); }
 
 .hero__grille { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
 @media (max-width: 900px) { .hero__grille { grid-template-columns: 1fr; gap: 2rem; } }
 
 .badge-pilule {
-  display: inline-block; background: var(--accent); color: var(--encre);
+  display: inline-block; background: var(--accent); color: #fff;
   font-size: .68rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase;
   padding: .38rem .75rem; border-radius: 6px; margin-bottom: 1.1rem;
 }
 .hero__titre { font-size: clamp(2.1rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
-.hero__titre .accent { color: #7ea6ff; }
+.hero__titre .accent { color: #7ee2a8; }
 .hero__texte { font-size: 1.08rem; color: rgba(226, 232, 240, .88); max-width: 34rem; margin-bottom: 1.9rem; }
 .hero__boutons { display: flex; flex-wrap: wrap; gap: .75rem; }
 
@@ -172,7 +175,7 @@ p { margin: 0 0 1rem; }
 .hero__stat span { font-size: .74rem; text-transform: uppercase; letter-spacing: .14em; color: var(--ardoise-300); }
 
 .fiche-produit {
-  background: rgba(255,255,255,.97); color: var(--ardoise-900); border-radius: 18px;
+  background: rgba(255,255,255,.98); color: var(--ardoise-900); border-radius: 18px;
   padding: .6rem; box-shadow: var(--ombre-forte);
 }
 .fiche-produit__img { border-radius: 13px; width: 100%; height: 260px; object-fit: cover; background: var(--ardoise-100); }
@@ -187,9 +190,22 @@ p { margin: 0 0 1rem; }
 .section { padding: 4.5rem 1.25rem; }
 .section--gris { background: var(--ardoise-100); }
 .section__entete { text-align: center; max-width: 46rem; margin: 0 auto 2.75rem; }
-.section__sur { color: var(--primaire); font-weight: 800; text-transform: uppercase; letter-spacing: .18em; font-size: .74rem; margin-bottom: .55rem; }
+.section__sur { color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: .18em; font-size: .74rem; margin-bottom: .55rem; }
 .section__titre { font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; }
 .section__texte { color: var(--ardoise-500); margin: 0; }
+
+/* ------------------------------- Spécialités -------------------------- */
+
+.grille-specialites { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-bottom: 3rem; }
+.specialite {
+  background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon);
+  border-top: 4px solid var(--accent); padding: 1.5rem; transition: transform var(--transition), box-shadow var(--transition);
+}
+.specialite:hover { transform: translateY(-4px); box-shadow: var(--ombre); }
+.specialite__icone { width: 52px; height: 52px; border-radius: 14px; background: rgba(46,158,91,.12); color: var(--accent); display: grid; place-items: center; margin-bottom: 1rem; }
+.specialite__icone svg { width: 26px; height: 26px; }
+.specialite__titre { font-size: 1.12rem; font-weight: 800; }
+.specialite__texte { font-size: .9rem; color: var(--ardoise-500); margin: 0; }
 
 /* ------------------------------- Boutique ----------------------------- */
 
@@ -214,7 +230,7 @@ p { margin: 0 0 1rem; }
 .carte-produit__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 380ms ease; }
 .carte-produit:hover .carte-produit__media img { transform: scale(1.05); }
 .carte-produit__badge {
-  position: absolute; top: .7rem; left: .7rem; background: var(--accent); color: var(--encre);
+  position: absolute; top: .7rem; left: .7rem; background: var(--accent); color: #fff;
   font-size: .66rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
   padding: .28rem .55rem; border-radius: 5px;
 }
@@ -228,11 +244,16 @@ p { margin: 0 0 1rem; }
 
 /* ------------------------------- Services ----------------------------- */
 
-.grille-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-.carte-service { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon); overflow: hidden; transition: transform var(--transition), box-shadow var(--transition); }
+.grille-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem; }
+.carte-service { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon); overflow: hidden; display: flex; flex-direction: column; transition: transform var(--transition), box-shadow var(--transition); }
 .carte-service:hover { transform: translateY(-4px); box-shadow: var(--ombre); }
 .carte-service img { height: 190px; width: 100%; object-fit: cover; background: var(--ardoise-100); }
-.carte-service__corps { padding: 1.25rem; }
+.carte-service__corps { padding: 1.4rem; }
+.carte-service__icone {
+  width: 50px; height: 50px; border-radius: 13px; display: grid; place-items: center;
+  background: rgba(22,35,63,.06); color: var(--primaire); margin-bottom: 1rem;
+}
+.carte-service__icone svg { width: 25px; height: 25px; }
 .carte-service__titre { font-size: 1.08rem; font-weight: 700; margin-bottom: .35rem; }
 .carte-service__texte { font-size: .9rem; color: var(--ardoise-500); margin: 0; }
 
@@ -263,7 +284,7 @@ p { margin: 0 0 1rem; }
   background: var(--ardoise-50); transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
 }
 .champ input:focus, .champ textarea:focus, .champ select:focus {
-  outline: none; border-color: var(--primaire); background: #fff; box-shadow: 0 0 0 3px rgba(30, 58, 138, .12);
+  outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(46, 158, 91, .15);
 }
 .ligne-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 @media (max-width: 620px) { .ligne-2 { grid-template-columns: 1fr; } }
@@ -275,19 +296,21 @@ p { margin: 0 0 1rem; }
 
 /* -------------------------------- Footer ------------------------------ */
 
-.pied { background: var(--ardoise-900); color: var(--ardoise-300); padding: 3.25rem 1.25rem 1.5rem; }
+.pied { background: var(--primaire-sombre); color: var(--ardoise-300); padding: 3.25rem 1.25rem 1.5rem; }
 .pied__grille { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 2.5rem; }
 @media (max-width: 820px) { .pied__grille { grid-template-columns: 1fr; gap: 1.75rem; } }
 .pied__logo { width: 46px; height: 46px; border-radius: 12px; margin-bottom: .8rem; }
-.pied__texte { font-size: .9rem; color: var(--ardoise-500); max-width: 30rem; }
+.pied__nom { color: #fff; font-size: 1.2rem; font-weight: 800; letter-spacing: -.02em; text-transform: uppercase; }
+.pied__nom .tiret { color: var(--accent-clair); }
+.pied__texte { font-size: .9rem; color: var(--ardoise-500); max-width: 30rem; margin-top: .6rem; }
 .pied__titre { color: #fff; font-size: .8rem; text-transform: uppercase; letter-spacing: .16em; font-weight: 800; margin-bottom: 1rem; }
 .pied__liens { display: grid; gap: .55rem; font-size: .9rem; }
-.pied__liens a:hover { color: var(--accent); }
-.pied__bas { border-top: 1px solid #1e293b; margin-top: 2.5rem; padding-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .75rem; justify-content: space-between; font-size: .8rem; color: var(--ardoise-500); }
+.pied__liens a:hover { color: var(--accent-clair); }
+.pied__bas { border-top: 1px solid rgba(255,255,255,.1); margin-top: 2.5rem; padding-top: 1.25rem; display: flex; flex-wrap: wrap; gap: .75rem; justify-content: space-between; font-size: .8rem; color: var(--ardoise-500); }
 
 /* -------------------------------- Panier ------------------------------ */
 
-.voile { position: fixed; inset: 0; background: rgba(15, 23, 42, .55); opacity: 0; pointer-events: none; transition: opacity var(--transition); z-index: 80; }
+.voile { position: fixed; inset: 0; background: rgba(13, 23, 41, .6); opacity: 0; pointer-events: none; transition: opacity var(--transition); z-index: 80; }
 .voile.visible { opacity: 1; pointer-events: auto; }
 
 .panier {
@@ -317,7 +340,7 @@ p { margin: 0 0 1rem; }
 
 .toast {
   position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 150%);
-  background: var(--ardoise-900); color: #fff; padding: .8rem 1.3rem; border-radius: 999px;
+  background: var(--primaire); color: #fff; padding: .8rem 1.3rem; border-radius: 999px;
   font-size: .88rem; font-weight: 600; z-index: 120; transition: transform 260ms cubic-bezier(.4,0,.2,1);
   box-shadow: var(--ombre-forte); max-width: 90vw; text-align: center;
 }
@@ -337,4 +360,4 @@ p { margin: 0 0 1rem; }
 }
 
 /* -------------------------------- Bandeau maintenance ---------------- */
-.bandeau-info { background: var(--accent); color: var(--encre); text-align: center; font-weight: 700; font-size: .86rem; padding: .5rem 1rem; }
+.bandeau-info { background: var(--accent); color: #fff; text-align: center; font-weight: 700; font-size: .86rem; padding: .5rem 1rem; }

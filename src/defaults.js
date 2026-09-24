@@ -1,27 +1,33 @@
 'use strict';
 
 /**
- * Contenu par défaut du site Linksmartech.
+ * Contenu par défaut du site LK-TECH (Linksmartech).
  *
- * Ces valeurs servent de "seed" : elles sont copiées dans le stockage (JSON ou MySQL)
- * au premier démarrage, puis c'est l'admin qui fait foi. Aucune donnée n'est demandée
- * à l'utilisateur à l'installation.
+ * Trois spécialités structurent tout le site :
+ *   1. Informatique & digital
+ *   2. Construction & BTP
+ *   3. Énergie renouvelable
+ *
+ * Ces valeurs sont copiées dans le stockage (JSON local ou MySQL détecté)
+ * au premier démarrage, puis c'est l'admin qui fait foi.
  */
 
 const CONTENU_DEFAUT = {
   identite: {
-    nom: 'LINKS MARTECH',
-    nomComplet: 'Linksmartech',
-    slogan: 'Portail Institutionnel & E-Commerce',
+    nom: 'LK-TECH',
+    nomComplet: 'LK-TECH',
+    nomLong: 'Linksmartech',
+    slogan: 'Informatique · Construction · Énergie renouvelable',
     rccm: 'CD-GOM-01-2024-A-002698',
     ville: 'Goma, Nord-Kivu, RDC',
     telephone: '+243 976 459 970',
     telephoneSecondaire: '',
-    email: 'contact@linksmartech.com',
+    email: 'contact@linkstech.cd',
     logo: '/assets/img/logo.svg',
+    logoClair: '/assets/img/logo-clair.svg',
     favicon: '/assets/img/favicon.svg',
-    couleurPrimaire: '#1e3a8a',
-    couleurAccent: '#eab308',
+    couleurPrimaire: '#16233F',
+    couleurAccent: '#2E9E5B',
     reseaux: [
       { nom: 'Facebook', url: 'https://facebook.com' },
       { nom: 'LinkedIn', url: 'https://linkedin.com' },
@@ -30,63 +36,110 @@ const CONTENU_DEFAUT = {
   },
 
   hero: {
-    actif: 'local',
+    actif: 'informatique',
     onglets: [
       {
-        id: 'local',
-        libelle: 'Produits Nationaux',
-        badge: 'Nouveauté Nationale',
-        titre: 'Valorisons le savoir-faire',
-        titreAccent: 'du Kivu',
+        id: 'informatique',
+        libelle: 'Informatique',
+        badge: 'Spécialité Informatique',
+        titre: 'Nous concevons vos',
+        titreAccent: "systèmes d'information",
         description:
-          "Découvrez notre sélection de produits locaux premium, certifiés et distribués par Linksmartech.",
-        boutonTexte: 'Découvrir la gamme',
-        boutonLien: '#boutique'
+          "Développement logiciel, réseaux, cloud et maintenance : des solutions numériques fiables, pensées pour les entreprises et institutions congolaises.",
+        boutonTexte: 'Découvrir nos solutions',
+        boutonLien: '#services'
       },
       {
-        id: 'intl',
-        libelle: 'Solutions Internationales',
-        badge: 'Innovation Globale',
-        titre: 'Technologie de pointe',
-        titreAccent: 'mondiale',
+        id: 'construction',
+        libelle: 'Construction',
+        badge: 'Spécialité Construction',
+        titre: 'Nous bâtissons des',
+        titreAccent: 'infrastructures durables',
         description:
-          "Accédez à nos équipements technologiques de précision et solutions importées pour vos projets.",
-        boutonTexte: 'Voir les solutions',
-        boutonLien: '#boutique'
+          "Études, gros œuvre, second œuvre et réhabilitation : nous réalisons vos bâtiments et ouvrages dans le respect des normes et des délais.",
+        boutonTexte: 'Voir nos réalisations',
+        boutonLien: '#services'
+      },
+      {
+        id: 'energie',
+        libelle: 'Énergie renouvelable',
+        badge: 'Spécialité Énergie',
+        titre: "L'énergie solaire",
+        titreAccent: 'pour tous',
+        description:
+          "Dimensionnement, installation et maintenance de kits solaires et systèmes hybrides : produisez votre propre électricité, sans coupure.",
+        boutonTexte: 'Demander une étude',
+        boutonLien: '#contact'
       }
     ]
   },
 
+  specialites: [
+    {
+      id: 'informatique',
+      icone: 'code',
+      titre: 'Informatique',
+      texte:
+        "Développement, réseaux, cloud et cybersécurité : nous digitalisons vos activités et protégeons vos données."
+    },
+    {
+      id: 'construction',
+      icone: 'btp',
+      titre: 'Construction',
+      texte:
+        "Études techniques, gros œuvre et réhabilitation : des bâtiments solides, livrés dans les délais et aux normes."
+    },
+    {
+      id: 'energie',
+      icone: 'solaire',
+      titre: 'Énergie renouvelable',
+      texte:
+        "Solaire, hybridation et pompage : produisez une énergie propre, fiable et rentable, même hors réseau."
+    }
+  ],
+
   services: [
     {
+      titre: 'Développement logiciel & Web',
+      description:
+        "Applications de gestion, sites web, plateformes métier : des outils sur mesure qui simplifient votre quotidien.",
+      icone: 'code',
+      image: ''
+    },
+    {
+      titre: 'Réseaux & Systèmes',
+      description:
+        "Câblage structuré, Wi-Fi professionnel, serveurs, sauvegardes et supervision de vos infrastructures.",
+      icone: 'reseau',
+      image: ''
+    },
+    {
       titre: 'Construction & BTP',
-      description: 'Infrastructures durables et réhabilitation.',
-      image:
-        'https://images.unsplash.com/photo-1541888946425-d81bb19240b5?auto=format&fit=crop&q=80&w=800'
+      description:
+        "Études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments résidentiels et institutionnels.",
+      icone: 'btp',
+      image: ''
     },
     {
-      titre: 'Solutions Numériques',
-      description: 'Transformation digitale et Cloud.',
-      image:
-        'https://images.unsplash.com/photo-1518432031352-d6fc5c10da6a?auto=format&fit=crop&q=80&w=800'
+      titre: 'Énergie solaire & renouvelable',
+      description:
+        "Kits solaires, systèmes hybrides et pompage solaire : dimensionnés pour votre consommation réelle.",
+      icone: 'solaire',
+      image: ''
     },
     {
-      titre: 'Environnement & WASH',
-      description: 'Eau, assainissement et hygiène.',
-      image:
-        'https://images.unsplash.com/photo-1549421263-504527786435?auto=format&fit=crop&q=80&w=800'
+      titre: 'Électricité & Réseaux',
+      description:
+        "Installations basse tension, tableaux, groupes de secours et mise aux normes de vos sites.",
+      icone: 'electricite',
+      image: ''
     },
     {
-      titre: 'Électricité',
-      description: 'Réseaux énergétiques et déploiement.',
-      image:
-        'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-      titre: 'Consultance Technique',
-      description: 'Accompagnement et études stratégiques.',
-      image:
-        'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800'
+      titre: 'Cybersécurité & Cloud',
+      description:
+        "Audits, protection des données, hébergement et infogérance : votre patrimoine numérique en sécurité.",
+      icone: 'cloud',
+      image: ''
     }
   ],
 
@@ -94,23 +147,89 @@ const CONTENU_DEFAUT = {
     titre: 'Notre Approche',
     sousTitre: 'Une méthode éprouvée, du diagnostic à la pérennisation',
     etapes: [
-      { numero: '01', titre: 'Diagnostic', description: 'Analyse approfondie.' },
-      { numero: '02', titre: 'Conception', description: 'Élaboration sur mesure.' },
-      { numero: '03', titre: 'Réalisation', description: 'Standards de qualité.' },
-      { numero: '04', titre: 'Accompagnement', description: 'Pérennité des projets.' }
+      { numero: '01', titre: 'Diagnostic', description: "Audit du besoin, visite du site et analyse technique." },
+      { numero: '02', titre: 'Conception', description: "Devis détaillé, plans et choix du matériel adapté." },
+      { numero: '03', titre: 'Réalisation', description: "Mise en œuvre par nos équipes, dans le respect des délais." },
+      { numero: '04', titre: 'Accompagnement', description: "Formation, maintenance et suivi après livraison." }
     ]
   },
 
   produits: [
     {
+      id: 'p-ordinateur-pro',
+      nom: 'Ordinateur portable professionnel',
+      description: 'Core i5 / 16 Go / SSD 512 Go — configuré et garanti 1 an.',
+      prix: 780,
+      devise: 'USD',
+      filtre: 'informatique',
+      categorie: 'intl',
+      badge: 'Best-seller',
+      image: '/assets/img/produits/ordinateur.jpg',
+      stock: 12,
+      actif: true
+    },
+    {
+      id: 'p-serveur-rack',
+      nom: 'Serveur Rack Edge Pro',
+      description: 'Haute performance pour déploiement réseau et virtualisation.',
+      prix: 1450,
+      devise: 'USD',
+      filtre: 'informatique',
+      categorie: 'intl',
+      badge: 'Sur commande',
+      image: '/assets/img/produits/serveur.jpg',
+      stock: 5,
+      actif: true
+    },
+    {
+      id: 'p-kit-solaire',
+      nom: 'Kit solaire hybride 5 kVA',
+      description: 'Onduleur hybride, panneaux et batteries lithium pour un foyer ou un petit commerce.',
+      prix: 3200,
+      devise: 'USD',
+      filtre: 'energie',
+      categorie: 'intl',
+      badge: 'Populaire',
+      image: '/assets/img/produits/kit-solaire.jpg',
+      stock: 8,
+      actif: true
+    },
+    {
+      id: 'p-panneau-solaire',
+      nom: 'Panneau solaire 450 W',
+      description: 'Monocristallin haute rendement, garantie 12 ans, pose comprise.',
+      prix: 185,
+      devise: 'USD',
+      filtre: 'energie',
+      categorie: 'intl',
+      badge: '',
+      image: '/assets/img/produits/panneau-solaire.jpg',
+      stock: 60,
+      actif: true
+    },
+    {
+      id: 'p-vsat',
+      nom: 'Terminal satellite VSAT',
+      description: 'Connectivité haut débit pour les sites isolés et les chantiers.',
+      prix: 890,
+      devise: 'USD',
+      filtre: 'informatique',
+      categorie: 'intl',
+      badge: 'Nouveau',
+      image: '/assets/img/produits/satellite.jpg',
+      stock: 6,
+      actif: true
+    },
+    {
       id: 'p-miel-turunga',
       nom: 'Miel pur de Turunga',
-      description: 'Récolté artisanalement dans le Nord-Kivu.',
+      description: 'Récolté artisanalement dans le Nord-Kivu, non pasteurisé.',
       prix: 15,
       devise: 'USD',
+      filtre: 'terroir',
       categorie: 'local',
-      badge: 'Best-seller',
-      image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=800',
+      badge: '',
+      image: '/assets/img/produits/miel.jpg',
       stock: 42,
       actif: true
     },
@@ -120,66 +239,47 @@ const CONTENU_DEFAUT = {
       description: 'Grains torréfiés, 1 kg, traçabilité complète.',
       prix: 22,
       devise: 'USD',
+      filtre: 'terroir',
       categorie: 'local',
       badge: '',
-      image: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=800',
+      image: '/assets/img/produits/cafe.jpg',
       stock: 30,
       actif: true
     },
     {
       id: 'p-the-bukavu',
       nom: 'Thé vert de Bukavu',
-      description: 'Feuilles sélectionnées, séchage lent, 500 g.',
+      description: 'Feuilles sélectionnées, séchage lent, sachet de 500 g.',
       prix: 12,
       devise: 'USD',
+      filtre: 'terroir',
       categorie: 'local',
       badge: '',
-      image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=800',
+      image: '/assets/img/produits/the.jpg',
       stock: 25,
-      actif: true
-    },
-    {
-      id: 'p-serveur-rack',
-      nom: 'Serveur Rack Edge Pro',
-      description: 'Haute performance pour déploiement réseau.',
-      prix: 1450,
-      devise: 'USD',
-      categorie: 'intl',
-      badge: 'Sur commande',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800',
-      stock: 5,
-      actif: true
-    },
-    {
-      id: 'p-station-solaire',
-      nom: 'Kit solaire hybride 5 kVA',
-      description: 'Onduleur, panneaux et batteries lithium.',
-      prix: 3200,
-      devise: 'USD',
-      categorie: 'intl',
-      badge: '',
-      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=800',
-      stock: 8,
-      actif: true
-    },
-    {
-      id: 'p-starlink',
-      nom: 'Terminal satellite VSAT',
-      description: 'Connectivité haut débit pour sites isolés.',
-      prix: 890,
-      devise: 'USD',
-      categorie: 'intl',
-      badge: 'Nouveau',
-      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800',
-      stock: 6,
       actif: true
     }
   ],
 
+  vedetteDevis: {
+    icone: 'btp',
+    image: '/assets/img/vedette-construction.jpg',
+    badge: 'Étude & devis',
+    titre: 'Un projet de construction ?',
+    texte: "Études techniques, plans et devis détaillé remis sous 48 h pour vos bâtiments résidentiels, commerciaux et institutionnels.",
+    boutonTexte: 'Demander une étude',
+    boutonLien: '#contact'
+  },
+
   boutique: {
     titre: 'Boutique',
-    sousTitre: 'Produits nationaux et solutions internationales',
-    tout: 'Tout',
+    sousTitre: 'Matériel informatique, solaire et produits du terroir',
+    filtres: [
+      { id: 'tout', libelle: 'Tout' },
+      { id: 'informatique', libelle: 'Informatique' },
+      { id: 'energie', libelle: 'Énergie renouvelable' },
+      { id: 'terroir', libelle: 'Produits du terroir' }
+    ],
     texteAjouter: 'Ajouter au panier'
   },
 
@@ -188,12 +288,12 @@ const CONTENU_DEFAUT = {
     sousTitre: 'Parlons de votre projet',
     adresse: 'Avenue du Lac, Goma, Nord-Kivu, RDC',
     horaires: 'Lundi – Samedi : 08h00 – 18h00',
-    messageSucces: 'Merci ! Votre message a bien été envoyé.',
+    messageSucces: 'Merci ! Votre message a bien été envoyé.'
   },
 
   pied: {
     description:
-      "Linksmartech accompagne les institutions, les entreprises et les particuliers dans la construction, le numérique et l'énergie en République Démocratique du Congo.",
+      "LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, construction et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.",
     mentions: 'Tous droits réservés.'
   }
 };

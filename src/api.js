@@ -232,6 +232,7 @@ async function traiter(requete) {
       prix: Number(corps.prix) || 0,
       devise: nettoyer(corps.devise, 8) || 'USD',
       categorie: corps.categorie === 'intl' ? 'intl' : 'local',
+      filtre: nettoyer(corps.filtre, 30),
       badge: nettoyer(corps.badge, 40),
       image: nettoyer(corps.image, 500),
       stock: Number(corps.stock) || 0,

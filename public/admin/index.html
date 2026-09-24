@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration | Linksmartech</title>
+  <title>Administration | LK-TECH</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
   <link rel="stylesheet" href="/assets/css/styles.css">
@@ -60,7 +60,7 @@
 
     /* Écran de connexion */
     .connexion-fond { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
-      background: radial-gradient(900px 460px at 15% 0%, rgba(43,82,196,.5), transparent 60%), linear-gradient(135deg,#0b1220,#14265c 45%,#1e3a8a); }
+      background: radial-gradient(900px 460px at 15% 0%, rgba(46,158,91,.28), transparent 60%), linear-gradient(135deg,#0a1120,#0d1729 45%,#16233F); }
     .connexion-carte { background: #fff; border-radius: 18px; padding: 2.25rem; width: min(420px, 100%); box-shadow: var(--ombre-forte); }
     .connexion-carte img { width: 54px; height: 54px; border-radius: 14px; margin-bottom: 1rem; }
     .connexion-carte h1 { font-size: 1.35rem; font-weight: 800; margin-bottom: .25rem; }
@@ -76,9 +76,9 @@
   <!-- ============================ CONNEXION ============================ -->
   <div class="connexion-fond" id="vue-connexion">
     <form class="connexion-carte" id="formulaire-connexion">
-      <img src="/assets/img/logo.svg" alt="Logo Linksmartech">
+      <img src="/assets/img/logo.svg" alt="Logo LK-TECH">
       <h1>Espace d'administration</h1>
-      <p>Gérez le contenu du site Linksmartech.</p>
+      <p>Gérez le contenu du site LK-TECH.</p>
 
       <div class="rappel">
         <strong>Aucune base de données à configurer.</strong><br>
@@ -110,7 +110,7 @@
       <div class="admin-entete__inner">
         <div class="admin-marque">
           <img src="/assets/img/logo.svg" alt="">
-          <span>LINKS<span style="color:#7ea6ff">MARTECH</span> · Admin</span>
+          <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
         </div>
         <div style="display:flex;align-items:center;gap:.75rem">
           <span class="badge-pilote" id="badge-pilote">Stockage : …</span>
@@ -125,6 +125,7 @@
         <button data-vue="tableau" class="actif">📊 Tableau de bord</button>
         <button data-vue="identite">🏷️ Identité &amp; logo</button>
         <button data-vue="hero">🖼️ Bannière d'accueil</button>
+        <button data-vue="specialites">🎯 Spécialités</button>
         <button data-vue="produits">🛍️ Produits</button>
         <button data-vue="services">🧰 Services</button>
         <button data-vue="approche">🧭 Approche</button>
@@ -169,13 +170,25 @@
 
           <div class="panneau">
             <h3>Logo</h3>
-            <div style="display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap">
-              <img id="apercu-logo" src="/assets/img/logo.svg" alt="Aperçu du logo" style="width:86px;height:86px;border-radius:16px;object-fit:contain;border:1px solid var(--ardoise-200);padding:.35rem;background:#fff">
-              <div>
-                <input type="file" id="fichier-logo" accept="image/png,image/jpeg,image/webp,image/svg+xml">
-                <p style="font-size:.78rem;color:var(--ardoise-500);margin:.5rem 0 0">PNG, JPG, WEBP ou SVG — 4 Mo maximum. Le logo s'applique à l'en-tête, au pied de page et à l'admin.</p>
+            <div style="display:flex;gap:2rem;flex-wrap:wrap">
+              <div style="display:flex;gap:1rem;align-items:center">
+                <img id="apercu-logo" src="/assets/img/logo.svg" alt="Aperçu du logo" style="width:82px;height:82px;border-radius:16px;object-fit:contain;border:1px solid var(--ardoise-200);padding:.35rem;background:#fff">
+                <div>
+                  <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ardoise-500)">Logo principal</label><br>
+                  <input type="file" id="fichier-logo" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                  <p style="font-size:.76rem;color:var(--ardoise-500);margin:.45rem 0 0">Fonds clairs (en-tête, admin)</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:1rem;align-items:center">
+                <img id="apercu-logo-clair" src="/assets/img/logo-clair.svg" alt="Aperçu du logo clair" style="width:82px;height:82px;border-radius:16px;object-fit:contain;border:1px solid var(--ardoise-200);padding:.35rem;background:#16233F">
+                <div>
+                  <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ardoise-500)">Logo variante claire</label><br>
+                  <input type="file" id="fichier-logo-clair" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                  <p style="font-size:.76rem;color:var(--ardoise-500);margin:.45rem 0 0">Fonds sombres (pied de page)</p>
+                </div>
               </div>
             </div>
+            <p style="font-size:.78rem;color:var(--ardoise-500);margin:1rem 0 0">PNG, JPG, WEBP ou SVG — 4 Mo maximum par fichier.</p>
           </div>
 
           <div class="panneau">
@@ -216,6 +229,27 @@
           <div id="zones-hero"></div>
         </section>
 
+        <!-- ---------------------------- SPÉCIALITÉS ---------------------------- -->
+        <section class="vue" id="vue-specialites">
+          <h2 class="admin-titre">Spécialités</h2>
+          <p class="admin-sous-titre">Les trois pôles d'expertise mis en avant sur la page d'accueil.</p>
+          <div id="zones-specialites"></div>
+          <div class="panneau">
+            <h3>Carte « demande d'étude »</h3>
+            <p class="note">Affichée dans la bannière lorsqu'aucun produit de la spécialité n'est disponible à la vente.</p>
+            <div class="grille-2">
+              <div class="champ"><label for="vd-badge">Badge</label><input id="vd-badge" type="text"></div>
+              <div class="champ"><label for="vd-titre">Titre</label><input id="vd-titre" type="text"></div>
+            </div>
+            <div class="champ"><label for="vd-texte">Texte</label><textarea id="vd-texte" rows="2"></textarea></div>
+            <div class="grille-2">
+              <div class="champ"><label for="vd-bouton">Texte du bouton</label><input id="vd-bouton" type="text"></div>
+              <div class="champ"><label for="vd-lien">Lien du bouton</label><input id="vd-lien" type="text"></div>
+            </div>
+          </div>
+          <div class="barre-actions"><button class="btn" id="enregistrer-specialites">Enregistrer les spécialités</button></div>
+        </section>
+
         <!-- ------------------------------ PRODUITS ----------------------------- -->
         <section class="vue" id="vue-produits">
           <h2 class="admin-titre">Produits</h2>
@@ -236,8 +270,13 @@
               </div>
               <div class="champ"><label for="p-description">Description</label><textarea id="p-description" rows="2"></textarea></div>
               <div class="grille-2">
-                <div class="champ"><label for="p-categorie">Catégorie</label>
-                  <select id="p-categorie"><option value="local">Produit national</option><option value="intl">Solution internationale</option></select>
+                <div class="champ"><label for="p-filtre">Spécialité (filtre boutique)</label>
+                  <select id="p-filtre">
+                    <option value="informatique">Informatique</option>
+                    <option value="energie">Énergie renouvelable</option>
+                    <option value="terroir">Produits du terroir</option>
+                    <option value="">Autre</option>
+                  </select>
                 </div>
                 <div class="champ"><label for="p-stock">Stock</label><input id="p-stock" type="number" min="0"></div>
               </div>

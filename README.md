@@ -1,6 +1,7 @@
-# Linksmartech — site institutionnel &amp; e-commerce
+# LK-TECH — site institutionnel &amp; e-commerce
 
-Site web de **Linksmartech** (Goma, Nord-Kivu, RDC) : vitrine institutionnelle,
+Site web de **LK-TECH** (Linksmartech, Goma, Nord-Kivu, RDC), spécialiste en
+**informatique**, **construction** et **énergie renouvelable** : vitrine institutionnelle,
 boutique en ligne, services, formulaire de contact et **espace d'administration complet**.
 
 > ### 🔑 L'essentiel
@@ -31,18 +32,61 @@ Pour changer le port : `PORT=8080 node server.js`.
 
 ---
 
-## 2. Ce que l'on peut gérer depuis l'admin
+## 2. Identité visuelle (logo LK-TECH)
+
+Le logo est fourni en **vectoriel (SVG)**, donc net à toutes les tailles, sans fond blanc :
+
+| Fichier | Usage |
+| --- | --- |
+| `public/assets/img/logo.svg` | Monogramme « lk » — en-tête, admin, favicon |
+| `public/assets/img/logo-clair.svg` | Variante pour fonds sombres — pied de page |
+| `public/assets/img/favicon.svg` | Icône de l'onglet du navigateur |
+| `public/assets/img/logo-lk-tech.svg` | Logo complet (monogramme + LK-TECH + LINKS MARTECH) |
+| `public/assets/img/logo-lk-tech-clair.svg` | Logo complet, variante fond sombre |
+
+Charte reprise du logo : **bleu marine `#16233F`**, **vert `#2E9E5B`**, gris `#8A9099`.
+Ces couleurs pilotent tout le site via les variables CSS `--primaire` et `--accent`.
+
+Deux façons de les personnaliser :
+
+1. **Depuis l'admin** — onglet *Identité & logo* : téléversez votre logo principal
+   **et** sa variante claire, puis ajustez les deux couleurs.
+   (PNG, JPG, WEBP ou SVG — 4 Mo max.)
+2. **Par fichier** — remplacez simplement les SVG du tableau ci-dessus.
+
+---
+
+## 3. Les trois spécialités
+
+Elles structurent toute la navigation et le contenu :
+
+| Spécialité | Onglet de la bannière | Services associés |
+| --- | --- | --- |
+| **Informatique** | « Nous concevons vos systèmes d'information » | Développement logiciel & Web, Réseaux & Systèmes, Cybersécurité & Cloud |
+| **Construction** | « Nous bâtissons des infrastructures durables » | Construction & BTP, Électricité & Réseaux |
+| **Énergie renouvelable** | « L'énergie solaire pour tous » | Énergie solaire & renouvelable |
+
+- La section **Spécialités** de la page d'accueil est cliquable : elle active l'onglet
+  correspondant et le produit mis en avant dans la bannière.
+- Si aucune marchandise n'est disponible pour une spécialité, la carte affiche une
+  **demande d'étude technique** (modifiable dans l'admin → *Spécialités*).
+- La boutique est filtrée par spécialité : *Tout · Informatique · Énergie renouvelable · Produits du terroir*.
+
+---
+
+## 4. Ce que l'on peut gérer depuis l'admin
 
 | Onglet | Contenu modifiable |
 | --- | --- |
 | **Tableau de bord** | Statistiques, derniers messages reçus |
-| **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, horaires, **logo**, couleurs de la marque, texte du pied de page |
-| **Bannière d'accueil** | Les deux onglets du hero (produits nationaux / solutions internationales) et le produit mis en avant |
-| **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, catégorie |
-| **Services** | Les piliers d'expertise (titre, image, description), ajout et retrait |
+| **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, horaires, **logos (principal + clair)**, couleurs, texte du pied de page |
+| **Bannière d'accueil** | Les trois onglets de spécialité et leur produit vedette |
+| **Spécialités** | Les trois pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
+| **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité |
+| **Services** | Les six prestations (titre, icône ou image, description) |
 | **Approche** | Les étapes de la méthode de travail |
-| **Messages** | Boîte de réception du formulaire de contact (lu / non lu, réponse par e-mail, suppression) |
-| **Réglages** | Devise, bouton « Portail Client », bandeau de maintenance |
+| **Messages** | Boîte de réception du formulaire de contact (lu / non lu, réponse, suppression) |
+| **Réglages** | Devise, bouton « Devis gratuit », bandeau de maintenance |
 | **Sécurité** | Changement du mot de passe d'administration |
 | **Stockage & sauvegarde** | Mode de stockage actif, export JSON complet, réinitialisation du contenu |
 
@@ -50,26 +94,12 @@ Chaque enregistrement est immédiatement visible sur le site public.
 
 ---
 
-## 3. Adapter le logo et l'identité visuelle
-
-Deux méthodes, au choix :
-
-1. **Depuis l'admin** (recommandé) — *Identité & logo* → téléversez votre logo
-   (PNG, JPG, WEBP ou SVG, 4 Mo max). Il s'applique à l'en-tête, au pied de page et à l'admin.
-2. **Par fichier** — remplacez `public/assets/img/logo.svg`
-   (ainsi que `favicon.svg` pour l'onglet du navigateur).
-
-Les couleurs principales se règlent aussi dans l'admin (sélecteurs de couleur) :
-elles sont appliquées à tout le site via les variables CSS `--primaire` et `--accent`.
-
----
-
-## 4. Où sont stockées les données ?
+## 5. Où sont stockées les données ?
 
 Le site choisit **tout seul**, dans cet ordre :
 
 1. **Stockage local (par défaut, zéro configuration)** — dossier `data/` :
-   - `content.json` — textes, produits, services
+   - `content.json` — textes, spécialités, produits, services
    - `settings.json` — réglages
    - `messages.json` — messages du formulaire
    - `security.json` — comptes admin (mots de passe hachés en scrypt)
@@ -87,7 +117,18 @@ Le site choisit **tout seul**, dans cet ordre :
 
 ---
 
-## 5. Sauvegarde
+## 6. Images
+
+Toutes les images du site sont **hébergées localement** dans `public/assets/img/`
+(produits, chantier, logo) : le site s'affiche correctement même avec une connexion
+faible ou un CDN inaccessible. Les visuels de produits sont des images d'illustration —
+remplacez-les par vos photos réelles depuis l'admin (*Produits* → téléverser une image).
+
+Une image manquante est automatiquement remplacée par un visuel aux couleurs de la marque.
+
+---
+
+## 7. Sauvegarde
 
 - **Export complet** : onglet *Stockage & sauvegarde* → *Exporter mes données (JSON)*.
 - **Sauvegarde manuelle** : copiez le dossier `data/` (il contient tout).
@@ -95,22 +136,22 @@ Le site choisit **tout seul**, dans cet ordre :
 
 ---
 
-## 6. Structure du projet
+## 8. Structure du projet
 
 ```
 links/
 ├── server.js                  Serveur HTTP + routage (sans dépendance)
 ├── src/
 │   ├── api.js                 API JSON (site public + administration)
-│   ├── defaults.js            Contenu par défaut du site
+│   ├── defaults.js            Contenu par défaut (3 spécialités, produits, services)
 │   ├── security.js            Hachage scrypt + sessions signées
 │   └── store.js               Stockage auto-configuré (local / MySQL détecté)
 ├── public/
 │   ├── index.html             Site public
 │   ├── admin/                 Espace d'administration
 │   ├── assets/css/styles.css  Design complet (aucun CDN)
-│   ├── assets/js/site.js      Comportements du site (panier, contact…)
-│   ├── assets/img/            Logos et visuels
+│   ├── assets/js/site.js      Comportements du site (panier, spécialités, contact…)
+│   ├── assets/img/            Logos SVG + visuels produits
 │   └── data/site.json         Contenu statique de secours
 ├── config/                    Configuration MySQL optionnelle (exemple fourni)
 ├── tools/build-fallback.js    Regénère le contenu statique de secours
@@ -125,7 +166,7 @@ renseigné dans l'admin (*Identité & logo* → *Téléphone principal*).
 
 ---
 
-## 7. Déploiement
+## 9. Déploiement
 
 **Hébergement Node.js (VPS, Render, Railway, cPanel Node…)**
 
@@ -144,7 +185,7 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 
 ---
 
-## 8. Sécurité
+## 10. Sécurité
 
 - Mots de passe hachés en **scrypt** (jamais stockés en clair).
 - Sessions signées HMAC, valables 12 h, cookie `HttpOnly` + `SameSite=Lax`.
@@ -152,4 +193,4 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 - Échappement systématique des contenus affichés (protection XSS).
 - L'espace admin est exclu de l'indexation (`noindex, nofollow`).
 
-© 2026 Linksmartech — Goma, Nord-Kivu, RDC.
+© 2026 LK-TECH — Goma, Nord-Kivu, RDC.

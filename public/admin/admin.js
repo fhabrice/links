@@ -1,5 +1,5 @@
 /* =====================================================================
-   Linksmartech — interface d'administration
+   LK-TECH (Linksmartech) — interface d'administration
    Tout passe par l'API interne : l'admin n'a jamais à saisir de
    coordonnées de base de données.
    ===================================================================== */
@@ -100,6 +100,7 @@
 
     remplirIdentite();
     remplirHero();
+    remplirSpecialites();
     remplirProduits();
     remplirServices();
     remplirApproche();
@@ -123,6 +124,7 @@
     $('#i-accent').value = i.couleurAccent || '#eab308';
     $('#i-description').value = etat.contenu.pied?.description || '';
     $('#apercu-logo').src = i.logo || '/assets/img/logo.svg';
+    $('#apercu-logo-clair').src = i.logoClair || i.logo || '/assets/img/logo-clair.svg';
   }
 
   async function enregistrerIdentite() {
@@ -145,14 +147,19 @@
     toast('Identité enregistrée ✔');
   }
 
-  async function televerserLogo(fichier) {
+  async function televerserLogo(fichier, variante = 'principal') {
     if (!fichier) return;
     if (fichier.size > 4 * 1024 * 1024) return toast("L'image dépasse 4 Mo.");
     const url = await televerser(fichier);
-    etat.contenu.identite.logo = url;
-    $('#apercu-logo').src = url;
+    if (variante === 'clair') {
+      etat.contenu.identite.logoClair = url;
+      $('#apercu-logo-clair').src = url;
+    } else {
+      etat.contenu.identite.logo = url;
+      $('#apercu-logo').src = url;
+    }
     await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
-    toast('Logo mis à jour ✔');
+    toast(variante === 'clair' ? 'Logo (variante claire) mis à jour ✔' : 'Logo mis à jour ✔');
   }
 
   /* -------------------------------- hero --------------------------------- */
@@ -194,6 +201,60 @@
     remplirHero();
   }
 
+  /* ----------------------------- spécialités ----------------------------- */
+
+  function remplirSpecialites() {
+    const zone = $('#zones-specialites');
+    if (!zone) return;
+
+    zone.innerHTML = (etat.contenu.specialites || [])
+      .map(
+        (specialite, index) => `
+        <div class="panneau" data-specialite="${index}">
+          <div class="grille-2">
+            <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(specialite.titre)}"></div>
+            <div class="champ"><label>Icône</label>
+              <select data-cle="icone">
+                ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Construction'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
+                  .map(([valeur, libelle]) => `<option value="${valeur}"${specialite.icone === valeur ? ' selected' : ''}>${libelle}</option>`)
+                  .join('')}
+              </select>
+            </div>
+          </div>
+          <div class="champ"><label>Texte</label><textarea data-cle="texte" rows="2">${echapper(specialite.texte)}</textarea></div>
+        </div>`
+      )
+      .join('');
+
+    const devis = etat.contenu.vedetteDevis || {};
+    $('#vd-badge').value = devis.badge || '';
+    $('#vd-titre').value = devis.titre || '';
+    $('#vd-texte').value = devis.texte || '';
+    $('#vd-bouton').value = devis.boutonTexte || '';
+    $('#vd-lien').value = devis.boutonLien || '';
+  }
+
+  async function enregistrerSpecialites() {
+    $$('#zones-specialites [data-specialite]').forEach((panneau) => {
+      const index = Number(panneau.dataset.specialite);
+      panneau.querySelectorAll('[data-cle]').forEach((champ) => {
+        etat.contenu.specialites[index][champ.dataset.cle] = champ.value;
+      });
+    });
+
+    etat.contenu.vedetteDevis = {
+      ...(etat.contenu.vedetteDevis || {}),
+      badge: $('#vd-badge').value.trim(),
+      titre: $('#vd-titre').value.trim(),
+      texte: $('#vd-texte').value.trim(),
+      boutonTexte: $('#vd-bouton').value.trim(),
+      boutonLien: $('#vd-lien').value.trim()
+    };
+
+    await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
+    toast('Spécialités enregistrées ✔');
+  }
+
   /* ------------------------------ produits ------------------------------- */
 
   function remplirProduits() {
@@ -212,7 +273,10 @@
             <strong>${echapper(produit.nom)}</strong><br>
             <span style="font-size:.78rem;color:var(--ardoise-500)">${echapper(produit.description || '')}</span>
           </td>
-          <td><span class="puce puce--info">${produit.categorie === 'intl' ? 'International' : 'National'}</span></td>
+          <td><span class="puce puce--info">${
+            { informatique: 'Informatique', energie: 'Énergie', terroir: 'Terroir' }[produit.filtre] ||
+            (produit.categorie === 'intl' ? 'International' : 'National')
+          }</span></td>
           <td>$${Number(produit.prix || 0).toFixed(2)}</td>
           <td>${Number(produit.stock || 0)}</td>
           <td><span class="puce ${produit.actif === false ? 'puce--inactif' : 'puce--actif'}">${produit.actif === false ? 'Masqué' : 'Visible'}</span></td>
@@ -251,7 +315,7 @@
     $('#p-nom').value = produit?.nom || '';
     $('#p-prix').value = produit?.prix ?? '';
     $('#p-description').value = produit?.description || '';
-    $('#p-categorie').value = produit?.categorie || 'local';
+    $('#p-filtre').value = produit?.filtre ?? 'informatique';
     $('#p-stock').value = produit?.stock ?? 0;
     $('#p-badge').value = produit?.badge || '';
     $('#p-image').value = produit?.image || '';
@@ -265,7 +329,9 @@
       nom: $('#p-nom').value.trim(),
       prix: Number($('#p-prix').value) || 0,
       description: $('#p-description').value.trim(),
-      categorie: $('#p-categorie').value,
+      filtre: $('#p-filtre').value,
+      // La catégorie technique découle de la spécialité choisie.
+      categorie: $('#p-filtre').value === 'terroir' ? 'local' : 'intl',
       stock: Number($('#p-stock').value) || 0,
       badge: $('#p-badge').value.trim(),
       image: $('#p-image').value.trim(),
@@ -402,7 +468,7 @@
               </div>
             </div>
             <div style="display:flex;gap:.4rem">
-              <a class="btn btn--petit btn--fantome" href="mailto:${echapper(message.email)}?subject=Réponse Linksmartech">Répondre</a>
+              <a class="btn btn--petit btn--fantome" href="mailto:${echapper(message.email)}?subject=Réponse LK-TECH">Répondre</a>
               <button class="btn btn--petit btn--fantome" data-lu="${echapper(message.id)}">${message.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
               <button class="btn btn--petit btn--fantome" data-effacer="${echapper(message.id)}" style="color:var(--danger)">Supprimer</button>
             </div>
@@ -507,7 +573,9 @@
 
     // Identité
     $('#enregistrer-identite').addEventListener('click', () => enregistrerIdentite().catch((e) => toast(e.message)));
-    $('#fichier-logo').addEventListener('change', (e) => televerserLogo(e.target.files[0]).catch((err) => toast(err.message)));
+    $('#fichier-logo').addEventListener('change', (e) => televerserLogo(e.target.files[0], 'principal').catch((err) => toast(err.message)));
+    $('#fichier-logo-clair').addEventListener('change', (e) => televerserLogo(e.target.files[0], 'clair').catch((err) => toast(err.message)));
+    $('#enregistrer-specialites').addEventListener('click', () => enregistrerSpecialites().catch((e) => toast(e.message)));
 
     // Hero
     const zoneHero = $('#zones-hero');

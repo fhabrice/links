@@ -1,16 +1,37 @@
 /* =====================================================================
-   Linksmartech — logique du site public
+   LK-TECH (Linksmartech) — logique du site public
    Récupère le contenu depuis /api/site (aucune base à configurer côté client)
    et, en secours, depuis /data/site.json pour un hébergement 100 % statique.
    ===================================================================== */
 (function () {
   'use strict';
 
-  const CLE_PANIER = 'linksmartech-panier';
+  const CLE_PANIER = 'linkstech-panier';
+  const IMAGE_SECOURS = '/assets/img/photo-manquante.svg';
   const etat = { contenu: null, reglages: {}, filtre: 'tout', panier: chargerPanier() };
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+  /* ----------------------------- icônes SVG ------------------------------ */
+
+  const ICONES = {
+    code: '<path d="M8 6 3 12l5 6M16 6l5 6-5 6M13.5 4l-3 16"/>',
+    reseau:
+      '<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v3.5M10.3 12.7 6.6 16.6M13.7 12.7l3.7 3.9"/>',
+    btp: '<path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-6h4v6"/>',
+    solaire:
+      '<circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>',
+    electricite: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+    cloud:
+      '<path d="M18 18.5a4.5 4.5 0 0 0-.6-8.96 6 6 0 0 0-11.2 1.6A3.75 3.75 0 0 0 7 18.5z"/><path d="M12 12v4.5M10 14.5 12 12l2 2.5"/>',
+    defaut: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>'
+  };
+
+  function iconeSvg(cle, taille = 24) {
+    const trace = ICONES[cle] || ICONES.defaut;
+    return `<svg viewBox="0 0 24 24" width="${taille}" height="${taille}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${trace}</svg>`;
+  }
 
   /* ------------------------------ utilitaires ------------------------------ */
 
@@ -38,6 +59,28 @@
     return String(texte ?? '').replace(/[&<>"']/g, (c) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
+  }
+
+  /** Met en forme le nom de la marque : « LK-TECH » → LK[TECH avec tiret vert]. */
+  function htmlNom(nom) {
+    const brut = String(nom || 'LK-TECH').trim();
+    if (brut.includes('-')) {
+      const [tete, ...queue] = brut.split('-');
+      return `${echapper(tete)}<i class="tiret">-</i>${echapper(queue.join('-'))}`;
+    }
+    return echapper(brut);
+  }
+
+  /** Filet de sécurité : une image indisponible n'apparaît jamais cassée. */
+  function brancherImagesSecours(racine = document) {
+    racine.querySelectorAll('img').forEach((img) => {
+      if (img.dataset.secoursBranche) return;
+      img.dataset.secoursBranche = '1';
+      img.addEventListener('error', () => {
+        if (img.src.endsWith(IMAGE_SECOURS)) return;
+        img.src = IMAGE_SECOURS;
+      });
+    });
   }
 
   function toast(message) {
@@ -71,44 +114,32 @@
     document.title = `${identite.nomComplet || identite.nom} | ${identite.slogan || ''}`.trim();
 
     const logo = identite.logo || '/assets/img/logo.svg';
-    ['#logo-entete', '#logo-pied'].forEach((sel) => { const el = $(sel); if (el) el.src = logo; });
-    const favicon = $('#favicon');
-    if (favicon && identite.favicon) favicon.href = identite.favicon;
+    const logoClair = identite.logoClair || logo;
+    if ($('#logo-entete')) $('#logo-entete').src = logo;
+    if ($('#logo-pied')) $('#logo-pied').src = logoClair;
+    if ($('#favicon') && identite.favicon) $('#favicon').href = identite.favicon;
 
-    const nom = (identite.nom || 'LINKS MARTECH').toUpperCase();
-    const coupe = nom.indexOf('MARTECH');
-    const htmlNom = coupe > 0
-      ? `${echapper(nom.slice(0, coupe))}<span>${echapper(nom.slice(coupe))}</span>`
-      : echapper(nom);
-
-    if ($('#nom-entete')) $('#nom-entete').innerHTML = htmlNom;
+    if ($('#nom-entete')) $('#nom-entete').innerHTML = htmlNom(identite.nom);
+    if ($('#nom-pied')) $('#nom-pied').innerHTML = htmlNom(identite.nom);
     if ($('#slogan-entete')) $('#slogan-entete').textContent = identite.slogan || '';
-    if ($('#nom-pied')) $('#nom-pied').innerHTML = coupe > 0
-      ? `${echapper(nom.slice(0, coupe))}<span style="color:#3b82f6">${echapper(nom.slice(coupe))}</span>`
-      : echapper(nom);
 
     $$('[data-champ="rccm"]').forEach((el) => { el.textContent = `RCCM : ${identite.rccm || ''}`; });
     $$('[data-champ="ville"]').forEach((el) => { el.textContent = `📍 ${identite.ville || ''}`; });
     $$('[data-champ="adresse"]').forEach((el) => { el.textContent = identite.ville || ''; });
     $$('[data-champ="telephone"]').forEach((el) => {
       el.textContent = `📞 ${identite.telephone || ''}`;
-      if (el.dataset.lien === 'tel') {
-        el.textContent = `📞 ${identite.telephone || ''}`;
-        el.href = `tel:${String(identite.telephone || '').replace(/[^+\d]/g, '')}`;
-      }
+      if (el.dataset.lien === 'tel') el.href = `tel:${String(identite.telephone || '').replace(/[^+\d]/g, '')}`;
     });
     $$('[data-champ="email"]').forEach((el) => {
       el.textContent = identite.email || '';
       if (el.dataset.lien === 'mailto') el.href = `mailto:${identite.email || ''}`;
     });
 
-    // Couleurs de marque pilotées par l'admin
     if (identite.couleurPrimaire) {
       document.documentElement.style.setProperty('--primaire', identite.couleurPrimaire);
       if (identite.couleurAccent) document.documentElement.style.setProperty('--accent', identite.couleurAccent);
     }
 
-    // Réseaux sociaux
     const zone = $('#reseaux-sociaux');
     if (zone && Array.isArray(identite.reseaux)) {
       zone.innerHTML = identite.reseaux
@@ -129,13 +160,14 @@
       .join('');
 
     zone.querySelectorAll('[data-onglet]').forEach((bouton) => {
-      bouton.addEventListener('click', () => activerOnglet(bouton.dataset.onglet));
+      bouton.addEventListener('click', () => activerSpecialite(bouton.dataset.onglet, false));
     });
 
-    activerOnglet(hero.actif || hero.onglets[0]?.id);
+    activerSpecialite(hero.actif || hero.onglets[0]?.id, false);
   }
 
-  function activerOnglet(id) {
+  /** Active une spécialité : onglet du hero + carte vedette. */
+  function activerSpecialite(id, defiler = true) {
     const hero = etat.contenu?.hero;
     if (!hero?.onglets) return;
     const onglet = hero.onglets.find((o) => o.id === id) || hero.onglets[0];
@@ -147,19 +179,67 @@
     $('#hero-texte').textContent = onglet.description || '';
     const bouton = $('#hero-bouton');
     bouton.textContent = onglet.boutonTexte || 'Découvrir';
-    bouton.href = onglet.boutonLien || '#boutique';
+    bouton.href = onglet.boutonLien || '#services';
 
-    // Le produit vedette suit l'onglet actif
-    const produit =
-      (etat.contenu.produits || []).find((p) => p.categorie === onglet.id) || (etat.contenu.produits || [])[0];
+    rendreVedette(onglet.id);
+    if (defiler) document.getElementById('accueil').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /** Carte vedette : un produit de la spécialité, sinon un appel au devis. */
+  function rendreVedette(idSpecialite) {
+    const produit = (etat.contenu.produits || []).find((p) => (p.filtre || p.categorie) === idSpecialite);
+    const fiche = $('#fiche-vedette');
+
     if (produit) {
-      $('#vedette-img').src = produit.image || '';
+      $('#vedette-img').src = produit.image || IMAGE_SECOURS;
       $('#vedette-img').alt = produit.nom;
       $('#vedette-nom').textContent = produit.nom;
       $('#vedette-desc').textContent = produit.description || '';
       $('#vedette-prix').textContent = prix(produit.prix);
-      $('#vedette-ajouter').onclick = () => ajouterAuPanier(produit.id);
+      $('#vedette-prix').hidden = false;
+      const bouton = $('#vedette-ajouter');
+      bouton.textContent = 'Ajouter au panier';
+      bouton.onclick = () => ajouterAuPanier(produit.id);
+      fiche?.classList.remove('fiche-produit--devis');
+      return;
     }
+
+    // Aucun produit dans cette spécialité : on propose une étude technique.
+    const devis = etat.contenu.vedetteDevis || {};
+    $('#vedette-img').src = devis.image || IMAGE_SECOURS;
+    $('#vedette-img').alt = devis.titre || 'Demande de devis';
+    $('#vedette-nom').textContent = devis.titre || 'Un projet ?';
+    $('#vedette-desc').textContent = devis.texte || '';
+    $('#vedette-prix').hidden = true;
+    const bouton = $('#vedette-ajouter');
+    bouton.textContent = devis.boutonTexte || 'Demander une étude';
+    bouton.onclick = () => {
+      const cible = document.querySelector(devis.boutonLien || '#contact');
+      cible?.scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+
+  function rendreSpecialites() {
+    const grille = $('#grille-specialites');
+    if (!grille) return;
+    grille.innerHTML = (etat.contenu.specialites || [])
+      .map(
+        (specialite) => `
+        <article class="specialite apparait" data-specialite="${echapper(specialite.id)}" role="button" tabindex="0">
+          <div class="specialite__icone">${iconeSvg(specialite.icone)}</div>
+          <h3 class="specialite__titre">${echapper(specialite.titre)}</h3>
+          <p class="specialite__texte">${echapper(specialite.texte)}</p>
+        </article>`
+      )
+      .join('');
+
+    grille.querySelectorAll('[data-specialite]').forEach((carte) => {
+      const ouvrir = () => activerSpecialite(carte.dataset.specialite, true);
+      carte.addEventListener('click', ouvrir);
+      carte.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ouvrir(); }
+      });
+    });
   }
 
   function rendreServices(services) {
@@ -169,8 +249,13 @@
       .map(
         (service) => `
         <article class="carte-service apparait">
-          <img src="${echapper(service.image || '')}" alt="${echapper(service.titre)}" loading="lazy">
+          ${
+            service.image
+              ? `<img src="${echapper(service.image)}" alt="${echapper(service.titre)}" loading="lazy">`
+              : ''
+          }
           <div class="carte-service__corps">
+            ${service.image ? '' : `<div class="carte-service__icone">${iconeSvg(service.icone, 25)}</div>`}
             <h3 class="carte-service__titre">${echapper(service.titre)}</h3>
             <p class="carte-service__texte">${echapper(service.description)}</p>
           </div>
@@ -183,6 +268,7 @@
     const grille = $('#grille-etapes');
     if (!grille || !approche) return;
     if (approche.titre) $('#approche-titre').textContent = approche.titre;
+    if (approche.sousTitre && $('#approche-soustitre')) $('#approche-soustitre').textContent = approche.sousTitre;
     grille.innerHTML = (approche.etapes || [])
       .map(
         (etape) => `
@@ -198,15 +284,17 @@
   function rendreFiltres() {
     const zone = $('#filtres-boutique');
     if (!zone) return;
-    const categories = ['tout', ...new Set((etat.contenu.produits || []).map((p) => p.categorie).filter(Boolean))];
-    const libelles = { tout: 'Tout', local: 'Produits Nationaux', intl: 'Solutions Internationales' };
+    const filtres = etat.contenu.boutique?.filtres || [
+      { id: 'tout', libelle: 'Tout' },
+      { id: 'informatique', libelle: 'Informatique' },
+      { id: 'energie', libelle: 'Énergie renouvelable' },
+      { id: 'terroir', libelle: 'Produits du terroir' }
+    ];
 
-    zone.innerHTML = categories
+    zone.innerHTML = filtres
       .map(
-        (cat) =>
-          `<button class="filtre${cat === etat.filtre ? ' actif' : ''}" data-filtre="${echapper(cat)}">${
-            libelles[cat] || echapper(cat)
-          }</button>`
+        (filtre) =>
+          `<button class="filtre${filtre.id === etat.filtre ? ' actif' : ''}" data-filtre="${echapper(filtre.id)}">${echapper(filtre.libelle)}</button>`
       )
       .join('');
 
@@ -224,7 +312,7 @@
     if (!grille) return;
 
     const liste = (etat.contenu.produits || []).filter(
-      (produit) => etat.filtre === 'tout' || produit.categorie === etat.filtre
+      (produit) => etat.filtre === 'tout' || (produit.filtre || produit.categorie) === etat.filtre
     );
 
     if (!liste.length) {
@@ -237,13 +325,11 @@
         (produit) => `
         <article class="carte-produit apparait">
           <div class="carte-produit__media">
-            <img src="${echapper(produit.image || '')}" alt="${echapper(produit.nom)}" loading="lazy">
+            <img src="${echapper(produit.image || IMAGE_SECOURS)}" alt="${echapper(produit.nom)}" loading="lazy">
             ${produit.badge ? `<span class="carte-produit__badge">${echapper(produit.badge)}</span>` : ''}
           </div>
           <div class="carte-produit__corps">
-            <span class="carte-produit__cat">${
-              produit.categorie === 'intl' ? 'Solution internationale' : 'Produit national'
-            }</span>
+            <span class="carte-produit__cat">${echapper(libelleCategorie(produit))}</span>
             <h3 class="carte-produit__titre">${echapper(produit.nom)}</h3>
             <p class="carte-produit__desc">${echapper(produit.description)}</p>
             <div class="carte-produit__pied">
@@ -266,7 +352,13 @@
       bouton.addEventListener('click', () => ajouterAuPanier(bouton.dataset.ajouter));
     });
 
+    brancherImagesSecours(grille);
     observerApparitions();
+  }
+
+  function libelleCategorie(produit) {
+    const libelles = { informatique: 'Informatique', energie: 'Énergie renouvelable', terroir: 'Produit du terroir' };
+    return libelles[produit.filtre] || (produit.categorie === 'intl' ? 'Solution internationale' : 'Produit national');
   }
 
   /* -------------------------------- panier -------------------------------- */
@@ -314,7 +406,7 @@
       .map(
         (ligne) => `
         <div class="ligne-panier">
-          <img src="${echapper(ligne.image || '')}" alt="${echapper(ligne.nom)}">
+          <img src="${echapper(ligne.image || IMAGE_SECOURS)}" alt="${echapper(ligne.nom)}">
           <div>
             <div class="ligne-panier__nom">${echapper(ligne.nom)}</div>
             <div class="ligne-panier__prix">${prix(ligne.prix)} × ${ligne.quantite}</div>
@@ -332,6 +424,8 @@
       )
       .join('');
 
+    brancherImagesSecours(liste);
+
     liste.querySelectorAll('[data-plus]').forEach((b) => b.addEventListener('click', () => changerQuantite(b.dataset.plus, 1)));
     liste.querySelectorAll('[data-moins]').forEach((b) => b.addEventListener('click', () => changerQuantite(b.dataset.moins, -1)));
     liste.querySelectorAll('[data-suppr]').forEach((b) =>
@@ -345,7 +439,7 @@
     // Commande via WhatsApp (aucun paiement en ligne requis)
     const telephone = String(etat.contenu?.identite?.telephone || '').replace(/[^\d]/g, '');
     const details = etat.panier.map((l) => `• ${l.nom} × ${l.quantite} = ${prix(l.prix * l.quantite)}`).join('\n');
-    const texte = encodeURIComponent(`Bonjour Linksmartech, je souhaite commander :\n${details}\n\nTotal : ${prix(total)}`);
+    const texte = encodeURIComponent(`Bonjour ${etat.contenu?.identite?.nom || 'LK-TECH'}, je souhaite commander :\n${details}\n\nTotal : ${prix(total)}`);
     const bouton = $('#panier-commander');
     bouton.href = telephone ? `https://wa.me/${telephone}?text=${texte}` : '#contact';
     bouton.target = telephone ? '_blank' : '_self';
@@ -403,8 +497,7 @@
         formulaire.reset();
         toast('Message envoyé ✔');
       } catch (e) {
-        // Secours : ouverture du client mail si l'API n'est pas joignable
-        const email = etat.contenu?.identite?.email || 'contact@linksmartech.com';
+        const email = etat.contenu?.identite?.email || 'contact@linkstech.cd';
         erreur.innerHTML = `${echapper(e.message)} Vous pouvez aussi nous écrire à <a href="mailto:${echapper(email)}"><strong>${echapper(email)}</strong></a>.`;
         erreur.classList.add('visible');
       } finally {
@@ -446,6 +539,7 @@
       etat.contenu = donnees.contenu;
       etat.reglages = donnees.reglages || {};
       appliquerIdentite(donnees.contenu.identite);
+      rendreSpecialites();
       rendreOngletsHero(donnees.contenu.hero);
       rendreServices(donnees.contenu.services);
       rendreEtapes(donnees.contenu.approche);
@@ -456,7 +550,7 @@
       if (donnees.contenu.boutique?.sousTitre) $('#boutique-soustitre').textContent = donnees.contenu.boutique.sousTitre;
       if (donnees.contenu.pied?.description) $('#pied-description').textContent = donnees.contenu.pied.description;
       $('#pied-copyright').textContent = `© ${new Date().getFullYear()} ${
-        donnees.contenu.identite?.nomComplet || 'Linksmartech'
+        donnees.contenu.identite?.nom || 'LK-TECH'
       } — ${donnees.contenu.pied?.mentions || 'Tous droits réservés.'}`;
 
       if (etat.reglages.portailClientActif === false) $('#btn-portail').hidden = true;
@@ -466,7 +560,6 @@
     rendrePanier();
     brancherFormulaire();
 
-    // Interactions d'interface (indépendantes du contenu)
     $('#btn-panier').addEventListener('click', () => ouvrirPanier(true));
     $('#panier-fermer').addEventListener('click', () => ouvrirPanier(false));
     $('#voile').addEventListener('click', () => ouvrirPanier(false));
@@ -493,6 +586,7 @@
       })
     );
 
+    brancherImagesSecours();
     observerApparitions();
   }
 
