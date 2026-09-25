@@ -268,6 +268,29 @@ p { margin: 0 0 1rem; }
 .carte-produit__prix { font-weight: 800; color: var(--primaire); font-size: 1.15rem; }
 .carte-produit__stock { font-size: .72rem; color: var(--ardoise-500); }
 
+/* ------------------------------ Réalisations ---------------------------- */
+
+.grille-realisations { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+.carte-realisation {
+  background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon);
+  overflow: hidden; display: flex; flex-direction: column;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.carte-realisation:hover { transform: translateY(-4px); box-shadow: var(--ombre); border-color: var(--ardoise-300); }
+.carte-realisation__media { position: relative; aspect-ratio: 4 / 3; background: var(--ardoise-100); overflow: hidden; }
+.carte-realisation__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 380ms ease; }
+.carte-realisation:hover .carte-realisation__media img { transform: scale(1.05); }
+.carte-realisation__etiquette {
+  position: absolute; bottom: .7rem; left: .7rem; background: rgba(22, 35, 63, .88); color: #fff;
+  font-size: .66rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+  padding: .3rem .6rem; border-radius: 5px; backdrop-filter: blur(4px);
+}
+.carte-realisation__corps { padding: 1.15rem 1.25rem 1.35rem; }
+.carte-realisation__titre { font-size: 1.02rem; font-weight: 700; margin: 0 0 .4rem; }
+.carte-realisation__texte { font-size: .87rem; color: var(--ardoise-500); margin: 0; }
+.lien-ancre { color: var(--primaire); font-weight: 700; text-decoration: none; border-bottom: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+.lien-ancre:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
 /* ------------------------------- Services ----------------------------- */
 
 .grille-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5rem; }

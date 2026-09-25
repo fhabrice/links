@@ -317,6 +317,7 @@ final class Store
             'messagesNonLus' => count(array_filter($messages, static fn (array $m): bool => empty($m['lu']))),
             'produits' => count($contenu['produits'] ?? []),
             'services' => count($contenu['services'] ?? []),
+            'realisations' => count($contenu['realisations'] ?? []),
         ];
     }
 

@@ -1,9 +1,9 @@
 <?php
 /**
- * LK-TECH (Linksmartech) — page d'accueil
+ * Linkstech — page d'accueil
  * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
  *
- * @package LK-TECH
+ * @package Linkstech
  */
 
 declare(strict_types=1);
@@ -20,14 +20,14 @@ $reglages = lk_store()->reglages();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= htmlspecialchars(($identite['nom'] ?? 'LK-TECH'), ENT_QUOTES, 'UTF-8') ?> | Spécialiste en informatique, construction &amp; énergie renouvelable — <?= htmlspecialchars(($identite['ville'] ?? 'Goma, RDC'), ENT_QUOTES, 'UTF-8') ?></title>
-  <meta name="description" content="LK-TECH (Linksmartech) : spécialiste en informatique, construction et énergie renouvelable à Goma, Nord-Kivu. Développement logiciel, réseaux, BTP, kits solaires.">
+  <title>Linkstech | Construire. Digitaliser. Impacter. — RDC · Kenya · Canada</title>
+  <meta name="description" content="Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Basée en RDC, au Kenya et au Canada.">
   <meta name="theme-color" content="#16233F">
-  <meta property="og:title" content="LK-TECH | Spécialiste en informatique · construction · énergie renouvelable">
-  <meta property="og:description" content="Entreprise congolaise spécialisée en informatique, construction et énergie renouvelable.">
+  <meta property="og:title" content="Linkstech — Construire. Digitaliser. Impacter.">
+  <meta property="og:description" content="Nous connectons les services aux clients, les marchés aux entreprises. Construction, technologie, connexions et impact.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.linksmartec.com/">
-  <meta property="og:site_name" content="LK-TECH">
+  <meta property="og:site_name" content="Linkstech">
   <link rel="canonical" href="https://www.linksmartec.com/">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
@@ -35,14 +35,14 @@ $reglages = lk_store()->reglages();
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "LK-TECH (Linksmartech)",
+    "@type": "Organization",
+    "name": "Linkstech",
     "url": "https://www.linksmartec.com",
     "email": "contact@linksmartec.com",
     "telephone": "+243 976 459 970",
-    "description": "Spécialiste en informatique, construction et énergie renouvelable à Goma, Nord-Kivu, RDC.",
-    "areaServed": "Nord-Kivu, République Démocratique du Congo",
-    "knowsAbout": ["Informatique", "Développement logiciel", "Réseaux", "Construction", "BTP", "Énergie renouvelable", "Énergie solaire"]
+    "description": "Solutions de construction et de technologie, connexions commerciales à l'échelle internationale.",
+    "areaServed": ["République Démocratique du Congo", "Kenya", "Canada"],
+    "knowsAbout": ["Construction", "Génie civil", "Développement logiciel", "Énergies renouvelables", "Connexions aux marchés"]
   }
   </script>
 </head>
@@ -57,7 +57,7 @@ $reglages = lk_store()->reglages();
     <div class="conteneur topbar__inner">
       <span class="topbar__rccm" data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
       <div class="topbar__infos">
-        <span data-champ="ville">📍 Goma, RDC</span>
+        <span data-champ="ville">📍 RDC · Kenya · Canada</span>
         <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">📞 +243 976 459 970</a>
       </div>
     </div>
@@ -66,11 +66,11 @@ $reglages = lk_store()->reglages();
   <!-- =============================== ENTÊTE ============================= -->
   <header class="entete">
     <div class="conteneur entete__inner">
-      <a class="marque" href="#accueil" aria-label="Accueil LK-TECH">
-        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+      <a class="marque" href="#accueil" aria-label="Accueil Linkstech">
+        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo Linkstech">
         <span class="marque__texte">
-          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
-          <span class="marque__slogan" id="slogan-entete">Informatique · Construction · Énergie renouvelable</span>
+          <span class="marque__nom" id="nom-entete">Linkstech</span>
+          <span class="marque__slogan" id="slogan-entete">Construire. Digitaliser. Impacter.</span>
         </span>
       </a>
 
@@ -78,7 +78,8 @@ $reglages = lk_store()->reglages();
         <a class="nav__lien" href="#accueil">Accueil</a>
         <a class="nav__lien" href="#specialites">Spécialités</a>
         <a class="nav__lien" href="#boutique">Boutique</a>
-        <a class="nav__lien" href="#services">Services</a>
+        <a class="nav__lien" href="#realisations">Réalisations</a>
+        <a class="nav__lien" href="#services">Expertises</a>
         <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
         <a class="nav__lien" href="#contact">Contact</a>
       </nav>
@@ -88,7 +89,7 @@ $reglages = lk_store()->reglages();
           🛒 Panier
           <span class="panier-btn__compteur" id="panier-compteur" hidden>0</span>
         </button>
-        <a class="btn btn--petit" id="btn-portail" href="#contact">Devis gratuit</a>
+        <a class="btn btn--petit" id="btn-portail" href="#contact">Être mis en relation</a>
         <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
       </div>
     </div>
@@ -106,24 +107,25 @@ $reglages = lk_store()->reglages();
   <section class="hero" id="accueil">
     <div class="conteneur hero__inner">
       <div class="onglets" id="onglets-hero" role="tablist">
-        <button class="onglet actif" role="tab" data-onglet="informatique">Informatique</button>
+        <button class="onglet actif" role="tab" data-onglet="connexions">Connexions &amp; marchés</button>
         <button class="onglet" role="tab" data-onglet="construction">Construction</button>
-        <button class="onglet" role="tab" data-onglet="energie">Énergie renouvelable</button>
+        <button class="onglet" role="tab" data-onglet="informatique">Technologie</button>
+        <button class="onglet" role="tab" data-onglet="energie">Énergie</button>
       </div>
 
       <div class="hero__grille">
         <div>
-          <span class="badge-pilule" id="hero-badge">Spécialité Informatique</span>
-          <h1 class="hero__titre" id="hero-titre">Nous concevons vos <span class="accent">systèmes d'information</span>.</h1>
-          <p class="hero__texte" id="hero-texte">Développement logiciel, réseaux, cloud et maintenance : des solutions numériques fiables, pensées pour les entreprises et institutions congolaises.</p>
+          <span class="badge-pilule" id="hero-badge">Notre promesse</span>
+          <h1 class="hero__titre" id="hero-titre">Nous connectons <span class="accent">services et marchés</span>.</h1>
+          <p class="hero__texte" id="hero-texte">Basée en RDC, au Kenya et au Canada, Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale.</p>
           <div class="hero__boutons">
-            <a class="btn btn--accent" id="hero-bouton" href="#services">Découvrir nos solutions</a>
-            <a class="btn btn--fantome" href="#contact" style="--btn-texte:#fff;border-color:rgba(255,255,255,.35)">Demander un devis</a>
+            <a class="btn btn--accent" id="hero-bouton" href="#contact">Être mis en relation</a>
+            <a class="btn btn--fantome" href="#realisations" style="--btn-texte:#fff;border-color:rgba(255,255,255,.35)">Voir les réalisations</a>
           </div>
           <div class="hero__stats">
-            <div class="hero__stat"><strong>10+</strong><span>Années d'expérience</span></div>
-            <div class="hero__stat"><strong>150+</strong><span>Projets livrés</span></div>
-            <div class="hero__stat"><strong>3</strong><span>Pôles d'expertise</span></div>
+            <div class="hero__stat"><strong>04</strong><span>Pôles d'expertise</span></div>
+            <div class="hero__stat"><strong>06+</strong><span>Solutions réalisées</span></div>
+            <div class="hero__stat"><strong>Global</strong><span>Notre ambition</span></div>
           </div>
         </div>
 
@@ -148,9 +150,9 @@ $reglages = lk_store()->reglages();
   <section class="section" id="specialites">
     <div class="conteneur">
       <div class="section__entete">
-        <p class="section__sur">Nos trois spécialités</p>
-        <h2 class="section__titre">Informatique · Construction · Énergie renouvelable</h2>
-        <p class="section__texte">Trois métiers complémentaires réunis sous un même toit, à Goma et dans tout le Nord-Kivu : cliquez sur une spécialité pour découvrir nos solutions.</p>
+        <p class="section__sur">Nos quatre pôles</p>
+        <h2 class="section__titre">Construction · Technologie · Connexions · Impact</h2>
+        <p class="section__texte">Quatre pôles complémentaires, une même exigence : construire, digitaliser, connecter et renforcer les capacités — de la RDC à l'international.</p>
       </div>
       <div class="grille-specialites" id="grille-specialites"></div>
     </div>
@@ -181,8 +183,22 @@ $reglages = lk_store()->reglages();
     </div>
   </section>
 
+  <!-- ============================ RÉALISATIONS =========================== -->
+  <section class="section section--gris" id="realisations">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">Réalisations sélectionnées</p>
+        <h2 class="section__titre">Des projets qui parlent pour notre savoir-faire.</h2>
+        <p class="section__texte">Digital, construction ou connexions : une sélection de réalisations représentatives de notre manière de travailler.</p>
+      </div>
+      <div class="filtres" id="filtres-realisations" role="group" aria-label="Filtrer les réalisations"></div>
+      <div class="grille-realisations" id="grille-realisations"></div>
+      <p class="section__texte" style="margin-top:2rem"><a class="lien-ancre" href="#contact">Vous avez un projet similaire ? Parlons-en →</a></p>
+    </div>
+  </section>
+
   <!-- ============================== APPROCHE ============================ -->
-  <section class="section section--gris" id="approche">
+  <section class="section" id="approche">
     <div class="conteneur">
       <div class="section__entete">
         <p class="section__sur">Méthode</p>
@@ -198,8 +214,8 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <div class="section__entete">
         <p class="section__sur">Écrivez-nous</p>
-        <h2 class="section__titre" id="contact-titre">Contact</h2>
-        <p class="section__texte" id="contact-soustitre">Parlons de votre projet</p>
+        <h2 class="section__titre" id="contact-titre">Votre connexion commence ici</h2>
+        <p class="section__texte" id="contact-soustitre">Trouvez le bon service, le bon client ou le bon marché</p>
       </div>
 
       <div class="grille-contact">
@@ -247,21 +263,26 @@ $reglages = lk_store()->reglages();
               <input id="c-tel" name="telephone" type="tel" placeholder="+243 …">
             </div>
             <div class="champ">
-              <label for="c-sujet">Spécialité concernée</label>
+              <label for="c-sujet">Service recherché</label>
               <select id="c-sujet" name="sujet">
-                <option>Informatique &amp; digital</option>
-                <option>Construction &amp; BTP</option>
-                <option>Énergie renouvelable</option>
+                <option>Construction &amp; Génie civil</option>
+                <option>Solutions informatiques</option>
+                <option>Études &amp; accompagnement</option>
+                <option>Digitalisation d'entreprise</option>
+                <option>Connexion aux marchés &amp; services</option>
+                <option>ONG, associations &amp; bailleurs de fonds</option>
+                <option>Outils de suivi &amp; réalisation</option>
+                <option>Encadrement &amp; formation</option>
+                <option>Création d'entreprises &amp; startups</option>
                 <option>Commande boutique</option>
-                <option>Partenariat</option>
-                <option>Autre</option>
+                <option>Autre demande</option>
               </select>
             </div>
           </div>
 
           <div class="champ">
             <label for="c-message">Message *</label>
-            <textarea id="c-message" name="message" rows="5" required placeholder="Décrivez votre besoin…"></textarea>
+            <textarea id="c-message" name="message" rows="5" required placeholder="Décrivez-nous votre besoin…"></textarea>
           </div>
 
           <button class="btn btn--bloc" type="submit" id="contact-envoyer">Envoyer le message</button>
@@ -276,9 +297,9 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
-          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, construction et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.</p>
+          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo Linkstech">
+          <div class="pied__nom" id="nom-pied">Linkstech</div>
+          <p class="pied__texte" id="pied-description">Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>
@@ -286,13 +307,14 @@ $reglages = lk_store()->reglages();
             <a href="#accueil">Accueil</a>
             <a href="#specialites">Spécialités</a>
             <a href="#boutique">Boutique</a>
-            <a href="#services">Services</a>
+            <a href="#services">Expertises</a>
+            <a href="#realisations">Réalisations</a>
             <a href="<?= $base ?>/a-propos">À propos</a>
             <a href="#contact">Contact</a>
           </div>
         </div>
         <div>
-          <h4 class="pied__titre">Nos spécialités</h4>
+          <h4 class="pied__titre">Nos pôles</h4>
           <div class="pied__liens" id="pied-specialites"></div>
         </div>
         <div>
@@ -308,8 +330,8 @@ $reglages = lk_store()->reglages();
         </div>
       </div>
       <div class="pied__bas">
-        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
-        <span>Conçu à Goma 🇨🇩</span>
+        <span id="pied-copyright">© 2026 Linkstech — Tous droits réservés.</span>
+        <span>RDC · Kenya · Canada</span>
       </div>
     </div>
   </footer>

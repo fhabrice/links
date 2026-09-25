@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration | LK-TECH</title>
+  <title>Administration | Linkstech</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
   <link rel="stylesheet" href="/assets/css/styles.css">
@@ -86,9 +86,9 @@
   <!-- ============================ CONNEXION ============================ -->
   <div class="connexion-fond" id="vue-connexion">
     <form class="connexion-carte" id="formulaire-connexion">
-      <img src="/assets/img/logo.svg" alt="Logo LK-TECH">
+      <img src="/assets/img/logo.svg" alt="Logo Linkstech">
       <h1>Espace d'administration</h1>
-      <p>Gérez le contenu du site LK-TECH.</p>
+      <p>Gérez le contenu du site Linkstech.</p>
 
       <div class="rappel">
         <strong>Aucune base de données à configurer.</strong><br>
@@ -120,7 +120,7 @@
       <div class="admin-entete__inner">
         <div class="admin-marque">
           <img src="/assets/img/logo.svg" alt="">
-          <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
+          <span>Linkstech · Admin</span>
         </div>
         <div style="display:flex;align-items:center;gap:.75rem">
           <span class="badge-pilote" id="badge-pilote">Stockage : …</span>
@@ -139,6 +139,7 @@
         <button data-vue="apropos">ℹ️ À propos</button>
         <button data-vue="produits">🛍️ Produits</button>
         <button data-vue="services">🧰 Services</button>
+        <button data-vue="realisations">🏗️ Réalisations</button>
         <button data-vue="approche">🧭 Approche</button>
         <button data-vue="messages">✉️ Messages <span id="puce-messages" class="puce puce--inactif" hidden>0</span></button>
         <button data-vue="reglages">⚙️ Réglages</button>
@@ -158,6 +159,7 @@
             <div class="stat"><strong id="stat-non-lus">0</strong><span>Messages non lus</span></div>
             <div class="stat"><strong id="stat-produits">0</strong><span>Produits</span></div>
             <div class="stat"><strong id="stat-services">0</strong><span>Services</span></div>
+            <div class="stat"><strong id="stat-realisations">0</strong><span>Réalisations</span></div>
           </div>
 
           <div class="panneau">
@@ -413,6 +415,15 @@
           <div class="barre-actions"><button class="btn" id="enregistrer-services">Enregistrer les services</button></div>
         </section>
 
+        <!-- ---------------------------- RÉALISATIONS --------------------------- -->
+        <section class="vue" id="vue-realisations">
+          <h2 class="admin-titre">Réalisations</h2>
+          <p class="admin-sous-titre">Les projets présentés dans la section « Réalisations » de la page d'accueil (filtres Digital / Construction).</p>
+          <div class="barre-actions"><button class="btn" id="ajouter-realisation">+ Ajouter une réalisation</button></div>
+          <div id="zones-realisations"></div>
+          <div class="barre-actions"><button class="btn" id="enregistrer-realisations">Enregistrer les réalisations</button></div>
+        </section>
+
         <!-- ------------------------------ APPROCHE ----------------------------- -->
         <section class="vue" id="vue-approche">
           <h2 class="admin-titre">Notre approche</h2>
@@ -482,7 +493,7 @@
           <div class="panneau">
             <h3>Sauvegarde &amp; maintenance</h3>
             <div class="barre-actions">
-              <a class="btn" href="/api/admin/export" id="bouton-export">⬇️ Exporter mes données (JSON)</a>
+              <a class="btn" href="/api/admin/export" id="bouton-export" download>⬇️ Exporter mes données (JSON)</a>
               <button class="btn btn--fantome" id="bouton-reinitialiser">Réinitialiser le contenu</button>
             </div>
             <p style="font-size:.82rem;color:var(--ardoise-500);margin:0">
@@ -497,6 +508,6 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="/admin/admin.js"></script>
+  <script src="/assets/js/admin.js"></script>
 </body>
 </html>

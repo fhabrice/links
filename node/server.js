@@ -97,7 +97,7 @@ function servirFichier(res, chemin, { cache = false } = {}) {
 function erreur404() {
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page introuvable | LK-TECH</title>
+  <title>Page introuvable | Linkstech</title>
   <style>body{font-family:Inter,system-ui,sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;height:100vh;margin:0;text-align:center}
   a{color:#eab308;font-weight:700}h1{font-size:4rem;margin:0}</style></head>
   <body><div><h1>404</h1><p>Cette page n'existe pas ou a été déplacée.</p><p><a href="/">Retour à l'accueil</a></p></div></body></html>`;
@@ -111,7 +111,7 @@ function contenuPublic(contenu) {
 }
 
 async function demarrer() {
-  console.log("\n  LK-TECH (Linksmartech) — démarrage");
+  console.log("\n  Linkstech — démarrage");
   const { stockage, pilote } = await creerStockage();
   securite.definirSecret(process.env.SESSION_SECRET || 'linksmartech-local-session');
 

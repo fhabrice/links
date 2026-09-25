@@ -15,9 +15,10 @@
    les mêmes pages — toute nouvelle page est créée **dans les deux versions**.
 2. **Deux niveaux de profondeur maximum** : `page` et `page/{slug}`.
    Un visiteur trouve n'importe quelle information en 2 clics depuis l'accueil.
-3. **Les trois spécialités sont la colonne vertébrale** : informatique,
-   construction, énergie renouvelable. Chaque spécialité aura **sa propre page**
-   qui concentre ses services, ses produits et ses réalisations.
+3. **Les quatre pôles sont la colonne vertébrale** : construction, technologie,
+   énergie renouvelable, connexions & marchés (alignement sur le positionnement
+   officiel Linkstech). Chaque pôle aura **sa propre page** qui concentre ses
+   services, ses produits et ses réalisations.
 4. **Une page = une intention** (SEO) : une recherche, une page.
    L'accueil convertit ; les pages profondes informent et référencent.
 5. **L'accueil reste complet mais allège la boutique** : il montre une
@@ -140,10 +141,15 @@ Rien à changer structurellement. À ajouter quand les pages liées existeront :
 **Rôle** : prouver (« 150+ projets livrés » doit se voir). Grille de projets
 avec photo, spécialité, lieu, année, description courte.
 
-- Filtres par spécialité (même mécanique que la boutique) ;
+- Filtres **Tous / Digital / Construction** (même mécanique que la boutique) ;
 - chaque carte peut devenir une page détail `/realisations/{slug}` en P3
   (galerie, contexte, solutions apportées) ;
-- administrable : nouvel onglet **Réalisations** dans l'admin (comme Produits).
+- administrable : onglet **Réalisations** dans l'admin ✅ ;
+
+> **Avancement (septembre 2026)** : la **section Réalisations existe déjà sur
+> l'accueil** (7 projets réels : LITO Finance, Youpend ImmoSelect, Urbanova,
+> Smart Event Kivu, FieldLink, chantiers RDC, résidences Goma), administrable
+> via l'onglet dédié. Reste à créer : la page dédiée `/realisations`.
 
 ### 3.6 `/a-propos` — À propos *(existant ✅)*
 
@@ -262,7 +268,7 @@ graph TD
 |---|---|---|
 | **P0 — fait ✅** | accueil, à propos, fiches produit, admin, API | — |
 | **P1 — socle** | pages spécialités ×3 · page `/boutique` · mentions légales · CGV · menu/pied/fil d'Ariane unifiés · sitemap | 1 itération |
-| **P2 — preuve** | `/realisations` (admin : onglet Réalisations) · `/contact` dédié (carte + canaux) | 1 itération |
+| **P2 — preuve** | section Réalisations ✅ (accueil + admin) · page `/realisations` dédiée · `/contact` dédié (carte + canaux) | 1 itération |
 | **P3 — croissance** | `/blog` + articles · pages projet `/realisations/{slug}` · témoignages clients | à la demande |
 | **P4 — commerce** | commandes enregistrées (checkout) + suivi de commande + gestion dans l'admin | à la demande |
 

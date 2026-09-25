@@ -187,7 +187,8 @@ class StockageJson {
       messages: messages.length,
       messagesNonLus: messages.filter((m) => !m.lu).length,
       produits: (contenu.produits || []).length,
-      services: (contenu.services || []).length
+      services: (contenu.services || []).length,
+      realisations: (contenu.realisations || []).length
     };
   }
 }
@@ -346,7 +347,8 @@ class StockageMysql {
       messages: total,
       messagesNonLus: nonLus,
       produits: (contenu.produits || []).length,
-      services: (contenu.services || []).length
+      services: (contenu.services || []).length,
+      realisations: (contenu.realisations || []).length
     };
   }
 }

@@ -1,8 +1,9 @@
-# LK-TECH — site institutionnel &amp; e-commerce
+# Linkstech — site institutionnel &amp; e-commerce
 
-Site web de **LK-TECH** (Linksmartech, Goma, Nord-Kivu, RDC), spécialiste en
-**informatique**, **construction** et **énergie renouvelable** : vitrine institutionnelle,
-boutique en ligne, services, formulaire de contact et **espace d'administration complet**.
+Site web de **Linkstech** (« Construire. Digitaliser. Impacter. », présent en
+**RDC · Kenya · Canada**) : construction, technologie, énergies renouvelables et
+connexions aux marchés. Vitrine institutionnelle, boutique en ligne, réalisations,
+formulaire de contact et **espace d'administration complet**.
 
 | | |
 | --- | --- |
@@ -64,17 +65,17 @@ Pour changer le port : `PORT=8080 node node/server.js`.
 
 ---
 
-## 2. Identité visuelle (logo LK-TECH)
+## 2. Identité visuelle (logo)
 
 Le logo est fourni en **vectoriel (SVG)**, donc net à toutes les tailles, sans fond blanc :
 
 | Fichier | Usage |
 | --- | --- |
-| `public/assets/img/logo.svg` | Monogramme « lk » — en-tête, admin, favicon |
-| `public/assets/img/logo-clair.svg` | Variante pour fonds sombres — pied de page |
-| `public/assets/img/favicon.svg` | Icône de l'onglet du navigateur |
-| `public/assets/img/logo-lk-tech.svg` | Logo complet (monogramme + LK-TECH + LINKS MARTECH) |
-| `public/assets/img/logo-lk-tech-clair.svg` | Logo complet, variante fond sombre |
+| `assets/img/logo.svg` | Monogramme « lk » — en-tête, admin, favicon |
+| `assets/img/logo-clair.svg` | Variante pour fonds sombres — pied de page |
+| `assets/img/favicon.svg` | Icône de l'onglet du navigateur |
+| `assets/img/logo-lk-tech.svg` | Logo complet (monogramme + LK-TECH + LINKS MARTECH) |
+| `assets/img/logo-lk-tech-clair.svg` | Logo complet, variante fond sombre |
 
 Charte reprise du logo : **bleu marine `#16233F`**, **vert `#2E9E5B`**, gris `#8A9099`.
 Ces couleurs pilotent tout le site via les variables CSS `--primaire` et `--accent`.
@@ -88,15 +89,17 @@ Deux façons de les personnaliser :
 
 ---
 
-## 3. Les trois spécialités
+## 3. Les quatre pôles d'expertise
 
-Elles structurent toute la navigation et le contenu :
+Ils structurent toute la navigation et le contenu (alignés sur le site
+officiel www.linksmartec.com) :
 
-| Spécialité | Onglet de la bannière | Services associés |
+| Pôle | Onglet de la bannière | Contenu associé |
 | --- | --- | --- |
-| **Informatique** | « Nous concevons vos systèmes d'information » | Développement logiciel & Web, Réseaux & Systèmes, Cybersécurité & Cloud |
-| **Construction** | « Nous bâtissons des infrastructures durables » | Construction & BTP, Électricité & Réseaux |
-| **Énergie renouvelable** | « L'énergie solaire pour tous » | Énergie solaire & renouvelable |
+| **Connexions & marchés** | « Nous connectons services et marchés » | Mise en relation, ONG & bailleurs, création d'entreprises |
+| **Construction** | « Nous construisons des ouvrages durables » | Construction & Génie civil, études, suivi de chantier |
+| **Technologie** | « Nous développons des solutions sur mesure » | Applications web, plateformes métiers, digitalisation |
+| **Énergie renouvelable** | « Une énergie propre au service de vos projets » | Études solaires, installation, efficacité énergétique |
 
 - La section **Spécialités** de la page d'accueil est cliquable : elle active l'onglet
   correspondant et le produit mis en avant dans la bannière.
@@ -162,11 +165,12 @@ slug personnalisé éventuel.
 | --- | --- |
 | **Tableau de bord** | Statistiques, derniers messages reçus |
 | **Identité & logo** | Nom, slogan, RCCM, ville, téléphones, e-mail, **site web**, horaires, **logos (principal + clair)**, couleurs, texte du pied de page |
-| **Bannière d'accueil** | Les trois onglets de spécialité et leur produit vedette |
-| **Spécialités** | Les trois pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
+| **Bannière d'accueil** | Les quatre onglets de pôle et leur produit vedette |
+| **Spécialités** | Les quatre pôles d'expertise (titre, icône, texte) et la carte « demande d'étude » |
 | **À propos** | Toute la page : présentation, image, mission, vision, chiffres, spécialités, valeurs, parcours, arguments et bandeau d'appel |
 | **Produits** | Ajout, modification, masquage, suppression, **téléversement d'image**, prix, stock, badge, spécialité, **fiche complète** (description longue, caractéristiques, galerie, slug) |
-| **Services** | Les six prestations (titre, icône ou image, description) |
+| **Services** | Les neuf expertises (titre, icône ou image, description) |
+| **Réalisations** | Les projets de la section Réalisations (titre, étiquette, catégorie Digital/Construction, image, description, lien) |
 | **Approche** | Les étapes de la méthode de travail |
 | **Messages** | Boîte de réception du formulaire de contact (lu / non lu, réponse, suppression) |
 | **Réglages** | Devise, bouton « Devis gratuit », bandeau de maintenance |
@@ -311,4 +315,4 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 - Échappement systématique des contenus affichés (protection XSS).
 - L'espace admin est exclu de l'indexation (`noindex, nofollow`).
 
-© 2026 LK-TECH — Goma, Nord-Kivu, RDC.
+© 2026 Linkstech — RDC · Kenya · Canada.

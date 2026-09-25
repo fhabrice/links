@@ -1,9 +1,9 @@
 <?php
 /**
- * LK-TECH (Linksmartech) — interface d'administration
+ * Linkstech — interface d'administration
  * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
  *
- * @package LK-TECH
+ * @package Linkstech
  */
 
 declare(strict_types=1);
@@ -20,7 +20,7 @@ $reglages = lk_store()->reglages();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration | LK-TECH</title>
+  <title>Administration | Linkstech</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
@@ -103,9 +103,9 @@ $reglages = lk_store()->reglages();
   <!-- ============================ CONNEXION ============================ -->
   <div class="connexion-fond" id="vue-connexion">
     <form class="connexion-carte" id="formulaire-connexion">
-      <img src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+      <img src="<?= $base ?>/assets/img/logo.svg" alt="Logo Linkstech">
       <h1>Espace d'administration</h1>
-      <p>Gérez le contenu du site LK-TECH.</p>
+      <p>Gérez le contenu du site Linkstech.</p>
 
       <div class="rappel">
         <strong>Aucune base de données à configurer.</strong><br>
@@ -137,7 +137,7 @@ $reglages = lk_store()->reglages();
       <div class="admin-entete__inner">
         <div class="admin-marque">
           <img src="<?= $base ?>/assets/img/logo.svg" alt="">
-          <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
+          <span>Linkstech · Admin</span>
         </div>
         <div style="display:flex;align-items:center;gap:.75rem">
           <span class="badge-pilote" id="badge-pilote">Stockage : …</span>
@@ -156,6 +156,7 @@ $reglages = lk_store()->reglages();
         <button data-vue="apropos">ℹ️ À propos</button>
         <button data-vue="produits">🛍️ Produits</button>
         <button data-vue="services">🧰 Services</button>
+        <button data-vue="realisations">🏗️ Réalisations</button>
         <button data-vue="approche">🧭 Approche</button>
         <button data-vue="messages">✉️ Messages <span id="puce-messages" class="puce puce--inactif" hidden>0</span></button>
         <button data-vue="reglages">⚙️ Réglages</button>
@@ -175,6 +176,7 @@ $reglages = lk_store()->reglages();
             <div class="stat"><strong id="stat-non-lus">0</strong><span>Messages non lus</span></div>
             <div class="stat"><strong id="stat-produits">0</strong><span>Produits</span></div>
             <div class="stat"><strong id="stat-services">0</strong><span>Services</span></div>
+            <div class="stat"><strong id="stat-realisations">0</strong><span>Réalisations</span></div>
           </div>
 
           <div class="panneau">
@@ -428,6 +430,15 @@ $reglages = lk_store()->reglages();
           <div class="barre-actions"><button class="btn" id="ajouter-service">+ Ajouter un service</button></div>
           <div id="zones-services"></div>
           <div class="barre-actions"><button class="btn" id="enregistrer-services">Enregistrer les services</button></div>
+        </section>
+
+        <!-- ---------------------------- RÉALISATIONS --------------------------- -->
+        <section class="vue" id="vue-realisations">
+          <h2 class="admin-titre">Réalisations</h2>
+          <p class="admin-sous-titre">Les projets présentés dans la section « Réalisations » de la page d'accueil (filtres Digital / Construction).</p>
+          <div class="barre-actions"><button class="btn" id="ajouter-realisation">+ Ajouter une réalisation</button></div>
+          <div id="zones-realisations"></div>
+          <div class="barre-actions"><button class="btn" id="enregistrer-realisations">Enregistrer les réalisations</button></div>
         </section>
 
         <!-- ------------------------------ APPROCHE ----------------------------- -->

@@ -133,6 +133,7 @@
     $('#stat-non-lus').textContent = etat.stats.messagesNonLus ?? 0;
     $('#stat-produits').textContent = etat.stats.produits ?? (etat.contenu.produits || []).length;
     $('#stat-services').textContent = etat.stats.services ?? (etat.contenu.services || []).length;
+    $('#stat-realisations').textContent = etat.stats.realisations ?? (etat.contenu.realisations || []).length;
 
     const puce = $('#puce-messages');
     puce.textContent = etat.stats.messagesNonLus ?? 0;
@@ -149,6 +150,7 @@
     remplirAPropos();
     remplirProduits();
     remplirServices();
+    remplirRealisations();
     remplirApproche();
     remplirMessages();
     remplirReglages();
@@ -712,6 +714,61 @@
     toast('Services enregistrés ✔');
   }
 
+  /* ----------------------------- réalisations ---------------------------- */
+
+  function remplirRealisations() {
+    // Anciens contenus stockés sans la clé « realisations » : on l'initialise.
+    if (!Array.isArray(etat.contenu.realisations)) etat.contenu.realisations = [];
+    const zone = $('#zones-realisations');
+    zone.innerHTML = (etat.contenu.realisations || [])
+      .map(
+        (realisation, index) => `
+        <div class="panneau" data-realisation="${index}">
+          <div class="grille-2">
+            <div class="champ"><label>Titre du projet</label><input data-cle="titre" value="${echapper(realisation.titre)}"></div>
+            <div class="champ"><label>Étiquette (ex. Fintech, Habitat · RDC)</label><input data-cle="etiquette" value="${echapper(realisation.etiquette)}"></div>
+          </div>
+          <div class="grille-2">
+            <div class="champ">
+              <label>Catégorie (filtre)</label>
+              <select data-cle="categorie">
+                <option value="digital"${realisation.categorie !== 'construction' ? ' selected' : ''}>Digital</option>
+                <option value="construction"${realisation.categorie === 'construction' ? ' selected' : ''}>Construction</option>
+              </select>
+            </div>
+            <div class="champ"><label>Image (URL)</label><input data-cle="image" value="${echapper(realisation.image)}"></div>
+          </div>
+          <div class="champ"><label>Description</label><textarea data-cle="description" rows="2">${echapper(realisation.description)}</textarea></div>
+          <div class="champ"><label>Lien externe (optionnel, ex. https://…)</label><input data-cle="lien" value="${echapper(realisation.lien)}"></div>
+          <button class="btn btn--petit btn--fantome" data-retirer-realisation="${index}" style="color:var(--danger);justify-self:start">Retirer cette réalisation</button>
+        </div>`
+      )
+      .join('');
+
+    zone.querySelectorAll('[data-retirer-realisation]').forEach((b) =>
+      b.addEventListener('click', () => {
+        collecterRealisations();
+        etat.contenu.realisations.splice(Number(b.dataset.retirerRealisation), 1);
+        remplirRealisations();
+      })
+    );
+  }
+
+  function collecterRealisations() {
+    $$('#zones-realisations [data-realisation]').forEach((panneau) => {
+      const index = Number(panneau.dataset.realisation);
+      panneau.querySelectorAll('[data-cle]').forEach((champ) => {
+        etat.contenu.realisations[index][champ.dataset.cle] = champ.value;
+      });
+    });
+  }
+
+  async function enregistrerRealisations() {
+    collecterRealisations();
+    await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
+    toast('Réalisations enregistrées ✔');
+  }
+
   /* ------------------------------- approche ------------------------------ */
 
   function remplirApproche() {
@@ -945,6 +1002,21 @@
       remplirServices();
     });
     $('#enregistrer-services').addEventListener('click', () => enregistrerServices().catch((e) => toast(e.message)));
+
+    // Réalisations
+    $('#ajouter-realisation').addEventListener('click', () => {
+      collecterRealisations();
+      etat.contenu.realisations.push({
+        titre: 'Nouvelle réalisation',
+        etiquette: '',
+        categorie: 'digital',
+        description: '',
+        image: '',
+        lien: ''
+      });
+      remplirRealisations();
+    });
+    $('#enregistrer-realisations').addEventListener('click', () => enregistrerRealisations().catch((e) => toast(e.message)));
 
     // Approche
     $('#ajouter-etape').addEventListener('click', () => {

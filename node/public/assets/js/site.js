@@ -16,7 +16,7 @@
 
   const CLE_PANIER = 'linkstech-panier';
   const IMAGE_SECOURS = `${BASE}/assets/img/photo-manquante.svg`;
-  const etat = { contenu: null, reglages: {}, filtre: 'tout', panier: chargerPanier() };
+  const etat = { contenu: null, reglages: {}, filtre: 'tout', filtreRealisation: 'tout', panier: chargerPanier() };
 
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -75,7 +75,7 @@
 
   /** Met en forme le nom de la marque : « LK-TECH » → LK[TECH avec tiret vert]. */
   function htmlNom(nom) {
-    const brut = String(nom || 'LK-TECH').trim();
+    const brut = String(nom || 'Linkstech').trim();
     if (brut.includes('-')) {
       const [tete, ...queue] = brut.split('-');
       return `${echapper(tete)}<i class="tiret">-</i>${echapper(queue.join('-'))}`;
@@ -470,6 +470,57 @@
       .join('');
   }
 
+  function rendreRealisations() {
+    const grille = $('#grille-realisations');
+    if (!grille) return;
+
+    const zoneFiltres = $('#filtres-realisations');
+    if (zoneFiltres) {
+      const filtres = [
+        { id: 'tout', libelle: 'Tous' },
+        { id: 'digital', libelle: 'Digital' },
+        { id: 'construction', libelle: 'Construction' }
+      ];
+      zoneFiltres.innerHTML = filtres
+        .map(
+          (filtre) =>
+            `<button class="filtre${filtre.id === etat.filtreRealisation ? ' actif' : ''}" data-filtre-realisation="${echapper(filtre.id)}">${echapper(filtre.libelle)}</button>`
+        )
+        .join('');
+      zoneFiltres.querySelectorAll('[data-filtre-realisation]').forEach((bouton) => {
+        bouton.addEventListener('click', () => {
+          etat.filtreRealisation = bouton.dataset.filtreRealisation;
+          rendreRealisations();
+        });
+      });
+    }
+
+    const liste = (etat.contenu.realisations || []).filter(
+      (realisation) => etat.filtreRealisation === 'tout' || realisation.categorie === etat.filtreRealisation
+    );
+
+    if (!liste.length) {
+      grille.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--ardoise-500)">Aucune réalisation dans cette catégorie pour le moment.</p>';
+      return;
+    }
+
+    grille.innerHTML = liste
+      .map(
+        (realisation) => `
+        <article class="carte-realisation apparait">
+          <div class="carte-realisation__media">
+            <img src="${echapper(cheminImage(realisation.image) || IMAGE_SECOURS)}" alt="${echapper(realisation.titre)}" loading="lazy">
+            ${realisation.etiquette ? `<span class="carte-realisation__etiquette">${echapper(realisation.etiquette)}</span>` : ''}
+          </div>
+          <div class="carte-realisation__corps">
+            <h3 class="carte-realisation__titre">${echapper(realisation.titre)}</h3>
+            <p class="carte-realisation__texte">${echapper(realisation.description)}</p>
+          </div>
+        </article>`
+      )
+      .join('');
+  }
+
   function rendreEtapes(approche) {
     const grille = $('#grille-etapes');
     if (!grille || !approche) return;
@@ -807,6 +858,7 @@
       rendreAPropos();
       rendreOngletsHero(donnees.contenu.hero);
       rendreServices(donnees.contenu.services);
+      rendreRealisations();
       rendreEtapes(donnees.contenu.approche);
       rendreFiltres();
       rendreProduits();
