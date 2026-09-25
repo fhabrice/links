@@ -221,6 +221,10 @@ Une image manquante est automatiquement remplacée par un visuel aux couleurs de
 
 ## 10. Structure du projet
 
+> 🗺️ **Plan d'arborescence et de navigation du site : [STRUCTURE-SITE.md](STRUCTURE-SITE.md)**
+> Pages existantes, pages à créer (spécialités, boutique, réalisations,
+> contact, pages légales), maillage interne et plan de mise en œuvre par phases.
+
 ```
 links/
 ├── index.php                  ⬅︎ VERSION PHP (hébergement classique) — accueil
