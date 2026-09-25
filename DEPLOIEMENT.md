@@ -1,6 +1,6 @@
 # Mettre le site LK-TECH en ligne
 
-Ce guide couvre les quatre façons d'héberger le site, de la plus simple à la plus
+Ce guide couvre les façons d'héberger le site, de la plus simple à la plus
 complète. Choisissez **une seule** option selon votre budget et vos compétences.
 
 > **Rappel important** : le site n'utilise aucune base de données obligatoire.
@@ -8,7 +8,8 @@ complète. Choisissez **une seule** option selon votre budget et vos compétence
 > en ligne. La façon la plus simple est la **version PHP** (Option 1) : quelques
 > fichiers à téléverser, aucun logiciel à installer. Les options suivantes
 > concernent la version Node.js (dossier `node/`), pour un VPS ou une plateforme
-> managée.
+> managée — et l'**option 7 (Netlify)** pour un hébergement statique gratuit
+> sans serveur.
 
 ---
 
@@ -211,6 +212,10 @@ local — aucune page d'erreur, aucune configuration à refaire.
 enregistré côté serveur. Fonctionne sur **Netlify, Vercel, GitHub Pages ou tout espace
 d'hébergement statique**.
 
+> 💡 **Pour Netlify spécifiquement, préférez l'option 7 ci-dessous** : elle génère
+> aussi les fiches produit en HTML et branche le formulaire de contact sur
+> Netlify Forms (messages reçus par e-mail).
+
 1. Générez le contenu statique :
    ```bash
    node tools/build-fallback.js
@@ -226,6 +231,71 @@ modifications nécessitent de regénérer `site.json` puis de republier.
 
 ---
 
+## Option 7 — **Netlify** *(gratuit, statique optimisé)*
+
+**Pour qui ?** Un site public rapide et gratuit (100 Go de trafic/mois inclus),
+sans gérer de serveur. La boutique, le panier et la commande WhatsApp fonctionnent
+entièrement dans le navigateur ; le formulaire de contact passe par **Netlify Forms**
+(vous recevez les messages dans le tableau de bord Netlify et par e-mail).
+
+⚠️ **Limites de ce mode** : pas d'administration en ligne ni d'API — les
+modifications de contenu se font en local puis sont republiées (voir plus bas).
+Pour un site avec admin en ligne, utilisez l'option 1 (PHP), 2, 3 ou 4.
+
+### Mise en ligne (10 minutes)
+
+1. **Poussez ce dépôt sur GitHub** (il y est probablement déjà) — la branche
+   `main` suffit.
+2. Sur [app.netlify.com](https://app.netlify.com) → **Add new site → Import an
+   existing project → GitHub** → choisissez le dépôt.
+3. Netlify lit automatiquement **`netlify.toml`** : rien à remplir.
+   - Build command : `node tools/build-netlify.js`
+   - Publish directory : `netlify-dist`
+4. **Deploy** — le site est en ligne sur `https://votre-site.netlify.app`.
+5. **Votre domaine** : *Domain management → Add a domain* → `linksmartec.com`,
+   puis chez votre registraire, remplacez les enregistrements DNS par ceux
+   affichés par Netlify (ou laissez Netlify gérer le DNS). Le HTTPS est
+   automatique.
+6. **Définissez l'URL publique** : *Site configuration → Environment variables →*
+   `SITE_URL` = `https://www.linksmartec.com` (utilisée dans `robots.txt` et
+   `sitemap.xml`), puis redéployez.
+
+### Recevoir les messages du formulaire
+
+1. Dans Netlify → **Forms** : le formulaire `contact` apparaît après le premier
+   déploiement.
+2. *Forms → Settings and forms → Form notifications → Add notification →
+   Email notification* → votre adresse (`contact@linksmartec.com`).
+3. Chaque message est visible dans l'onglet Forms et arrivé par e-mail.
+
+### Modifier le contenu du site
+
+Le contenu publié est « figé » au moment du déploiement. Pour le modifier :
+
+1. **En local** : lancez la version Node (`node node/server.js`), connectez-vous
+   à l'administration (`/admin`) et faites vos modifications — ou éditez
+   directement les valeurs par défaut (`node/src/defaults.js`).
+2. **Exportez** : admin → *Stockage & sauvegarde → Exporter mes données (JSON)*.
+3. **Enregistrez le fichier** à la racine du dépôt sous le nom
+   **`contenu-site.json`** et téléversez dans ce même fichier les images
+   personnalisées en les plaçant dans le dossier **`images-site/`** (créez-le).
+4. `git push` → Netlify reconstruit et republie le site automatiquement.
+
+Sans fichier `contenu-site.json`, le site publie les valeurs par défaut du dépôt.
+
+### Ce qui fonctionne en mode Netlify
+
+| Fonction | État |
+| --- | --- |
+| Vitrine complète (accueil, à propos, spécialités, services) | ✅ |
+| Boutique + filtres + panier + commande WhatsApp | ✅ (navigateur) |
+| Fiches produit `/produit/{slug}` (SSR, SEO, JSON-LD) | ✅ générées à chaque déploiement |
+| Formulaire de contact | ✅ via Netlify Forms (e-mail) |
+| Page 404, sitemap, robots.txt, HTTPS | ✅ |
+| Administration en ligne, API, téléversement en production | ❌ (hébergement statique) |
+
+---
+
 ## Comparatif rapide
 
 | | Coût | Difficulté | Admin en ligne | Données conservées |
@@ -235,7 +305,8 @@ modifications nécessitent de regénérer `site.json` puis de republier.
 | **3. Node sur VPS** | 4–8 €/mois | ⭐⭐⭐ technique | ✅ | ✅ (disque du serveur) |
 | **4. Render / Railway** | 0–5 $/mois | ⭐⭐ simple | ✅ | ⚠️ avec disque persistant |
 | **5. + MySQL** | selon hébergeur | ⭐ facile | ✅ | ✅ |
-| **6. Statique** | 0 € | ⭐ facile | ❌ | — |
+| **6. Statique brut** | 0 € | ⭐ facile | ❌ | — |
+| **7. Netlify** | 0 € | ⭐ facile | ❌ (contenu via git) | messages : Netlify Forms |
 
 ---
 

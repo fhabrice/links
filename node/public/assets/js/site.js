@@ -735,13 +735,24 @@
       bouton.textContent = 'Envoi…';
 
       try {
-        const reponse = await fetch(`${BASE}/api/contact`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(donnees)
-        });
-        const resultat = await reponse.json().catch(() => ({}));
-        if (!reponse.ok) throw new Error(resultat.erreur || "L'envoi a échoué.");
+        if (window.LK_STATIQUE) {
+          // Hébergement statique (Netlify) : le formulaire est déclaré dans la
+          // page avec data-netlify — soumission encodée façon formulaire HTML.
+          const reponse = await fetch(window.location.pathname, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ 'form-name': 'contact', piege: '', ...donnees }).toString()
+          });
+          if (!reponse.ok) throw new Error("L'envoi a échoué.");
+        } else {
+          const reponse = await fetch(`${BASE}/api/contact`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(donnees)
+          });
+          const resultat = await reponse.json().catch(() => ({}));
+          if (!reponse.ok) throw new Error(resultat.erreur || "L'envoi a échoué.");
+        }
 
         succes.textContent = etat.contenu?.contact?.messageSucces || 'Merci ! Votre message a bien été envoyé.';
         succes.classList.add('visible');

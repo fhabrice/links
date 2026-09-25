@@ -1,0 +1,65 @@
+# =====================================================================
+# LK-TECH — déploiement Netlify (site public statique)
+#
+# Netlify n'exécute ni PHP ni de serveur Node permanent : le site public
+# (vitrine, boutique, fiches produit, contact) est généré en pages statiques
+# par tools/build-netlify.js à chaque déploiement.
+#
+# ⚠️ L'administration et l'API ne sont pas disponibles dans ce mode.
+# Guide complet : DEPLOIEMENT.md → « Option 7 — Netlify ».
+# =====================================================================
+
+[build]
+  command = "node tools/build-netlify.js"
+  publish = "netlify-dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # URL publique du site (utilisée pour robots.txt et sitemap.xml).
+  # Avec un domaine Netlify :            https://votre-site.netlify.app
+  # Avec votre domaine personnalisé :    https://www.linksmartec.com
+  # (modifiable aussi dans Netlify → Site configuration → Environment variables)
+  # SITE_URL = "https://www.linksmartec.com"
+
+# ----------------------------- Redirections --------------------------------
+
+[[redirects]]
+  from = "/a-propos"
+  to = "/a-propos.html"
+  status = 301
+
+[[redirects]]
+  from = "/produit"
+  to = "/#boutique"
+  status = 302
+
+# --------------------------- En-têtes de sécurité ---------------------------
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Ressources rarement modifiées : mise en cache une semaine
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# CSS et JavaScript : un jour
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

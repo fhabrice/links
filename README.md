@@ -245,6 +245,8 @@ links/
 │   ├── deploy/                Fichiers prêts à l'emploi : systemd, Nginx, cPanel
 │   └── data/ · config/        Données et configuration MySQL (non versionnées)
 ├── tools/build-fallback.js    Regénère le contenu statique de secours (2 versions)
+├── tools/build-netlify.js     Génère le site statique pour Netlify (fiches produit)
+├── netlify.toml               Déploiement Netlify (build + en-têtes + redirections)
 ├── Dockerfile · Procfile · render.yaml    Déploiement Node (Docker, Railway, Render)
 ├── DEPLOIEMENT.md             Guide d'hébergement pas-à-pas
 └── README.md                  Ce fichier
@@ -263,13 +265,14 @@ par un message WhatsApp récapitulatif envoyé au numéro renseigné dans l'admi
 ## 11. Déploiement — hébergement
 
 > 📘 **Guide pas-à-pas complet : [DEPLOIEMENT.md](DEPLOIEMENT.md)**
-> Il couvre quatre scénarios (mutualisé cPanel, VPS, Render/Railway, site statique),
-> les enregistrements DNS, HTTPS, la sauvegarde et les dépannages courants.
+> Il couvre sept scénarios (mutualisé cPanel, VPS, Render/Railway, site statique,
+> Netlify…), les enregistrements DNS, HTTPS, la sauvegarde et les dépannages courants.
 
 Les fichiers de déploiement sont déjà fournis dans le dépôt :
 
 | Fichier | Pour quel hébergement |
 | --- | --- |
+| `netlify.toml` + `tools/build-netlify.js` | **Netlify** (statique gratuit : le build génère les fiches produit et branche le contact sur Netlify Forms) |
 | `render.yaml` | Render (déploiement en un clic, disque persistant et nom de domaine pré-remplis) |
 | `Procfile` | Railway, Heroku et compatibles |
 | `Dockerfile` | Docker, Fly.io, Koyeb, VPS, Kubernetes… |

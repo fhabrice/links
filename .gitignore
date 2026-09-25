@@ -25,3 +25,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 .tmp/
+
+# Site statique généré pour Netlify (artefact de build)
+netlify-dist/
+.netlify/
