@@ -1,9 +1,9 @@
 <?php
 /**
- * Linkstech — page d'accueil
+ * LK-TECH (Linksmartech) — page d'accueil
  * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
  *
- * @package Linkstech
+ * @package LK-TECH
  */
 
 declare(strict_types=1);
@@ -20,14 +20,14 @@ $reglages = lk_store()->reglages();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Linkstech | Construire. Digitaliser. Impacter. — RDC · Kenya · Canada</title>
-  <meta name="description" content="Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Basée en RDC, au Kenya et au Canada.">
+  <title>LK-TECH | Construire. Digitaliser. Impacter. — RDC · Kenya · Canada</title>
+  <meta name="description" content="LK-TECH (Linksmartech) développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Présent en RDC, au Kenya et au Canada.">
   <meta name="theme-color" content="#16233F">
-  <meta property="og:title" content="Linkstech — Construire. Digitaliser. Impacter.">
+  <meta property="og:title" content="LK-TECH — Construire. Digitaliser. Impacter.">
   <meta property="og:description" content="Nous connectons les services aux clients, les marchés aux entreprises. Construction, technologie, connexions et impact.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.linksmartec.com/">
-  <meta property="og:site_name" content="Linkstech">
+  <meta property="og:site_name" content="LK-TECH">
   <link rel="canonical" href="https://www.linksmartec.com/">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
@@ -36,7 +36,7 @@ $reglages = lk_store()->reglages();
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Linkstech",
+    "name": "LK-TECH (Linksmartech)",
     "url": "https://www.linksmartec.com",
     "email": "contact@linksmartec.com",
     "telephone": "+243 976 459 970",
@@ -66,10 +66,10 @@ $reglages = lk_store()->reglages();
   <!-- =============================== ENTÊTE ============================= -->
   <header class="entete">
     <div class="conteneur entete__inner">
-      <a class="marque" href="#accueil" aria-label="Accueil Linkstech">
-        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo Linkstech">
+      <a class="marque" href="#accueil" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
-          <span class="marque__nom" id="nom-entete">Linkstech</span>
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
           <span class="marque__slogan" id="slogan-entete">Construire. Digitaliser. Impacter.</span>
         </span>
       </a>
@@ -117,7 +117,7 @@ $reglages = lk_store()->reglages();
         <div>
           <span class="badge-pilule" id="hero-badge">Notre promesse</span>
           <h1 class="hero__titre" id="hero-titre">Nous connectons <span class="accent">services et marchés</span>.</h1>
-          <p class="hero__texte" id="hero-texte">Basée en RDC, au Kenya et au Canada, Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale.</p>
+          <p class="hero__texte" id="hero-texte">Basée en RDC, au Kenya et au Canada, LK-TECH développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale.</p>
           <div class="hero__boutons">
             <a class="btn btn--accent" id="hero-bouton" href="#contact">Être mis en relation</a>
             <a class="btn btn--fantome" href="#realisations" style="--btn-texte:#fff;border-color:rgba(255,255,255,.35)">Voir les réalisations</a>
@@ -297,9 +297,9 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo Linkstech">
-          <div class="pied__nom" id="nom-pied">Linkstech</div>
-          <p class="pied__texte" id="pied-description">Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
+          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>
@@ -330,7 +330,7 @@ $reglages = lk_store()->reglages();
         </div>
       </div>
       <div class="pied__bas">
-        <span id="pied-copyright">© 2026 Linkstech — Tous droits réservés.</span>
+        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
         <span>RDC · Kenya · Canada</span>
       </div>
     </div>

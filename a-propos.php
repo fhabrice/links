@@ -1,9 +1,9 @@
 <?php
 /**
- * Linkstech — page « À propos »
+ * LK-TECH (Linksmartech) — page « À propos »
  * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
  *
- * @package Linkstech
+ * @package LK-TECH
  */
 
 declare(strict_types=1);
@@ -20,11 +20,11 @@ $reglages = lk_store()->reglages();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>À propos | Linkstech — Construire. Digitaliser. Impacter.</title>
-  <meta name="description" content="Linkstech : un seul partenaire, quatre expertises fortes. Basée en RDC, au Kenya et au Canada — mission, vision, valeurs et pôles de compétences.">
+  <title>À propos | LK-TECH — Construire. Digitaliser. Impacter.</title>
+  <meta name="description" content="LK-TECH (Linksmartech) : un seul partenaire, quatre expertises fortes. Présent en RDC, au Kenya et au Canada — mission, vision, valeurs et pôles de compétences.">
   <meta name="theme-color" content="#16233F">
-  <meta property="og:title" content="À propos de Linkstech">
-  <meta property="og:description" content="Un seul partenaire. Quatre expertises fortes — Linkstech, de la RDC à l'international.">
+  <meta property="og:title" content="À propos de LK-TECH">
+  <meta property="og:description" content="Un seul partenaire. Quatre expertises fortes — LK-TECH, de la RDC à l'international.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.linksmartec.com/a-propos.php">
   <link rel="canonical" href="https://www.linksmartec.com/a-propos.php">
@@ -48,10 +48,10 @@ $reglages = lk_store()->reglages();
   <!-- =============================== ENTÊTE ============================= -->
   <header class="entete">
     <div class="conteneur entete__inner">
-      <a class="marque" href="<?= $base ?>/" aria-label="Accueil Linkstech">
-        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo Linkstech">
+      <a class="marque" href="<?= $base ?>/" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
-          <span class="marque__nom" id="nom-entete">Linkstech</span>
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
           <span class="marque__slogan" id="slogan-entete">Informatique · Construction · Énergie renouvelable</span>
         </span>
       </a>
@@ -79,7 +79,7 @@ $reglages = lk_store()->reglages();
         <a href="<?= $base ?>/">Accueil</a> <span aria-hidden="true">›</span> <span>À propos</span>
       </nav>
       <p class="section__sur" id="apropos-sur">Notre entreprise</p>
-      <h1 class="page-entete__titre" id="apropos-titre">À propos de Linkstech</h1>
+      <h1 class="page-entete__titre" id="apropos-titre">À propos de LK-TECH</h1>
       <p class="page-entete__texte" id="apropos-soustitre">Un seul partenaire. Quatre expertises fortes.</p>
     </div>
   </section>
@@ -90,7 +90,7 @@ $reglages = lk_store()->reglages();
       <div class="grille-presentation">
         <div id="apropos-intro"></div>
         <figure class="presentation-figure">
-          <img id="apropos-image" src="<?= $base ?>/assets/img/vedette-construction.jpg" alt="Équipes Linkstech sur un chantier à Goma">
+          <img id="apropos-image" src="<?= $base ?>/assets/img/vedette-construction.jpg" alt="Équipes LK-TECH sur un chantier à Goma">
           <figcaption>Goma, Nord-Kivu — études, réalisation et maintenance.</figcaption>
         </figure>
       </div>
@@ -183,9 +183,9 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo Linkstech">
-          <div class="pied__nom" id="nom-pied">Linkstech</div>
-          <p class="pied__texte" id="pied-description">Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
+          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>
@@ -214,7 +214,7 @@ $reglages = lk_store()->reglages();
         </div>
       </div>
       <div class="pied__bas">
-        <span id="pied-copyright">© 2026 Linkstech — Tous droits réservés.</span>
+        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
         <span>Conçu à Goma 🇨🇩</span>
       </div>
     </div>

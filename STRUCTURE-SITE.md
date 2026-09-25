@@ -17,8 +17,8 @@
    Un visiteur trouve n'importe quelle information en 2 clics depuis l'accueil.
 3. **Les quatre pôles sont la colonne vertébrale** : construction, technologie,
    énergie renouvelable, connexions & marchés (alignement sur le positionnement
-   officiel Linkstech). Chaque pôle aura **sa propre page** qui concentre ses
-   services, ses produits et ses réalisations.
+   du site officiel www.linksmartec.com). Chaque pôle aura **sa propre page** qui
+   concentre ses services, ses produits et ses réalisations.
 4. **Une page = une intention** (SEO) : une recherche, une page.
    L'accueil convertit ; les pages profondes informent et référencent.
 5. **L'accueil reste complet mais allège la boutique** : il montre une

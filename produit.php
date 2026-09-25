@@ -1,11 +1,11 @@
 <?php
 /**
- * Linkstech — fiche produit
+ * LK-TECH (Linksmartech) — fiche produit
  * Adresse : /produit/{slug} (réécrit vers ce fichier, voir .htaccess à la racine).
  * Le produit est identifié par son identifiant interne, son slug personnalisé
  * ou le slug déduit de son nom — aucune configuration n'est nécessaire.
  *
- * @package Linkstech
+ * @package LK-TECH
  */
 
 declare(strict_types=1);
@@ -111,7 +111,7 @@ if ($produit === null) {
     $telephone = preg_replace('/[^\d]/', '', (string) ($identite['telephone'] ?? '')) ?? '';
     $messageWhatsApp = sprintf(
         'Bonjour %s, je suis intéressé(e) par « %s » (%s). Est-il disponible ?',
-        (string) ($identite['nom'] ?? 'Linkstech'),
+        (string) ($identite['nom'] ?? 'LK-TECH'),
         (string) ($produit['nom'] ?? ''),
         $prixFormate
     );
@@ -131,7 +131,7 @@ if ($produit === null) {
         'description' => $descriptionMeta,
         'image' => $imagesJsonLd ?: [$origine . '/assets/img/photo-manquante.svg'],
         'sku' => (string) ($produit['id'] ?? ''),
-        'brand' => ['@type' => 'Brand', 'name' => (string) ($identite['nom'] ?? 'Linkstech')],
+        'brand' => ['@type' => 'Brand', 'name' => (string) ($identite['nom'] ?? 'LK-TECH')],
         'offers' => [
             '@type' => 'Offer',
             'url' => $lienCanonique,
@@ -139,7 +139,7 @@ if ($produit === null) {
             'priceCurrency' => (string) ($produit['devise'] ?? 'USD'),
             'availability' => $enStock ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
             'itemCondition' => 'https://schema.org/NewCondition',
-            'seller' => ['@type' => 'Organization', 'name' => (string) ($identite['nomComplet'] ?? ($identite['nom'] ?? 'Linkstech'))],
+            'seller' => ['@type' => 'Organization', 'name' => (string) ($identite['nomComplet'] ?? ($identite['nom'] ?? 'LK-TECH'))],
         ],
     ];
     $donneesFilAriane = [
@@ -153,7 +153,7 @@ if ($produit === null) {
     ];
 }
 
-$nomSite = (string) ($identite['nomComplet'] ?? ($identite['nom'] ?? 'Linkstech'));
+$nomSite = (string) ($identite['nomComplet'] ?? ($identite['nom'] ?? 'LK-TECH'));
 $e = static fn ($texte): string => htmlspecialchars((string) $texte, ENT_QUOTES, 'UTF-8');
 ?>
 <!DOCTYPE html>
@@ -206,10 +206,10 @@ $e = static fn ($texte): string => htmlspecialchars((string) $texte, ENT_QUOTES,
   <!-- =============================== ENTÊTE ============================= -->
   <header class="entete">
     <div class="conteneur entete__inner">
-      <a class="marque" href="<?= $e($base) ?>/" aria-label="Accueil Linkstech">
-        <img class="marque__logo" id="logo-entete" src="<?= $e($base) ?>/assets/img/logo.svg" alt="Logo Linkstech">
+      <a class="marque" href="<?= $e($base) ?>/" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" id="logo-entete" src="<?= $e($base) ?>/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
-          <span class="marque__nom" id="nom-entete">Linkstech</span>
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
           <span class="marque__slogan" id="slogan-entete"><?= $e($identite['slogan'] ?? '') ?></span>
         </span>
       </a>
@@ -424,9 +424,9 @@ $e = static fn ($texte): string => htmlspecialchars((string) $texte, ENT_QUOTES,
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $e($base) ?>/assets/img/logo-clair.svg" alt="Logo Linkstech">
-          <div class="pied__nom" id="nom-pied">Linkstech</div>
-          <p class="pied__texte" id="pied-description">Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
+          <img class="pied__logo" id="logo-pied" src="<?= $e($base) ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>

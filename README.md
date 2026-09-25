@@ -1,9 +1,9 @@
-# Linkstech — site institutionnel &amp; e-commerce
+# LK-TECH — site institutionnel &amp; e-commerce
 
-Site web de **Linkstech** (« Construire. Digitaliser. Impacter. », présent en
-**RDC · Kenya · Canada**) : construction, technologie, énergies renouvelables et
-connexions aux marchés. Vitrine institutionnelle, boutique en ligne, réalisations,
-formulaire de contact et **espace d'administration complet**.
+Site web de **LK-TECH** (Linksmartech, « Construire. Digitaliser. Impacter. »,
+présent en **RDC · Kenya · Canada**) : construction, technologie, énergies
+renouvelables et connexions aux marchés. Vitrine institutionnelle, boutique en
+ligne, réalisations, formulaire de contact et **espace d'administration complet**.
 
 | | |
 | --- | --- |
@@ -315,4 +315,4 @@ contact bascule automatiquement sur l'adresse e-mail de contact et l'admin n'est
 - Échappement systématique des contenus affichés (protection XSS).
 - L'espace admin est exclu de l'indexation (`noindex, nofollow`).
 
-© 2026 Linkstech — RDC · Kenya · Canada.
+© 2026 LK-TECH (Linksmartech) — RDC · Kenya · Canada.

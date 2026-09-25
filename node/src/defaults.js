@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Contenu par défaut du site Linkstech.
+ * Contenu par défaut du site LK-TECH (Linksmartech).
  *
  * Trois spécialités structurent tout le site :
  *   1. Informatique & digital
@@ -14,9 +14,9 @@
 
 const CONTENU_DEFAUT = {
   "identite": {
-    "nom": "Linkstech",
-    "nomComplet": "Linkstech",
-    "nomLong": "Linkstech",
+    "nom": "LK-TECH",
+    "nomComplet": "LK-TECH",
+    "nomLong": "Linksmartech",
     "slogan": "Construire. Digitaliser. Impacter.",
     "rccm": "CD-GOM-01-2024-A-002698",
     "ville": "RDC · Kenya · Canada",
@@ -53,7 +53,7 @@ const CONTENU_DEFAUT = {
         "badge": "Notre promesse",
         "titre": "Nous connectons",
         "titreAccent": "services et marchés",
-        "description": "Basée en RDC, au Kenya et au Canada, Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale.",
+        "description": "Basée en RDC, au Kenya et au Canada, LK-TECH développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale.",
         "boutonTexte": "Être mis en relation",
         "boutonLien": "#contact"
       },
@@ -202,7 +202,7 @@ const CONTENU_DEFAUT = {
       "id": "p-ordinateur-pro",
       "nom": "Ordinateur portable professionnel",
       "description": "Core i5 / 16 Go / SSD 512 Go — configuré et garanti 1 an.",
-      "descriptionLongue": "Un portable pensé pour durer dans les conditions réelles des bureaux et des chantiers congolais : châssis renforcé, clavier résistant aux poussières et batterie longue autonomie pour travailler même lors des coupures de courant.\nChaque machine est configurée, testée et mise à jour par nos techniciens avant la livraison : suite bureautique, outils de sécurité et sauvegarde prêts à l'emploi.\nVous bénéficiez d'un an de garantie assurée localement par Linkstech, avec prêt de matériel possible pendant la réparation.",
+      "descriptionLongue": "Un portable pensé pour durer dans les conditions réelles des bureaux et des chantiers congolais : châssis renforcé, clavier résistant aux poussières et batterie longue autonomie pour travailler même lors des coupures de courant.\nChaque machine est configurée, testée et mise à jour par nos techniciens avant la livraison : suite bureautique, outils de sécurité et sauvegarde prêts à l'emploi.\nVous bénéficiez d'un an de garantie assurée localement par LK-TECH, avec prêt de matériel possible pendant la réparation.",
       "specifications": [
         {
           "label": "Processeur",
@@ -505,12 +505,12 @@ const CONTENU_DEFAUT = {
   ],
   "apropos": {
     "sur": "Notre entreprise",
-    "titre": "À propos de Linkstech",
+    "titre": "À propos de LK-TECH",
     "sousTitre": "Un seul partenaire. Quatre expertises fortes.",
     "intro": [
-      "Linkstech est une entreprise basée en RDC, au Kenya et au Canada. Elle réunit construction, technologie, mise en relation et accompagnement des organisations pour servir les entreprises, ONG, associations, institutions et communautés à l'international.",
+      "LK-TECH est une entreprise basée en RDC, au Kenya et au Canada. Elle réunit construction, technologie, mise en relation et accompagnement des organisations pour servir les entreprises, ONG, associations, institutions et communautés à l'international.",
       "Notre différence : comprendre chaque terrain, concevoir avec précision et livrer des solutions adaptées au contexte de chaque client, où qu'il se trouve.",
-      "Notre nom résume notre promesse : LINKS, le lien vers la réussite · SMART, l'intelligence vers l'excellence · TECH, technologie et ingénierie."
+      "Une vision intégrée, du plan à la solution finale : un seul partenaire pour construire, digitaliser, connecter et renforcer les capacités."
     ],
     "image": "/assets/img/vedette-construction.jpg",
     "chiffres": [
@@ -600,7 +600,7 @@ const CONTENU_DEFAUT = {
       {
         "annee": "2024",
         "titre": "Ingénierie intégrée",
-        "texte": "Linkstech réunit les quatre pôles et conduit des projets de bout en bout."
+        "texte": "LK-TECH réunit les quatre pôles et conduit des projets de bout en bout."
       }
     ],
     "raisons": [
@@ -668,7 +668,7 @@ const CONTENU_DEFAUT = {
     "messageSucces": "Merci ! Votre message a bien été envoyé."
   },
   "pied": {
-    "description": "Linkstech développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.",
+    "description": "LK-TECH développe des solutions de construction et de technologie et facilite les connexions commerciales à l'échelle internationale. Nous accompagnons entreprises, ONG, institutions et porteurs de startups, de l'étude à la réalisation.",
     "mentions": "Tous droits réservés."
   },
   "realisations": [

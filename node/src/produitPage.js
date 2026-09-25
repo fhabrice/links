@@ -51,10 +51,10 @@ function entete(contenu, { avecPanier = true } = {}) {
 
   <header class="entete">
     <div class="conteneur entete__inner">
-      <a class="marque" href="/" aria-label="Accueil Linkstech">
-        <img class="marque__logo" id="logo-entete" src="/assets/img/logo.svg" alt="Logo Linkstech">
+      <a class="marque" href="/" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" id="logo-entete" src="/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
-          <span class="marque__nom" id="nom-entete">Linkstech</span>
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
           <span class="marque__slogan" id="slogan-entete">${echap(identite.slogan || '')}</span>
         </span>
       </a>
@@ -84,15 +84,15 @@ function entete(contenu, { avecPanier = true } = {}) {
 function pied(contenu) {
   const identite = contenu.identite || {};
   const annee = new Date().getFullYear();
-  const nomSite = identite.nomComplet || identite.nom || 'Linkstech';
+  const nomSite = identite.nomComplet || identite.nom || 'LK-TECH';
   const siteWeb = String(identite.siteWeb || '').replace(/^https?:\/\//i, '').replace(/\/+$/, '');
   return `
   <footer class="pied">
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" id="logo-pied" src="/assets/img/logo-clair.svg" alt="Logo Linkstech">
-          <div class="pied__nom" id="nom-pied">Linkstech</div>
+          <img class="pied__logo" id="logo-pied" src="/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
           <p class="pied__texte" id="pied-description">${echap((contenu.pied || {}).description || '')}</p>
         </div>
         <div>
@@ -159,7 +159,7 @@ function libelleCategorie(produit) {
 /** Rend la page complète. produit = null → page « produit introuvable » (404). */
 function rendrePageProduit({ contenu, produit = null, similaires = [] }) {
   const identite = contenu.identite || {};
-  const nomSite = identite.nomComplet || identite.nom || 'Linkstech';
+  const nomSite = identite.nomComplet || identite.nom || 'LK-TECH';
 
   let tete = '';
   let corps = '';
@@ -223,7 +223,7 @@ function rendrePageProduit({ contenu, produit = null, similaires = [] }) {
       description: descriptionMeta,
       image: imagesAbsolues.length ? imagesAbsolues : [`${origine}/assets/img/photo-manquante.svg`],
       sku: produit.id,
-      brand: { '@type': 'Brand', name: identite.nom || 'Linkstech' },
+      brand: { '@type': 'Brand', name: identite.nom || 'LK-TECH' },
       offers: {
         '@type': 'Offer',
         url: lienCanonique,
@@ -245,7 +245,7 @@ function rendrePageProduit({ contenu, produit = null, similaires = [] }) {
     };
 
     const telephone = String(identite.telephone || '').replace(/\D/g, '');
-    const messageWhatsApp = `Bonjour ${identite.nom || 'Linkstech'}, je suis intéressé(e) par « ${produit.nom} » (${prixFormate(produit.prix)}). Est-il disponible ?`;
+    const messageWhatsApp = `Bonjour ${identite.nom || 'LK-TECH'}, je suis intéressé(e) par « ${produit.nom} » (${prixFormate(produit.prix)}). Est-il disponible ?`;
     const lienWhatsApp = telephone ? `https://wa.me/${telephone}?text=${encodeURIComponent(messageWhatsApp)}` : '/#contact';
 
     tete = `

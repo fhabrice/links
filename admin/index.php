@@ -1,9 +1,9 @@
 <?php
 /**
- * Linkstech — interface d'administration
+ * LK-TECH (Linksmartech) — interface d'administration
  * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
  *
- * @package Linkstech
+ * @package LK-TECH
  */
 
 declare(strict_types=1);
@@ -20,7 +20,7 @@ $reglages = lk_store()->reglages();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administration | Linkstech</title>
+  <title>Administration | LK-TECH</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
@@ -103,9 +103,9 @@ $reglages = lk_store()->reglages();
   <!-- ============================ CONNEXION ============================ -->
   <div class="connexion-fond" id="vue-connexion">
     <form class="connexion-carte" id="formulaire-connexion">
-      <img src="<?= $base ?>/assets/img/logo.svg" alt="Logo Linkstech">
+      <img src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
       <h1>Espace d'administration</h1>
-      <p>Gérez le contenu du site Linkstech.</p>
+      <p>Gérez le contenu du site LK-TECH.</p>
 
       <div class="rappel">
         <strong>Aucune base de données à configurer.</strong><br>
@@ -137,7 +137,7 @@ $reglages = lk_store()->reglages();
       <div class="admin-entete__inner">
         <div class="admin-marque">
           <img src="<?= $base ?>/assets/img/logo.svg" alt="">
-          <span>Linkstech · Admin</span>
+          <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
         </div>
         <div style="display:flex;align-items:center;gap:.75rem">
           <span class="badge-pilote" id="badge-pilote">Stockage : …</span>

@@ -75,7 +75,7 @@
 
   /** Met en forme le nom de la marque : « LK-TECH » → LK[TECH avec tiret vert]. */
   function htmlNom(nom) {
-    const brut = String(nom || 'Linkstech').trim();
+    const brut = String(nom || 'LK-TECH').trim();
     if (brut.includes('-')) {
       const [tete, ...queue] = brut.split('-');
       return `${echapper(tete)}<i class="tiret">-</i>${echapper(queue.join('-'))}`;
