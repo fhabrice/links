@@ -15,6 +15,14 @@
   const FICHIER_SECOURS = (typeof window !== 'undefined' && window.LK_SECOURS) || `${BASE}/data/site.json`;
 
   const CLE_PANIER = 'linkstech-panier';
+  const CLE_LANGUE = 'lk-langue';
+  const LANGUES = { fr: 0, en: 1, sw: 2, ln: 3 };
+  const DICTIONNAIRE = new Map((window.LK_TRADUCTIONS || []).map((ligne) => [normaliser(ligne[0]), ligne]));
+  const originauxTexte = new WeakMap();
+  const originauxAttributs = new WeakMap();
+  let titreSource = '';
+  let titreTraduit = '';
+  let langue = choisirLangueInitiale();
   const IMAGE_SECOURS = `${BASE}/assets/img/photo-manquante.svg`;
   const etat = { contenu: null, reglages: {}, filtre: 'tout', panier: chargerPanier() };
 
@@ -45,6 +53,127 @@
     return `<svg viewBox="0 0 24 24" width="${taille}" height="${taille}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${trace}</svg>`;
   }
 
+  /* ------------------------------ langues ------------------------------ */
+
+  function normaliser(texte) {
+    return String(texte ?? '').replace(/\s+/g, ' ').trim();
+  }
+
+  function choisirLangueInitiale() {
+    const demandee = new URLSearchParams(window.location.search).get('lang');
+    if (demandee && Object.hasOwn(LANGUES, demandee)) { try { localStorage.setItem(CLE_LANGUE, demandee); } catch {} return demandee; }
+    try {
+      const memorisee = localStorage.getItem(CLE_LANGUE);
+      if (memorisee && Object.hasOwn(LANGUES, memorisee)) return memorisee;
+    } catch { /* stockage indisponible */ }
+    const navigateur = String(navigator.language || 'fr').slice(0, 2).toLowerCase();
+    return Object.hasOwn(LANGUES, navigateur) ? navigateur : 'fr';
+  }
+
+  /** Traduit un texte source français ; sans traduction connue, garde le français. */
+  function t(texte) {
+    const cle = normaliser(texte);
+    const ligne = DICTIONNAIRE.get(cle);
+    return (ligne && ligne[LANGUES[langue]]) || cle;
+  }
+
+  function traduireValeur(source) {
+    const debut = source.match(/^\s*/)[0];
+    const fin = source.match(/\s*$/)[0];
+    const coeur = normaliser(source);
+    return coeur ? `${debut}${t(coeur)}${fin}` : source;
+  }
+
+  function traduirePage(racine = document.body) {
+    if (!racine) return;
+    document.documentElement.lang = langue;
+
+    const parcours = document.createTreeWalker(racine, NodeFilter.SHOW_TEXT, {
+      acceptNode(noeud) {
+        const parent = noeud.parentElement;
+        if (!parent || parent.closest('script, style, [data-sans-traduction]')) return NodeFilter.FILTER_REJECT;
+        return normaliser(noeud.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    for (let noeud = parcours.nextNode(); noeud; noeud = parcours.nextNode()) {
+      const precedent = originauxTexte.get(noeud);
+      const source = precedent && noeud.nodeValue === precedent.rendu ? precedent.source : noeud.nodeValue;
+      const rendu = traduireValeur(source);
+      originauxTexte.set(noeud, { source, rendu });
+      if (noeud.nodeValue !== rendu) noeud.nodeValue = rendu;
+    }
+
+    const selecteurAttributs = '[alt], [aria-label], [placeholder], [title]';
+    const elements = racine.querySelectorAll ? [...racine.querySelectorAll(selecteurAttributs)] : [];
+    if (racine.matches?.(selecteurAttributs)) elements.unshift(racine);
+    elements.forEach((element) => {
+      if (element.closest('[data-sans-traduction]')) return;
+      const originaux = originauxAttributs.get(element) || {};
+      ['alt', 'aria-label', 'placeholder', 'title'].forEach((attribut) => {
+        if (!element.hasAttribute(attribut)) return;
+        const precedent = originaux[attribut];
+        const valeur = element.getAttribute(attribut);
+        const source = precedent && valeur === precedent.rendu ? precedent.source : valeur;
+        const rendu = t(source);
+        originaux[attribut] = { source, rendu };
+        if (valeur !== rendu) element.setAttribute(attribut, rendu);
+      });
+      originauxAttributs.set(element, originaux);
+    });
+
+    if (document.title !== titreTraduit) titreSource = document.title;
+    titreTraduit = titreSource.split(' | ').map(t).join(' | ');
+    document.title = titreTraduit;
+    const selecteur = $('#choix-langue');
+    if (selecteur) {
+      selecteur.value = langue;
+      selecteur.setAttribute('aria-label', t('Choisir la langue'));
+      $('label[for="choix-langue"]').textContent = t('Choisir la langue');
+    }
+    document.querySelectorAll('meta[name="description"], meta[property="og:title"], meta[property="og:description"]').forEach((meta) => {
+      if (!meta.dataset.sourceFr) meta.dataset.sourceFr = meta.content;
+      meta.content = meta.dataset.sourceFr.split(' | ').map(t).join(' | ');
+    });
+  }
+
+  /** Transporte le choix dans les liens entre pages, y compris sans localStorage. */
+  function lienLocalLangue(adresse) {
+    const url = new URL(adresse, window.location.href);
+    if (url.origin !== window.location.origin) return adresse;
+    url.searchParams.set('lang', langue);
+    return url.pathname + url.search + url.hash;
+  }
+
+  function changerLangue(nouvelle) {
+    if (!(Object.hasOwn(LANGUES, nouvelle))) return;
+    langue = nouvelle;
+    try { localStorage.setItem(CLE_LANGUE, langue); } catch { /* stockage indisponible */ }
+    try { window.history.replaceState(null, '', lienLocalLangue(window.location.href)); } catch { /* URL non modifiable */ }
+    if (etat.contenu) {
+      rendreProduits();
+      const specialite = $('#onglets-hero .actif')?.dataset.onglet;
+      if (specialite) rendreVedette(specialite);
+    }
+    rendrePanier();
+    traduirePage();
+  }
+
+  function brancherLangues() {
+    const selecteur = $('#choix-langue');
+    if (!selecteur) return;
+    selecteur.value = langue;
+    selecteur.addEventListener('change', () => changerLangue(selecteur.value));
+    document.addEventListener('click', (event) => {
+      const lien = event.target.closest('a[href]');
+      if (!lien || lien.getAttribute('href').startsWith('#')) return;
+      const url = new URL(lien.href, window.location.href);
+      if (url.origin === window.location.origin && !url.pathname.includes('/admin') &&
+          /\/(?:a-propos(?:\.html|\.php)?|index\.(?:html|php))?$/.test(url.pathname)) {
+        lien.href = lienLocalLangue(lien.href);
+      }
+    });
+  }
+
   /* ------------------------------ utilitaires ------------------------------ */
 
   function chargerPanier() {
@@ -64,7 +193,9 @@
 
   function prix(valeur) {
     const nombre = Number(valeur) || 0;
-    return `$${nombre.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return new Intl.NumberFormat({ fr: 'fr-FR', en: 'en-US', sw: 'sw', ln: 'ln-CD' }[langue], {
+      style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2
+    }).format(nombre);
   }
 
   function echapper(texte) {
@@ -108,7 +239,10 @@
 
   function toast(message) {
     const el = $('#toast');
-    el.textContent = message;
+    el.innerHTML = Array.isArray(message)
+      ? message.map((partie) => `<span>${echapper(partie)}</span>`).join(' ')
+      : `<span>${echapper(message)}</span>`;
+    traduirePage(el);
     el.classList.add('visible');
     clearTimeout(toast._minuteur);
     toast._minuteur = setTimeout(() => el.classList.remove('visible'), 2600);
@@ -134,7 +268,7 @@
 
   function appliquerIdentite(identite) {
     if (!identite) return;
-    document.title = `${identite.nomComplet || identite.nom} | ${identite.slogan || ''}`.trim();
+    document.title = `${identite.nomComplet || identite.nom} | Construire, digitaliser et connecter vos projets`;
 
     const logo = identite.logo || '/assets/img/logo.svg';
     const logoClair = identite.logoClair || logo;
@@ -147,10 +281,10 @@
     if ($('#slogan-entete')) $('#slogan-entete').textContent = identite.slogan || '';
 
     $$('[data-champ="rccm"]').forEach((el) => { el.textContent = `RCCM : ${identite.rccm || ''}`; });
-    $$('[data-champ="ville"]').forEach((el) => { el.textContent = `📍 ${identite.ville || ''}`; });
+    $$('[data-champ="ville"]').forEach((el) => { el.textContent = identite.ville || ''; });
     $$('[data-champ="adresse"]').forEach((el) => { el.textContent = identite.ville || ''; });
     $$('[data-champ="telephone"]').forEach((el) => {
-      el.textContent = `📞 ${identite.telephone || ''}`;
+      el.textContent = identite.telephone || '';
       if (el.dataset.lien === 'tel') el.href = `tel:${String(identite.telephone || '').replace(/[^+\d]/g, '')}`;
     });
     $$('[data-champ="email"]').forEach((el) => {
@@ -177,56 +311,60 @@
     }
   }
 
+  /** Les libellés et descriptions restent éditables dans l'administration (Bannière). */
   function rendreOngletsHero(hero) {
     const zone = $('#onglets-hero');
-    if (!zone || !hero?.onglets) return;
-    zone.innerHTML = hero.onglets
-      .map(
-        (onglet) =>
-          `<button class="onglet" role="tab" data-onglet="${echapper(onglet.id)}">${echapper(onglet.libelle)}</button>`
-      )
-      .join('');
-
+    if (!zone || !hero?.onglets?.length) return;
+    zone.innerHTML = hero.onglets.map((onglet, index) =>
+      `<button class="onglet" id="expertise-tab-${index}" role="tab" aria-controls="expertise-panel" aria-selected="false" tabindex="-1" data-onglet="${echapper(onglet.id)}">${echapper(onglet.libelle)}</button>`
+    ).join('');
     zone.querySelectorAll('[data-onglet]').forEach((bouton) => {
       bouton.addEventListener('click', () => activerSpecialite(bouton.dataset.onglet, false));
+      bouton.addEventListener('keydown', (e) => {
+        const boutons = [...zone.querySelectorAll('[data-onglet]')];
+        const index = boutons.indexOf(bouton);
+        const next = e.key === 'ArrowRight' ? (index + 1) % boutons.length
+          : e.key === 'ArrowLeft' ? (index + boutons.length - 1) % boutons.length
+          : e.key === 'Home' ? 0 : e.key === 'End' ? boutons.length - 1 : -1;
+        if (next < 0) return;
+        e.preventDefault(); boutons[next].click(); boutons[next].focus();
+      });
     });
-
-    activerSpecialite(hero.actif || hero.onglets[0]?.id, false);
+    activerSpecialite(hero.actif || hero.onglets[0].id, false);
   }
 
-  /**
-   * Active une spécialité : onglet du hero + carte vedette.
-   * Sur une page sans bannière (ex. « À propos »), on renvoie vers l'accueil
-   * en transmettant la spécialité choisie.
-   */
+  /** Les cartes d'expertise mènent aux solutions et actualisent la sélection boutique. */
   function activerSpecialite(id, defiler = true) {
-    const hero = etat.contenu?.hero;
-    if (!hero?.onglets) return;
-
-    if (!$('#onglets-hero') && !$('#hero-titre')) {
-      window.location.href = `${BASE}/?specialite=${encodeURIComponent(id)}#accueil`;
+    if (!etat.contenu?.specialites?.some((specialite) => specialite.id === id)) return;
+    if (!$('#grille-specialites')) {
+      window.location.href = lienLocalLangue(`${BASE}/?specialite=${encodeURIComponent(id)}#specialites`);
       return;
     }
-
-    const onglet = hero.onglets.find((o) => o.id === id) || hero.onglets[0];
-
-    $$('#onglets-hero .onglet').forEach((b) => b.classList.toggle('actif', b.dataset.onglet === onglet.id));
-
-    $('#hero-badge').textContent = onglet.badge || '';
-    $('#hero-titre').innerHTML = `${echapper(onglet.titre)} <span class="accent">${echapper(onglet.titreAccent || '')}</span>.`;
-    $('#hero-texte').textContent = onglet.description || '';
-    const bouton = $('#hero-bouton');
-    bouton.textContent = onglet.boutonTexte || 'Découvrir';
-    bouton.href = onglet.boutonLien || '#services';
-
-    rendreVedette(onglet.id);
-    if (defiler) document.getElementById('accueil').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const onglet = etat.contenu.hero?.onglets?.find((o) => o.id === id);
+    if (onglet && $('#expertise-titre')) {
+      $$('#onglets-hero .onglet').forEach((b) => {
+        const actif = b.dataset.onglet === id;
+        b.classList.toggle('actif', actif);
+        b.setAttribute('aria-selected', String(actif));
+        b.tabIndex = actif ? 0 : -1;
+        if (actif) $('#expertise-panel').setAttribute('aria-labelledby', b.id);
+      });
+      $('#expertise-badge').textContent = onglet.badge || '';
+      $('#expertise-titre').innerHTML = `<span>${echapper(onglet.titre || '')}</span> <span>${echapper(onglet.titreAccent || '')}</span>.`;
+      $('#expertise-texte').textContent = onglet.description || '';
+      $('#expertise-bouton').textContent = onglet.boutonTexte || 'Découvrir';
+      $('#expertise-bouton').href = onglet.boutonLien || '#contact';
+    }
+    rendreVedette(id);
+    traduirePage($('#services'));
+    traduirePage($('#boutique'));
+    if (defiler) document.getElementById('solutions-detail')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  /** Carte vedette : un produit de la spécialité, sinon un appel au devis. */
   function rendreVedette(idSpecialite) {
     const produit = (etat.contenu.produits || []).find((p) => (p.filtre || p.categorie) === idSpecialite);
     const fiche = $('#fiche-vedette');
+    if (!fiche) return;
 
     if (produit) {
       $('#vedette-img').src = cheminImage(produit.image) || IMAGE_SECOURS;
@@ -282,7 +420,7 @@
     const zone = $('#pied-specialites');
     if (!zone) return;
     zone.innerHTML = [
-      '<a href="#specialites">Toutes nos spécialités</a>',
+      `<a href="${$('#grille-specialites') ? '' : BASE + '/'}#specialites">Toutes nos spécialités</a>`,
       ...(etat.contenu.specialites || []).map(
         (specialite) =>
           `<a href="#services" data-pied-specialite="${echapper(specialite.id)}">${echapper(specialite.titre)}</a>`
@@ -475,6 +613,7 @@
         etat.filtre = bouton.dataset.filtre;
         rendreFiltres();
         rendreProduits();
+        traduirePage($('#filtres-boutique'));
       });
     });
   }
@@ -489,6 +628,7 @@
 
     if (!liste.length) {
       grille.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--ardoise-500)">Aucun produit dans cette catégorie pour le moment.</p>';
+      traduirePage(grille);
       return;
     }
 
@@ -526,6 +666,7 @@
 
     brancherImagesSecours(grille);
     observerApparitions();
+    traduirePage(grille);
   }
 
   function libelleCategorie(produit) {
@@ -543,7 +684,7 @@
     else etat.panier.push({ id: produit.id, nom: produit.nom, prix: Number(produit.prix) || 0, image: cheminImage(produit.image), quantite: 1 });
     sauverPanier();
     rendrePanier();
-    toast(`${produit.nom} ajouté au panier`);
+    toast([produit.nom, 'ajouté au panier']);
   }
 
   function changerQuantite(idProduit, delta) {
@@ -570,7 +711,11 @@
     $('#panier-total').textContent = prix(total);
 
     if (!etat.panier.length) {
+      $('#panier-commander').href = '#boutique';
+      $('#panier-commander').removeAttribute('target');
+      $('#panier-commander').textContent = 'Découvrir la boutique';
       liste.innerHTML = '<p class="panier__vide">Votre panier est vide.<br>Parcourez la boutique pour ajouter des produits.</p>';
+      traduirePage($('#panier'));
       return;
     }
 
@@ -610,20 +755,28 @@
 
     // Commande via WhatsApp (aucun paiement en ligne requis)
     const telephone = String(etat.contenu?.identite?.telephone || '').replace(/[^\d]/g, '');
-    const details = etat.panier.map((l) => `• ${l.nom} × ${l.quantite} = ${prix(l.prix * l.quantite)}`).join('\n');
-    const texte = encodeURIComponent(`Bonjour ${etat.contenu?.identite?.nom || 'LK-TECH'}, je souhaite commander :\n${details}\n\nTotal : ${prix(total)}`);
+    const details = etat.panier.map((l) => `• ${t(l.nom)} × ${l.quantite} = ${prix(l.prix * l.quantite)}`).join('\n');
+    const texte = encodeURIComponent(`${t('Bonjour')} ${etat.contenu?.identite?.nom || 'LK-TECH'}, ${t('je souhaite commander')} :\n${details}\n\n${t('Total')} : ${prix(total)}`);
     const bouton = $('#panier-commander');
+    bouton.textContent = 'Commander via WhatsApp';
     bouton.href = telephone ? `https://wa.me/${telephone}?text=${texte}` : '#contact';
     bouton.target = telephone ? '_blank' : '_self';
     bouton.rel = 'noopener';
+    traduirePage($('#panier'));
   }
 
   function ouvrirPanier(ouvert) {
     const panier = $('#panier');
     if (!panier) return; // page sans panier (ex. « À propos »)
+    const etaitOuvert = panier.classList.contains('ouvert');
+    if (ouvert && !etaitOuvert) ouvrirPanier.retour = document.activeElement;
+    panier.inert = !ouvert;
     panier.classList.toggle('ouvert', ouvert);
     panier.setAttribute('aria-hidden', String(!ouvert));
     $('#voile')?.classList.toggle('visible', ouvert);
+    document.body.classList.toggle('panier-ouvert', ouvert);
+    if (ouvert) $('#panier-fermer')?.focus();
+    else if (etaitOuvert) ouvrirPanier.retour?.focus();
   }
 
   /* ------------------------------- contact -------------------------------- */
@@ -650,12 +803,14 @@
 
       if (!donnees.nom || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(donnees.email) || donnees.message.length < 5) {
         erreur.textContent = 'Merci de renseigner votre nom, un e-mail valide et un message.';
+        traduirePage(erreur);
         erreur.classList.add('visible');
         return;
       }
 
       bouton.disabled = true;
       bouton.textContent = 'Envoi…';
+      traduirePage(bouton);
 
       try {
         const reponse = await fetch(`${BASE}/api/contact`, {
@@ -667,16 +822,19 @@
         if (!reponse.ok) throw new Error(resultat.erreur || "L'envoi a échoué.");
 
         succes.textContent = etat.contenu?.contact?.messageSucces || 'Merci ! Votre message a bien été envoyé.';
+        traduirePage(succes);
         succes.classList.add('visible');
         formulaire.reset();
         toast('Message envoyé ✔');
       } catch (e) {
         const email = etat.contenu?.identite?.email || 'contact@linksmartec.com';
-        erreur.innerHTML = `${echapper(e.message)} Vous pouvez aussi nous écrire à <a href="mailto:${echapper(email)}"><strong>${echapper(email)}</strong></a>.`;
+        erreur.innerHTML = `<span>${echapper(DICTIONNAIRE.has(normaliser(e.message)) || langue === 'fr' ? e.message : "L'envoi a échoué.")}</span> <span>Vous pouvez aussi nous écrire à</span> <a href="mailto:${echapper(email)}"><strong>${echapper(email)}</strong></a>.`;
+        traduirePage(erreur);
         erreur.classList.add('visible');
       } finally {
         bouton.disabled = false;
         bouton.textContent = 'Envoyer le message';
+        traduirePage(bouton);
       }
     });
   }
@@ -708,6 +866,8 @@
   /* --------------------------------- init --------------------------------- */
 
   async function initialiser() {
+    brancherLangues();
+    traduirePage();
     const donnees = await chargerContenu();
     if (donnees) {
       etat.contenu = donnees.contenu;
@@ -743,9 +903,9 @@
         $('#pied-description').textContent = donnees.contenu.pied.description;
       }
       if ($('#pied-copyright')) {
-        $('#pied-copyright').textContent = `© ${new Date().getFullYear()} ${
+        $('#pied-copyright').innerHTML = `© ${new Date().getFullYear()} ${echapper(
           donnees.contenu.identite?.nom || 'LK-TECH'
-        } — ${donnees.contenu.pied?.mentions || 'Tous droits réservés.'}`;
+        )} — <span>${echapper(donnees.contenu.pied?.mentions || 'Tous droits réservés.')}</span>`;
       }
 
       if (etat.reglages.portailClientActif === false && $('#btn-portail')) $('#btn-portail').hidden = true;
@@ -757,6 +917,14 @@
 
     $('#btn-panier')?.addEventListener('click', () => ouvrirPanier(true));
     $('#panier-fermer')?.addEventListener('click', () => ouvrirPanier(false));
+    $('#panier-commander')?.addEventListener('click', () => ouvrirPanier(false));
+    $('#panier')?.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const focusables = [...$('#panier').querySelectorAll('button, a[href]')].filter((el) => !el.disabled && !el.hidden);
+      const premier = focusables[0], dernier = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === premier) { e.preventDefault(); dernier.focus(); }
+      else if (!e.shiftKey && document.activeElement === dernier) { e.preventDefault(); premier.focus(); }
+    });
     $('#voile')?.addEventListener('click', () => ouvrirPanier(false));
     $('#panier-vider')?.addEventListener('click', () => {
       etat.panier = [];
@@ -765,7 +933,14 @@
       toast('Panier vidé');
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') ouvrirPanier(false);
+      if (e.key === 'Escape') {
+        ouvrirPanier(false);
+        if ($('#nav')?.classList.contains('ouvert')) {
+          $('#nav').classList.remove('ouvert');
+          $('#burger')?.setAttribute('aria-expanded', 'false');
+          $('#burger')?.focus();
+        }
+      }
     });
 
     const burger = $('#burger');
@@ -783,10 +958,11 @@
 
     // Spécialité transmise par une autre page : /?specialite=energie#accueil
     const specialiteDemandee = new URLSearchParams(window.location.search).get('specialite');
-    if (specialiteDemandee && $('#onglets-hero')) activerSpecialite(specialiteDemandee, false);
+    if (specialiteDemandee && $('#grille-specialites')) activerSpecialite(specialiteDemandee, false);
 
     brancherImagesSecours();
     observerApparitions();
+    traduirePage();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialiser);

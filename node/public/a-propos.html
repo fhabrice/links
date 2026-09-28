@@ -14,16 +14,27 @@
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="/assets/img/logo.svg">
   <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/refonte.css">
 </head>
 <body>
 
   <!-- ============================== TOPBAR ============================== -->
   <div class="topbar">
     <div class="conteneur topbar__inner">
-      <span class="topbar__rccm" data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+      <span class="topbar__rccm">CONSTRUCTION <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
       <div class="topbar__infos">
-        <span data-champ="ville">📍 Goma, RDC</span>
-        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">📞 +243 976 459 970</a>
+        <span data-champ="ville">Goma, RDC</span>
+        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+        <div class="langues" data-sans-traduction>
+          <label class="sr-only" for="choix-langue">Choisir la langue</label>
+          <span class="langues__icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9M12 3C9.6 5.5 8.4 8.5 8.4 12s1.2 6.5 3.6 9"/></svg></span>
+          <select id="choix-langue" name="langue" aria-label="Choisir la langue">
+            <option value="fr" lang="fr">Français</option>
+            <option value="en" lang="en">English</option>
+            <option value="sw" lang="sw">Kiswahili</option>
+            <option value="ln" lang="ln">Lingala</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -35,22 +46,23 @@
         <img class="marque__logo" id="logo-entete" src="/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
           <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
-          <span class="marque__slogan" id="slogan-entete">Informatique · Construction · Énergie renouvelable</span>
+          <span class="marque__slogan">LINKS MARTECH</span>
         </span>
       </a>
 
       <nav class="nav" id="nav">
         <a class="nav__lien" href="/">Accueil</a>
-        <a class="nav__lien" href="/#specialites">Spécialités</a>
+        <a class="nav__lien" href="/#specialites">Expertises</a>
+        <a class="nav__lien" href="/#services">Solutions</a>
+        <a class="nav__lien" href="/#approche">Notre méthode</a>
         <a class="nav__lien" href="/#boutique">Boutique</a>
-        <a class="nav__lien" href="/#services">Services</a>
-        <a class="nav__lien" href="/a-propos.html" style="color:var(--primaire)">À propos</a>
+        <a class="nav__lien" href="/a-propos.html">À propos</a>
         <a class="nav__lien" href="/#contact">Contact</a>
       </nav>
 
       <div class="entete__actions">
-        <a class="btn btn--accent btn--petit" href="/#contact">Devis gratuit</a>
-        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+        <a class="btn btn--petit" id="btn-portail" href="/#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
@@ -205,6 +217,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="/assets/i18n/traductions.js"></script>
   <script src="/assets/js/site.js"></script>
 </body>
 </html>

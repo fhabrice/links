@@ -17,7 +17,7 @@ const CONTENU_DEFAUT = {
     nom: 'LK-TECH',
     nomComplet: 'LK-TECH',
     nomLong: 'Linksmartech',
-    slogan: 'Informatique · Construction · Énergie renouvelable',
+    slogan: 'Construire · Digitaliser · Connecter',
     rccm: 'CD-GOM-01-2024-A-002698',
     ville: 'Goma, Nord-Kivu, RDC',
     telephone: '+243 976 459 970',
@@ -48,7 +48,7 @@ const CONTENU_DEFAUT = {
         description:
           "Développement logiciel, réseaux, cloud et maintenance : des solutions numériques fiables, pensées pour les entreprises et institutions congolaises.",
         boutonTexte: 'Découvrir nos solutions',
-        boutonLien: '#services'
+        boutonLien: '#grille-services'
       },
       {
         id: 'construction',
@@ -58,8 +58,8 @@ const CONTENU_DEFAUT = {
         titreAccent: 'infrastructures durables',
         description:
           "Études, gros œuvre, second œuvre et réhabilitation : nous réalisons vos bâtiments et ouvrages dans le respect des normes et des délais.",
-        boutonTexte: 'Voir nos réalisations',
-        boutonLien: '#services'
+        boutonTexte: 'Parler de mon chantier',
+        boutonLien: '#contact'
       },
       {
         id: 'energie',
@@ -145,7 +145,7 @@ const CONTENU_DEFAUT = {
   ],
 
   approche: {
-    titre: 'Notre Approche',
+    titre: 'Une méthode claire, du début à la fin.',
     sousTitre: 'Une méthode éprouvée, du diagnostic à la pérennisation',
     etapes: [
       { numero: '01', titre: 'Diagnostic', description: "Audit du besoin, visite du site et analyse technique." },
@@ -373,7 +373,7 @@ const CONTENU_DEFAUT = {
 
   boutique: {
     titre: 'Boutique',
-    sousTitre: 'Matériel informatique, solaire et produits du terroir',
+    sousTitre: 'Équipements informatiques, solutions solaires et produits locaux.',
     filtres: [
       { id: 'tout', libelle: 'Tout' },
       { id: 'informatique', libelle: 'Informatique' },
@@ -384,8 +384,8 @@ const CONTENU_DEFAUT = {
   },
 
   contact: {
-    titre: 'Contact',
-    sousTitre: 'Parlons de votre projet',
+    titre: 'Votre projet commence ici.',
+    sousTitre: 'Parlez-nous de votre besoin : nous vous aidons à trouver la solution adaptée.',
     adresse: 'Avenue du Lac, Goma, Nord-Kivu, RDC',
     horaires: 'Lundi – Samedi : 08h00 – 18h00',
     messageSucces: 'Merci ! Votre message a bien été envoyé.'
@@ -393,7 +393,7 @@ const CONTENU_DEFAUT = {
 
   pied: {
     description:
-      "LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, construction et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.",
+      "LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.",
     mentions: 'Tous droits réservés.'
   }
 };
