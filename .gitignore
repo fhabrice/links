@@ -25,3 +25,6 @@ Thumbs.db
 *.log
 npm-debug.log*
 .tmp/
+
+# Fichiers de travail et captures de validation
+.cache/

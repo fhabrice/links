@@ -31,16 +31,27 @@ $reglages = lk_store()->reglages();
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
 </head>
 <body>
 
   <!-- ============================== TOPBAR ============================== -->
   <div class="topbar">
     <div class="conteneur topbar__inner">
-      <span class="topbar__rccm" data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+      <span class="topbar__rccm">CONSTRUCTION <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
       <div class="topbar__infos">
-        <span data-champ="ville">📍 Goma, RDC</span>
-        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">📞 +243 976 459 970</a>
+        <span data-champ="ville">Goma, RDC</span>
+        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+        <div class="langues" data-sans-traduction>
+          <label class="sr-only" for="choix-langue">Choisir la langue</label>
+          <span class="langues__icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9M12 3C9.6 5.5 8.4 8.5 8.4 12s1.2 6.5 3.6 9"/></svg></span>
+          <select id="choix-langue" name="langue" aria-label="Choisir la langue">
+            <option value="fr" lang="fr">Français</option>
+            <option value="en" lang="en">English</option>
+            <option value="sw" lang="sw">Kiswahili</option>
+            <option value="ln" lang="ln">Lingala</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -52,22 +63,23 @@ $reglages = lk_store()->reglages();
         <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
         <span class="marque__texte">
           <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
-          <span class="marque__slogan" id="slogan-entete">Informatique · Construction · Énergie renouvelable</span>
+          <span class="marque__slogan">LINKS MARTECH</span>
         </span>
       </a>
 
       <nav class="nav" id="nav">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
-        <a class="nav__lien" href="<?= $base ?>/#specialites">Spécialités</a>
+        <a class="nav__lien" href="<?= $base ?>/#specialites">Expertises</a>
+        <a class="nav__lien" href="<?= $base ?>/#services">Solutions</a>
+        <a class="nav__lien" href="<?= $base ?>/#approche">Notre méthode</a>
         <a class="nav__lien" href="<?= $base ?>/#boutique">Boutique</a>
-        <a class="nav__lien" href="<?= $base ?>/#services">Services</a>
-        <a class="nav__lien" href="<?= $base ?>/a-propos" style="color:var(--primaire)">À propos</a>
+        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
       </nav>
 
       <div class="entete__actions">
-        <a class="btn btn--accent btn--petit" href="<?= $base ?>/#contact">Devis gratuit</a>
-        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+        <a class="btn btn--petit" id="btn-portail" href="<?= $base ?>/#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
@@ -224,6 +236,7 @@ $reglages = lk_store()->reglages();
 
   <script>window.LK_BASE = "<?= $base ?>";</script>
   <script>window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
+  <script src="<?= $base ?>/assets/i18n/traductions.js"></script>
   <script src="<?= $base ?>/assets/js/site.js"></script>
 </body>
 </html>

@@ -86,21 +86,60 @@ Deux façons de les personnaliser :
 
 ---
 
-## 3. Les trois spécialités
+## 3. Présentation institutionnelle et expertises
 
-Elles structurent toute la navigation et le contenu :
+La page d'accueil met en avant la construction, les solutions digitales et l'énergie,
+avec la palette **bleu marine / vert du logo LK-TECH**. La navigation, la boutique,
+le panier WhatsApp, le formulaire et l'administration existants sont conservés.
 
-| Spécialité | Onglet de la bannière | Services associés |
-| --- | --- | --- |
-| **Informatique** | « Nous concevons vos systèmes d'information » | Développement logiciel & Web, Réseaux & Systèmes, Cybersécurité & Cloud |
-| **Construction** | « Nous bâtissons des infrastructures durables » | Construction & BTP, Électricité & Réseaux |
-| **Énergie renouvelable** | « L'énergie solaire pour tous » | Énergie solaire & renouvelable |
+- La charte publique est dans `assets/css/refonte.css`, reproduite dans
+  `node/public/assets/css/refonte.css`. Elle ne modifie pas l'administration.
+- Les cartes « Expertises » ouvrent le détail correspondant dans « Solutions ».
+  Les onglets fonctionnent également au clavier (flèches, Début, Fin).
+- Les anciens champs de bannière restent utilisés : leurs titres, textes et boutons
+  alimentent désormais ces onglets. Ils restent modifiables dans l'admin.
+- La sélection de matériel est déplacée dans la boutique. Les filtres, quantités et
+  commandes WhatsApp sont conservés ; un panier vide renvoie à la boutique.
+- Les textes institutionnels de l'accueil sont dans `index.php` et
+  `node/public/index.html` ; conserver leur synchronisation lors des modifications.
+- Le visuel `portrait-expertise.jpg` est une **illustration générée par IA**, pas une
+  photographie de l'équipe. Cette mention figure sur la page. Remplacer le fichier
+  dans les deux versions par une photo réelle si disponible et adapter sa légende.
+- Les nouveaux contenus par défaut n'écrasent pas les personnalisations déjà
+  enregistrées dans l'admin. Sur un site existant, ajuster si nécessaire les titres
+  et le slogan depuis l'administration (sans réinitialiser les données).
 
-- La section **Spécialités** de la page d'accueil est cliquable : elle active l'onglet
-  correspondant et le produit mis en avant dans la bannière.
-- Si aucune marchandise n'est disponible pour une spécialité, la carte affiche une
-  **demande d'étude technique** (modifiable dans l'admin → *Spécialités*).
-- La boutique est filtrée par spécialité : *Tout · Informatique · Énergie renouvelable · Produits du terroir*.
+### Langues du site public
+
+Le site public s'affiche en **français, anglais, swahili et lingala** grâce au
+sélecteur placé dans la barre supérieure. Fonctionnement :
+
+- Le français reste la **langue de référence** : les contenus (admin, base,
+  fichiers de secours) sont stockés en français uniquement, rien ne change
+  côté administration ni côté API.
+- Les traductions vivent dans `assets/i18n/traductions.js` (copie identique
+  dans `node/public/assets/i18n/traductions.js`). Chaque ligne contient
+  `[français, anglais, swahili, lingala]`. Un texte français modifié dans
+  l'admin et absent du dictionnaire s'affiche en français dans les autres
+  langues : ajouter simplement une ligne pour le traduire.
+- Le choix est mémorisé (localStorage), transmis entre les pages via `?lang=`
+  et détecté depuis la langue du navigateur à la première visite.
+- La devise reste le dollar américain dans toutes les langues.
+
+### Validation de la refonte
+
+```bash
+npm run build                          # régénère les deux fichiers de secours
+node --test tools/test-refonte.js       # contrats PHP/Node, ressources, contact, traductions
+```
+
+La version Node a également été vérifiée en navigateur aux largeurs 320, 390,
+768, 1024, 1280 et 1440 pixels : navigation mobile, onglets clavier, boutique,
+panier, retours du formulaire et chargement du fichier de secours. Les réponses
+succès/erreur du formulaire sont simulées dans le navigateur ; l'API de contact
+est testée séparément avec un stockage en mémoire, sans créer de faux messages.
+L'exécution PHP doit être validée sur un environnement PHP 8 : le binaire PHP
+n'est pas disponible dans cet environnement de travail.
 
 ---
 
