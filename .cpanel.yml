@@ -1,0 +1,35 @@
+---
+# Déploiement cPanel (Git Version Control → « Deploy HEAD Commit »)
+# Dépôt cloné dans : /home/wqmetrvw/repositories/links
+# Site publié dans : /home/wqmetrvw/public_html/linksmartec.com
+#
+# - Copie la version PHP (racine du dépôt) vers le dossier du domaine.
+# - Ne touche JAMAIS au contenu vivant : data/ et uploads/ (seuls leurs
+#   .htaccess sont mis à jour), ni à config/database.php.
+# - Ignore les fichiers inutiles en production (.git, node/, Docker, Render…).
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wqmetrvw/public_html/linksmartec.com/
+    - /bin/mkdir -p $DEPLOYPATH
+    - >-
+      /usr/bin/rsync -rlt
+      --exclude=.git/
+      --exclude=.cpanel.yml
+      --exclude=node/
+      --exclude=Dockerfile
+      --exclude=.dockerignore
+      --exclude=Procfile
+      --exclude=render.yaml
+      --exclude=package.json
+      --exclude=.env
+      --exclude=.env.example
+      --exclude=config/database.php
+      --exclude='data/*'
+      --exclude='uploads/*'
+      ./ $DEPLOYPATH
+    - /bin/mkdir -p ${DEPLOYPATH}data ${DEPLOYPATH}uploads
+    - /bin/cp -f data/.htaccess ${DEPLOYPATH}data/.htaccess 2>/dev/null || true
+    - /bin/cp -f uploads/.htaccess ${DEPLOYPATH}uploads/.htaccess 2>/dev/null || true
+    - /bin/chmod 0755 ${DEPLOYPATH}data ${DEPLOYPATH}uploads
+    - /bin/find $DEPLOYPATH -path ${DEPLOYPATH}data -prune -o -path ${DEPLOYPATH}uploads -prune -o -type d -exec /bin/chmod 0755 {} +
+    - /bin/find $DEPLOYPATH -path ${DEPLOYPATH}data -prune -o -path ${DEPLOYPATH}uploads -prune -o -type f -exec /bin/chmod 0644 {} +
