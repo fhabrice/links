@@ -20,13 +20,14 @@ boutique en ligne, services, formulaire de contact et **espace d'administration 
 
 ## 1. Démarrage
 
-> **Deux versions équivalentes dans ce dépôt**
+> **Trois versions équivalentes dans ce dépôt**
 > | Version | Où | Pour qui |
 > | --- | --- | --- |
 > | **PHP 8** *(la version principale)* | **racine du dépôt** | hébergement mutualisé classique (cPanel, FTP) — *rien à installer* |
 > | Node.js 18+ | dossier `node/` | serveur dédié, VPS, Render/Railway, Docker |
+> | **Next.js 15 + Supabase** | dossier `next/` | backend moderne (Postgres managé, Auth, RLS) — voir [`next/README.md`](next/README.md) |
 >
-> Les deux servent **les mêmes pages, la même administration et la même API JSON**,
+> Les trois servent **les mêmes pages, la même administration et la même API JSON**,
 > et partagent le même contenu par défaut (`node/src/defaults.js` / `app/defaults.json`).
 > Guide PHP : **`LISEZ-MOI.md`**.
 
@@ -59,6 +60,20 @@ Node.js 18 ou supérieur est requis. Aucune commande `npm install` n'est nécess
 le projet ne dépend d'aucun paquet externe.
 
 Pour changer le port : `PORT=8080 node node/server.js`.
+
+### Version Next.js + Supabase
+
+```bash
+cd next
+npm install
+npm run dev          # http://localhost:3000
+```
+
+Backend moderne (App Router) avec bascule automatique sur **Supabase**
+(PostgreSQL + Auth + RLS) dès que `NEXT_PUBLIC_SUPABASE_URL` et
+`SUPABASE_SERVICE_ROLE_KEY` sont renseignées — sinon stockage local JSON.
+Guide complet (création du projet, schéma SQL, compte admin) :
+**[`next/README.md`](next/README.md)**.
 
 ---
 
