@@ -11,9 +11,13 @@ Supabase, le site tourne avec un stockage local JSON (`next/data/`), puis
 cd next
 npm install
 npm run dev          # http://localhost:3000
-# ou version production :
-npm run build && npm start -- -p 3001
+# ou version production (build automatique au 1er lancement) :
+npm start            # start.js : build si nécessaire, puis next start
 ```
+
+> 🌐 **Mise en ligne sur cPanel** : voir le guide pas-à-pas
+> [`DEPLOIEMENT-CPANEL.md`](DEPLOIEMENT-CPANEL.md)
+> (Plan B : Render / Vercel en fin de guide).
 
 - **Site** : `/` — vitrine + boutique + formulaire de contact,
   avec **bouton 🔒 Admin** dans l'en-tête et le pied de page

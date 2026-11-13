@@ -77,6 +77,7 @@ Administration sur `/admin` : **bouton 🔒 Admin** sur le site, connexion par
 (contenu, produits, messages, réglages).
 Guide complet (création du projet, schéma SQL, compte admin) :
 **[`next/README.md`](next/README.md)**.
+Mise en ligne sur cPanel : **[`next/DEPLOIEMENT-CPANEL.md`](next/DEPLOIEMENT-CPANEL.md)**.
 
 ---
 
