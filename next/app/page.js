@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { lireContenu, lireReglages, listerProduits, piloteActif } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
+import MenuNavigation from './components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,34 +40,53 @@ export default async function Accueil() {
       <header className="entete">
         <div className="conteneur">
           <div className="logo">
-            LK<span>-TECH</span>
+            <img
+              className="logo-marque"
+              src={identite.logoClair || '/assets/img/logo-clair.svg'}
+              alt=""
+              width="34"
+              height="39"
+            />
+            <span className="logo-texte">
+              LK<span>-TECH</span>
+            </span>
           </div>
-          <nav className="nav">
-            <a href="#specialites">Spécialités</a>
-            <a href="#produits">Boutique</a>
-            <a href="#apropos">À propos</a>
-            <a href="#contact">Contact</a>
+          <div className="entete-actions">
+            <MenuNavigation />
             <Link href="/admin" className="nav-admin" title="Espace d'administration">
               🔒 Admin
             </Link>
-          </nav>
+          </div>
         </div>
       </header>
 
       <section className="hero">
-        <div className="conteneur">
-          {hero?.badge && <span className="badge">{hero.badge}</span>}
-          <h1>
-            {hero?.titre} <em>{hero?.titreAccent}</em>
-          </h1>
-          <p>{hero?.description}</p>
-          <div className="boutons">
-            <a className="bouton bouton-vert" href="#produits">
-              {hero?.boutonTexte || 'Découvrir nos offres'}
-            </a>
-            <a className="bouton bouton-fantome" href="#contact">
-              Nous contacter
-            </a>
+        <div className="conteneur hero-grille">
+          <div className="hero-contenu">
+            {hero?.badge && <span className="badge">{hero.badge}</span>}
+            <h1>
+              {hero?.titre} <em>{hero?.titreAccent}</em>
+            </h1>
+            <p>{hero?.description}</p>
+            <div className="boutons">
+              <a className="bouton bouton-vert" href="#produits">
+                {hero?.boutonTexte || 'Découvrir nos offres'}
+              </a>
+              <a className="bouton bouton-fantome" href="#contact">
+                Nous contacter
+              </a>
+            </div>
+          </div>
+          <div className="hero-visuel">
+            <img
+              src={
+                contenu.vedetteDevis?.image ||
+                '/assets/img/vedette-construction.jpg'
+              }
+              alt="Équipes LK-TECH sur un chantier de construction à Goma"
+              width="640"
+              height="480"
+            />
           </div>
         </div>
       </section>
@@ -97,7 +117,17 @@ export default async function Accueil() {
           </p>
           <div className="grille">
             {vedette.map((p) => (
-              <div className="carte" key={p.id}>
+              <div className="carte carte-produit" key={p.id}>
+                {p.image && (
+                  <img
+                    className="produit-image"
+                    src={p.image}
+                    alt={p.nom}
+                    loading="lazy"
+                    width="400"
+                    height="260"
+                  />
+                )}
                 {p.badge && <span className="produit-badge">{p.badge}</span>}
                 <h3>{p.nom}</h3>
                 <p>{p.description}</p>
@@ -115,7 +145,20 @@ export default async function Accueil() {
       <section className="section" id="apropos">
         <div className="conteneur">
           <h2>{aPropos.titre || 'À propos de nous'}</h2>
-          <p className="sous-titre">{aPropos.texte || ''}</p>
+          <div className="apropos-grille">
+            <div className="apropos-visuel">
+              <img
+                src="/assets/img/portrait-expertise.jpg"
+                alt="Collaboration autour de plans et d’outils numériques"
+                loading="lazy"
+                width="560"
+                height="420"
+              />
+            </div>
+            <p className="apropos-texte">
+              {aPropos.texte || (aPropos.intro || []).join(' ')}
+            </p>
+          </div>
           <div className="grille">
             {(aPropos.chiffres || []).map((c) => (
               <div className="carte" key={c.libelle}>
@@ -141,7 +184,14 @@ export default async function Accueil() {
 
       <footer className="pied">
         <div className="conteneur">
-          <span>
+          <span className="pied-signature">
+            <img
+              className="pied-marque"
+              src={identite.logoClair || '/assets/img/logo-clair.svg'}
+              alt=""
+              width="26"
+              height="30"
+            />
             © {new Date().getFullYear()} {identite.nomLong || 'LK-TECH'} · RCCM{' '}
             {identite.rccm || '—'} ·{' '}
             <Link href="/admin" className="lien-admin-pied">

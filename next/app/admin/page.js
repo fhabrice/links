@@ -71,16 +71,11 @@ export default function Admin() {
     return { ok, erreur: donnees.erreur };
   }
 
-  if (session === 'chargement') {
-    return (
-      <div className="carte-login">
-        <p className="vide">Chargement…</p>
-      </div>
-    );
-  }
-
-  /* ---------------------- CONNEXION PAR CODE ---------------------- */
-  if (session === 'deconnecte') {
+  /* ---------------------- CONNEXION PAR CODE ----------------------
+     Le formulaire est aussi rendu pendant la vérification de session
+     (« chargement ») : la phrase d'aide reste donc visible dès la
+     première réponse du serveur, même sans JavaScript. */
+  if (session !== 'connecte') {
     return (
       <>
         <div className="admin-entete">
@@ -95,8 +90,7 @@ export default function Admin() {
             <p className="aide">
               Entrez le code d’accès du site pour gérer tout le contenu.
               <br />
-              Code initial : <strong>linksmartech</strong> (à changer dans
-              Réglages → Sécurité).
+              Vous pourrez le changer dans Réglages → Sécurité.
             </p>
             {erreur && <div className="alerte">{erreur}</div>}
             <div className="champ">

@@ -68,12 +68,48 @@ img {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-weight: 800;
   font-size: 1.25rem;
   letter-spacing: 0.04em;
 }
 
-.logo span {
+.logo-marque {
+  width: 34px;
+  height: 39px;
+  object-fit: contain;
+}
+
+.logo-texte {
+  line-height: 1;
+}
+
+.logo-texte span {
+  color: var(--vert);
+}
+
+.entete-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.burger {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  color: var(--blanc);
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+}
+
+.burger:hover {
+  border-color: var(--vert);
   color: var(--vert);
 }
 
@@ -113,6 +149,22 @@ img {
 }
 
 /* ---------- Hero ---------- */
+.hero-grille {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-visuel img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 4px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+}
+
 .hero {
   background:
     linear-gradient(135deg, rgba(22, 35, 63, 0.94), rgba(31, 49, 87, 0.9)),
@@ -219,6 +271,29 @@ img {
   max-width: 640px;
 }
 
+/* ---------- À propos ---------- */
+.apropos-grille {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.apropos-visuel img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(22, 35, 63, 0.16);
+}
+
+.apropos-texte {
+  color: var(--gris);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
 .grille {
   display: grid;
   gap: 1.25rem;
@@ -266,6 +341,15 @@ img {
 }
 
 /* ---------- Produits ---------- */
+.produit-image {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
 .produit-prix {
   color: var(--vert);
   font-weight: 800;
@@ -370,6 +454,14 @@ img {
   font-size: 0.88rem;
 }
 
+.pied-marque {
+  display: inline-block;
+  height: 30px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.55rem;
+}
+
 .pied .conteneur {
   display: flex;
   justify-content: space-between;
@@ -425,9 +517,20 @@ img {
 }
 
 .carte-login p.aide {
-  color: var(--gris);
-  font-size: 0.86rem;
+  color: var(--texte);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  background: var(--fond);
+  border: 1px solid var(--bord);
+  border-left: 4px solid var(--vert);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
   margin-bottom: 1.4rem;
+}
+
+.carte-login p.aide strong {
+  color: var(--vert-fonce);
+  font-weight: 800;
 }
 
 .champ {
@@ -691,8 +794,50 @@ textarea.json-zone {
 }
 
 @media (max-width: 640px) {
+  .burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-grille,
+  .apropos-grille {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
   .nav {
     display: none;
+  }
+
+  .nav.ouvert {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--navy);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.4rem 4% 0.6rem;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
+    z-index: 60;
+  }
+
+  .nav.ouvert a {
+    padding: 0.85rem 0.4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+    color: var(--blanc);
+  }
+
+  .nav.ouvert a:last-child {
+    border-bottom: none;
+  }
+
+  .nav.ouvert a:hover {
+    color: var(--vert);
   }
 
   .hero {

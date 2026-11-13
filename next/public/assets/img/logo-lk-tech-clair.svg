@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 215" width="380" height="215" role="img" aria-label="LK-TECH — Linksmartech">
+  <title>LK-TECH — Linksmartech</title>
+
+  <!-- ================= Monogramme (variante fond sombre) ================ -->
+  <g transform="translate(147,0) scale(1.1)">
+    <polygon points="4,83 4,26 26,0 26,83" fill="#FFFFFF"/>
+    <rect x="38" y="18" width="11" height="65" fill="#3FBF74"/>
+    <path d="M51 44 L74 18 L74 34 L62.6 48 L74 62 L74 78 L51 66 Z" fill="#3FBF74"/>
+  </g>
+
+  <!-- ============================= LK-TECH ============================== -->
+  <g transform="translate(6.3,110) scale(2.03)" fill="#FFFFFF">
+    <path d="M0 0 H8 V22 H22 V30 H0 Z"/>
+    <path d="M26 0 H34 V30 H26 Z"/>
+    <path d="M34 13 L56 0 L56 8 L45 15 L56 22 L56 30 L34 24 Z"/>
+    <path d="M60 11 H69 V20 H60 Z" fill="#3FBF74"/>
+    <path d="M73 0 H95 V8 H88 V30 H80 V8 H73 Z"/>
+    <path d="M99 0 H121 V8 H107 V11 H117 V19 H107 V22 H121 V30 H99 Z"/>
+    <path d="M148.43 7.93 A11 11 0 1 0 148.43 22.07" fill="none" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M159 0 H167 V11 H173 V0 H181 V30 H173 V19 H167 V30 H159 Z"/>
+  </g>
+
+  <!-- =========================== LINKS MARTECH ========================== -->
+  <text x="186" y="205" text-anchor="middle" font-family="Inter, 'Segoe UI', system-ui, -apple-system, sans-serif"
+        font-size="23" font-weight="500" letter-spacing="9.5" fill="#A9B6C6">LINKS MARTECH</text>
+</svg>
