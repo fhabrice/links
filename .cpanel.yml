@@ -1,0 +1,11 @@
+---
+# Déploiement cPanel — version PHP (racine du dépôt)
+# Exigé par cPanel › Version Control › Pull or Deploy.
+# Copie l'arbre de travail dans le dossier web du compte (sans le .git).
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wqmetrvw/public_html/
+    - /bin/mkdir -p "$DEPLOYPATH"
+    - /bin/cp -R * "$DEPLOYPATH"
+    - /bin/cp -f .htaccess "$DEPLOYPATH"/
+    - /bin/cp -f .cpanel.yml "$DEPLOYPATH"/
