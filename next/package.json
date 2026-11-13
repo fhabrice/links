@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "node start.js",
+    "start:direct": "next start"
   },
   "engines": {
     "node": ">=18"
