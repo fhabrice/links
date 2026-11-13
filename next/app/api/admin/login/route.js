@@ -1,6 +1,6 @@
 import { json, corpsRequete, nettoyer } from '../../../../lib/http';
-import { sb } from '../../../../lib/supabase';
-import { supabaseConfigure, lireSecurite, verifierHachage, journaliser } from '../../../../lib/store';
+import { sb, supabasePret } from '../../../../lib/supabase';
+import { lireSecurite, verifierHachage, journaliser } from '../../../../lib/store';
 import { creerJeton, cookieSession } from '../../../../lib/auth';
 import { tropDeTentatives, noterEchec, reinitialiserTentatives } from '../../../../lib/rate-limit';
 
@@ -32,32 +32,48 @@ export async function POST(requete) {
   }
 
   /* ---------------- Mode Supabase (Supabase Auth) ---------------- */
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const email = identifiant.includes('@')
       ? identifiant
       : process.env.SUPABASE_ADMIN_EMAIL || `${identifiant}@linksmartec.com`;
 
-    const { data, error } = await sb().auth.signInWithPassword({
-      email,
-      password: motDePasse
-    });
-
-    if (error || !data?.session) {
-      noterEchec(cle);
-      await journaliser('connexion-echouee', { identifiant });
-      return json({ erreur: 'Identifiant ou mot de passe incorrect.' }, { code: 401 });
+    let data = null;
+    let error = null;
+    try {
+      ({ data, error } = await sb().auth.signInWithPassword({
+        email,
+        password: motDePasse
+      }));
+    } catch (err) {
+      error = err;
     }
 
-    reinitialiserTentatives(cle);
-    await journaliser('connexion', { identifiant: email });
-    return json(
-      {
-        ok: true,
-        utilisateur: { identifiant: email, role: 'admin' },
-        pilote: 'supabase'
-      },
-      { entetes: { 'Set-Cookie': cookieSession(data.session.access_token) } }
+    // Erreur réseau (et non « mauvais mot de passe ») → repli sur le compte local
+    const erreurReseau = Boolean(
+      error &&
+        (error.name === 'AuthRetryableFetchError' ||
+          /fetch|network|timeout|ECONN/i.test(error.message || ''))
     );
+
+    if (!erreurReseau) {
+      if (error || !data?.session) {
+        noterEchec(cle);
+        await journaliser('connexion-echouee', { identifiant });
+        return json({ erreur: 'Identifiant ou mot de passe incorrect.' }, { code: 401 });
+      }
+
+      reinitialiserTentatives(cle);
+      await journaliser('connexion', { identifiant: email });
+      return json(
+        {
+          ok: true,
+          utilisateur: { identifiant: email, role: 'admin' },
+          pilote: 'supabase'
+        },
+        { entetes: { 'Set-Cookie': cookieSession(data.session.access_token) } }
+      );
+    }
+    // erreurReseau → on continue vers le mode local
   }
 
   /* ---------------- Mode local (JSON) ---------------- */

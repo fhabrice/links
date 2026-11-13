@@ -15,7 +15,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const { sb } = require('./supabase');
+const { sb, supabasePret } = require('./supabase');
 const { supabaseConfigure, modePilote } = require('./config');
 const { dossierData } = require('./auth');
 
@@ -83,6 +83,11 @@ function idUnique(prefixe) {
   return `${prefixe}-${crypto.randomUUID()}`;
 }
 
+/** Pilote réellement actif : 'supabase' si configuré ET joignable. */
+async function piloteActif() {
+  return (await supabasePret()) ? 'supabase' : 'local';
+}
+
 /* ------------------------------------------------------------------ */
 /* Semis automatique (une fois par processus)                          */
 /* ------------------------------------------------------------------ */
@@ -133,7 +138,7 @@ async function semerSupabase() {
 /* ------------------------------------------------------------------ */
 
 async function lireContenu() {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     await semerSupabase();
     const { data, error } = await sb()
       .from('contenu')
@@ -147,7 +152,7 @@ async function lireContenu() {
 }
 
 async function ecrireContenu(contenu) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     await semerSupabase();
     const { error } = await sb()
       .from('contenu')
@@ -160,7 +165,7 @@ async function ecrireContenu(contenu) {
 }
 
 async function lireReglages() {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     await semerSupabase();
     const { data, error } = await sb()
       .from('reglages')
@@ -174,7 +179,7 @@ async function lireReglages() {
 }
 
 async function ecrireReglages(reglages) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { error } = await sb()
       .from('reglages')
       .upsert({ cle: 'principal', donnees: reglages, maj_le: new Date().toISOString() });
@@ -207,7 +212,7 @@ function versLigneProduit(p) {
 }
 
 async function listerProduits({ admin = false } = {}) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     await semerSupabase();
     let q = sb().from('produits').select('*').order('ordre', { ascending: true });
     if (!admin) q = q.eq('actif', true);
@@ -221,7 +226,7 @@ async function listerProduits({ admin = false } = {}) {
 
 async function ajouterProduit(produit) {
   const ligne = versLigneProduit(produit);
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { data, error } = await sb().from('produits').insert(ligne).select().single();
     if (error) throw error;
     return data;
@@ -233,7 +238,7 @@ async function ajouterProduit(produit) {
 }
 
 async function modifierProduit(id, patch) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { data, error } = await sb()
       .from('produits')
       .update(versLigneProduit({ ...patch, id }))
@@ -252,7 +257,7 @@ async function modifierProduit(id, patch) {
 }
 
 async function supprimerProduit(id) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { error } = await sb().from('produits').delete().eq('id', id);
     if (error) throw error;
     return true;
@@ -278,7 +283,7 @@ async function ajouterMessage(message) {
     message: String(message.message || '').slice(0, 4000),
     lu: false
   };
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { data, error } = await sb()
       .from('messages')
       .insert({ ...ligne, recu_le: new Date().toISOString() })
@@ -294,7 +299,7 @@ async function ajouterMessage(message) {
 }
 
 async function listerMessages() {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { data, error } = await sb()
       .from('messages')
       .select('*')
@@ -307,7 +312,7 @@ async function listerMessages() {
 }
 
 async function marquerMessage(id, lu) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { data, error } = await sb()
       .from('messages')
       .update({ lu: Boolean(lu) })
@@ -326,7 +331,7 @@ async function marquerMessage(id, lu) {
 }
 
 async function supprimerMessage(id) {
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { error } = await sb().from('messages').delete().eq('id', id);
     if (error) throw error;
     return true;
@@ -344,7 +349,7 @@ async function supprimerMessage(id) {
 
 async function statistiques() {
   const produits = await listerProduits({ admin: true });
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     const { count: total, error } = await sb()
       .from('messages')
       .select('*', { count: 'exact', head: true });
@@ -355,7 +360,7 @@ async function statistiques() {
       .eq('lu', false);
     if (err2) throw err2;
     return {
-      mode: modePilote(),
+      mode: await piloteActif(),
       messages: total || 0,
       messagesNonLus: nonLus || 0,
       produits: produits.length
@@ -363,7 +368,7 @@ async function statistiques() {
   }
   const messages = lireJson('messages.json', []);
   return {
-    mode: modePilote(),
+    mode: await piloteActif(),
     messages: messages.length,
     messagesNonLus: messages.filter((m) => !m.lu).length,
     produits: produits.length
@@ -372,7 +377,7 @@ async function statistiques() {
 
 async function journaliser(type, details = {}) {
   try {
-    if (supabaseConfigure()) {
+    if (await supabasePret()) {
       await sb().from('journal').insert({ type, details });
       return;
     }
@@ -413,6 +418,7 @@ async function ecrireSecurite(donnees) {
 
 module.exports = {
   modePilote,
+  piloteActif,
   supabaseConfigure,
   defauts,
   hacher,

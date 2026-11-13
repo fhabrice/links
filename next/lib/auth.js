@@ -8,8 +8,7 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
-const { sb } = require('./supabase');
-const { supabaseConfigure } = require('./config');
+const { sb, supabasePret } = require('./supabase');
 
 const NOM_COOKIE = 'lk_session';
 const DUREE_SESSION_MS = 12 * 60 * 60 * 1000; // 12 h
@@ -73,7 +72,7 @@ async function utilisateurCourant(requete) {
 
   if (!token) return null;
 
-  if (supabaseConfigure()) {
+  if (await supabasePret()) {
     try {
       const { data, error } = await sb().auth.getUser(token);
       if (error || !data?.user) return null;

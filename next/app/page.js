@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { lireContenu, lireReglages, listerProduits, modePilote } from '../lib/store';
+import { lireContenu, lireReglages, listerProduits, piloteActif } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export default async function Accueil() {
     lireContenu(),
     lireReglages(),
     listerProduits(),
-    Promise.resolve(modePilote())
+    piloteActif()
   ]);
 
   const identite = contenu.identite || {};

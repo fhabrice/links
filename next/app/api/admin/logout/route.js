@@ -1,7 +1,6 @@
 import { json } from '../../../../lib/http';
 import { utilisateurCourant, cookieEfface } from '../../../../lib/auth';
-import { sb } from '../../../../lib/supabase';
-import { supabaseConfigure } from '../../../../lib/store';
+import { sb, supabasePret } from '../../../../lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +16,7 @@ export async function GET(requete) {
 
 export async function POST(requete) {
   const utilisateur = await utilisateurCourant(requete);
-  if (supabaseConfigure() && utilisateur?.jeton) {
+  if ((await supabasePret()) && utilisateur?.jeton) {
     try {
       await sb().auth.admin.signOut(utilisateur.jeton);
     } catch {

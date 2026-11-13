@@ -1,12 +1,18 @@
 import { json } from '../../../lib/http';
-import { modePilote } from '../../../lib/store';
+import { piloteActif, supabaseConfigure } from '../../../lib/store';
+import { supabasePret } from '../../../lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
+  const [pilote, joignable] = await Promise.all([piloteActif(), supabasePret()]);
   return json({
     statut: 'ok',
-    pilote: modePilote(),
+    pilote,
+    supabase: {
+      configure: supabaseConfigure(),
+      joignable: supabaseConfigure() ? joignable : null
+    },
     horodatage: new Date().toISOString()
   });
 }
