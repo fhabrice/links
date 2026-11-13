@@ -1,21 +1,24 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { api } from './api-client';
+import OngletMessages from './OngletMessages';
+import OngletProduits from './OngletProduits';
+import OngletContenu from './OngletContenu';
+import OngletReglages from './OngletReglages';
 
-async function api(url, options = {}) {
-  const reponse = await fetch(url, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }
-  });
-  const donnees = await reponse.json().catch(() => ({}));
-  return { ok: reponse.ok, code: reponse.status, donnees };
-}
+const ONGLETS = [
+  ['messages', '📨 Messages'],
+  ['produits', '🛒 Produits'],
+  ['contenu', '📝 Contenu du site'],
+  ['reglages', '⚙️ Réglages & sécurité']
+];
 
 export default function Admin() {
   const [session, setSession] = useState('chargement');
   const [etat, setEtat] = useState(null);
   const [erreur, setErreur] = useState('');
-  const [onglet, setOnglet] = useState('messages');
+  const [onglet, setOnglet] = useState('contenu');
 
   const chargerEtat = useCallback(async () => {
     const { ok, donnees } = await api('/api/admin/state');
@@ -41,13 +44,14 @@ export default function Admin() {
     const donnees = Object.fromEntries(new FormData(evenement.currentTarget).entries());
     const { ok, donnees: resultat } = await api('/api/admin/login', {
       method: 'POST',
-      body: JSON.stringify(donnees)
+      body: JSON.stringify({ code: donnees.code })
     });
     if (!ok) {
-      setErreur(resultat.erreur || 'Connexion refusée.');
+      setErreur(resultat.erreur || 'Code refusé.');
       return;
     }
     setSession('connecte');
+    setOnglet('contenu');
     await chargerEtat();
   }
 
@@ -55,6 +59,16 @@ export default function Admin() {
     await api('/api/admin/logout', { method: 'POST' });
     setSession('deconnecte');
     setEtat(null);
+  }
+
+  /** Sauvegarde du contenu éditorial (appelée par OngletContenu). */
+  async function sauvegarderContenu(contenu) {
+    const { ok, donnees } = await api('/api/admin/contenu', {
+      method: 'PUT',
+      body: JSON.stringify({ contenu })
+    });
+    if (ok) await chargerEtat();
+    return { ok, erreur: donnees.erreur };
   }
 
   if (session === 'chargement') {
@@ -65,43 +79,48 @@ export default function Admin() {
     );
   }
 
+  /* ---------------------- CONNEXION PAR CODE ---------------------- */
   if (session === 'deconnecte') {
     return (
-      <div className="admin-entete">
-        <div className="conteneur">
-          <h1>LK-TECH · Administration</h1>
+      <>
+        <div className="admin-entete">
+          <div className="conteneur">
+            <h1>LK-TECH · Administration</h1>
+            <span className="pilote">Espace réservé</span>
+          </div>
         </div>
-        <div className="conteneur" style={{ paddingBottom: '2rem' }}>
+        <div className="conteneur" style={{ paddingBottom: '3rem' }}>
           <form className="carte-login" onSubmit={connexion}>
-            <h2>Connexion</h2>
+            <h2>🔒 Accès administration</h2>
             <p className="aide">
-              Mode Supabase Auth si les clés sont configurées, sinon compte local
-              (admin / linksmartech).
+              Entrez le code d’accès du site pour gérer tout le contenu.
+              <br />
+              Code initial : <strong>linksmartech</strong> (à changer dans
+              Réglages → Sécurité).
             </p>
             {erreur && <div className="alerte">{erreur}</div>}
             <div className="champ">
-              <label htmlFor="identifiant">Identifiant</label>
-              <input id="identifiant" name="identifiant" autoComplete="username" required />
-            </div>
-            <div className="champ">
-              <label htmlFor="motDePasse">Mot de passe</label>
+              <label htmlFor="code">Code d’accès</label>
               <input
-                id="motDePasse"
-                name="motDePasse"
+                id="code"
+                name="code"
                 type="password"
-                autoComplete="current-password"
                 required
+                autoFocus
+                autoComplete="current-password"
+                placeholder="••••••••"
               />
             </div>
-            <button className="bouton bouton-vert" type="submit">
-              Se connecter
+            <button className="bouton bouton-vert" type="submit" style={{ width: '100%' }}>
+              Entrer
             </button>
           </form>
         </div>
-      </div>
+      </>
     );
   }
 
+  /* ------------------------- BACK-OFFICE ------------------------- */
   return (
     <>
       <header className="admin-entete">
@@ -139,213 +158,27 @@ export default function Admin() {
           </div>
 
           <div className="onglets">
-            <button
-              className={`onglet ${onglet === 'messages' ? 'actif' : ''}`}
-              onClick={() => setOnglet('messages')}
-            >
-              Messages
-            </button>
-            <button
-              className={`onglet ${onglet === 'produits' ? 'actif' : ''}`}
-              onClick={() => setOnglet('produits')}
-            >
-              Produits
-            </button>
+            {ONGLETS.map(([cle, libelle]) => (
+              <button
+                key={cle}
+                className={`onglet ${onglet === cle ? 'actif' : ''}`}
+                onClick={() => setOnglet(cle)}
+              >
+                {libelle}
+              </button>
+            ))}
           </div>
 
           {onglet === 'messages' && <OngletMessages />}
-          {onglet === 'produits' && <OngletProduits charger={chargerEtat} />}
+          {onglet === 'produits' && <OngletProduits rafraichir={chargerEtat} />}
+          {onglet === 'contenu' && etat?.contenu && (
+            <OngletContenu contenu={etat.contenu} sauvegarder={sauvegarderContenu} />
+          )}
+          {onglet === 'reglages' && etat?.reglages && (
+            <OngletReglages reglages={etat.reglages} rafraichir={chargerEtat} />
+          )}
         </div>
       </main>
-    </>
-  );
-}
-
-function OngletMessages() {
-  const [messages, setMessages] = useState(null);
-
-  const recharger = useCallback(async () => {
-    const { ok, donnees } = await api('/api/admin/messages');
-    if (ok) setMessages(donnees.messages);
-  }, []);
-
-  useEffect(() => {
-    recharger();
-  }, [recharger]);
-
-  async function basculerLu(message) {
-    await api(`/api/admin/messages/${message.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ lu: !message.lu })
-    });
-    recharger();
-  }
-
-  async function supprimer(message) {
-    if (!confirm('Supprimer ce message ?')) return;
-    await api(`/api/admin/messages/${message.id}`, { method: 'DELETE' });
-    recharger();
-  }
-
-  if (messages === null) return <p className="vide">Chargement des messages…</p>;
-  if (!messages.length)
-    return <p className="vide">Aucun message pour l’instant — teste le formulaire de contact.</p>;
-
-  return (
-    <table className="tableau">
-      <thead>
-        <tr>
-          <th>De</th>
-          <th>Sujet</th>
-          <th>Message</th>
-          <th>Reçu le</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {messages.map((m) => (
-          <tr key={m.id} className={m.lu ? '' : 'non-lu'}>
-            <td>
-              {m.nom}
-              <br />
-              <small style={{ color: '#6b7686' }}>{m.email}</small>
-            </td>
-            <td>{m.sujet}</td>
-            <td style={{ maxWidth: 320 }}>
-              {m.message.length > 120 ? `${m.message.slice(0, 120)}…` : m.message}
-            </td>
-            <td>{new Date(m.recu_le || m.recuLe).toLocaleString('fr-FR')}</td>
-            <td>
-              <div className="actions">
-                <button className="mini-bouton" onClick={() => basculerLu(m)}>
-                  {m.lu ? 'Marquer non lu' : 'Marquer lu'}
-                </button>
-                <button className="mini-bouton danger" onClick={() => supprimer(m)}>
-                  Supprimer
-                </button>
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-function OngletProduits({ charger: rafraichirGlobal }) {
-  const [produits, setProduits] = useState(null);
-  const [erreur, setErreur] = useState('');
-
-  const chargerProduits = useCallback(async () => {
-    const { ok, donnees } = await api('/api/admin/produits');
-    if (ok) setProduits(donnees.produits);
-  }, []);
-
-  useEffect(() => {
-    chargerProduits();
-  }, [chargerProduits]);
-
-  async function ajouter(evenement) {
-    evenement.preventDefault();
-    setErreur('');
-    const formulaire = evenement.currentTarget;
-    const donnees = Object.fromEntries(new FormData(formulaire).entries());
-    const { ok, donnees: resultat } = await api('/api/admin/produits', {
-      method: 'POST',
-      body: JSON.stringify({
-        ...donnees,
-        prix: Number(donnees.prix) || 0,
-        stock: Number(donnees.stock) || 0,
-        actif: true
-      })
-    });
-    if (!ok) {
-      setErreur(resultat.erreur || 'Erreur.');
-      return;
-    }
-    formulaire.reset();
-    chargerProduits();
-    rafraichirGlobal();
-  }
-
-  async function supprimer(produit) {
-    if (!confirm(`Supprimer « ${produit.nom} » ?`)) return;
-    await api(`/api/admin/produits/${produit.id}`, { method: 'DELETE' });
-    chargerProduits();
-    rafraichirGlobal();
-  }
-
-  if (produits === null) return <p className="vide">Chargement des produits…</p>;
-
-  return (
-    <>
-      <form className="carte" style={{ marginBottom: '1.5rem' }} onSubmit={ajouter}>
-        <h3 style={{ marginBottom: '1rem', color: '#16233f' }}>Ajouter un produit</h3>
-        {erreur && <div className="alerte">{erreur}</div>}
-        <div className="grille" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
-          <div className="champ">
-            <label>Nom *</label>
-            <input name="nom" required maxLength={200} />
-          </div>
-          <div className="champ">
-            <label>Prix (USD)</label>
-            <input name="prix" type="number" min="0" step="0.01" defaultValue="0" />
-          </div>
-          <div className="champ">
-            <label>Stock</label>
-            <input name="stock" type="number" min="0" defaultValue="0" />
-          </div>
-          <div className="champ">
-            <label>Catégorie</label>
-            <select name="filtre" defaultValue="informatique">
-              <option value="informatique">Informatique</option>
-              <option value="construction">Construction</option>
-              <option value="energie">Énergie</option>
-            </select>
-          </div>
-        </div>
-        <div className="champ">
-          <label>Description</label>
-          <input name="description" maxLength={2000} placeholder="Courte description…" />
-        </div>
-        <button className="bouton bouton-clair" type="submit">
-          Ajouter
-        </button>
-      </form>
-
-      {!produits.length && <p className="vide">Aucun produit.</p>}
-      {!!produits.length && (
-        <table className="tableau">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>État</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {produits.map((p) => (
-              <tr key={p.id}>
-                <td>{p.nom}</td>
-                <td>
-                  {p.prix} {p.devise}
-                </td>
-                <td>{p.stock}</td>
-                <td>{p.actif ? 'Actif' : 'Inactif'}</td>
-                <td>
-                  <div className="actions">
-                    <button className="mini-bouton danger" onClick={() => supprimer(p)}>
-                      Supprimer
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </>
   );
 }

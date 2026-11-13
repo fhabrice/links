@@ -15,12 +15,16 @@ npm run dev          # http://localhost:3000
 npm run build && npm start -- -p 3001
 ```
 
-- **Site** : `/` — vitrine + boutique + formulaire de contact
-- **Admin** : `/admin` — compte local par défaut `admin` / `linksmartech`
-  (à changer !), ou votre compte Supabase Auth si configuré
+- **Site** : `/` — vitrine + boutique + formulaire de contact,
+  avec **bouton 🔒 Admin** dans l'en-tête et le pied de page
+- **Admin** : `/admin` — connexion par **code d'accès**
+  (code initial : `linksmartech`, à changer dans *Réglages & sécurité*).
+  Back-office complet : **contenu du site** (identité, hero, spécialités,
+  à propos, JSON avancé), **produits**, **messages**, **réglages**,
+  changement de code.
 - **API** : `GET /api/health`, `GET /api/site`, `POST /api/contact`,
   et l'ensemble `/api/admin/*` (session, state, contenu, réglages,
-  produits CRUD, messages)
+  code, produits CRUD, messages)
 
 ## Connecter Supabase (3 étapes)
 
@@ -53,7 +57,8 @@ semés** dans Postgres (depuis `app/defaults.json`, source partagée du dépôt)
 | GET | `/api/health` | public | état + pilote (`local`/`supabase`) |
 | GET | `/api/site` | public | contenu éditorial + réglages |
 | POST | `/api/contact` | public | enregistre un message (validé) |
-| POST | `/api/admin/login` | public | connexion (Supabase Auth ou compte local), cookie `lk_session` HttpOnly |
+| POST | `/api/admin/login` | public | connexion par `{ code }` (Supabase Auth ou compte local), cookie `lk_session` HttpOnly |
+| PUT | `/api/admin/code` | session | changer le code d'accès (`ancienCode` / `nouveauCode`) |
 | POST | `/api/admin/logout` | session | déconnexion |
 | GET | `/api/admin/session` | session | état de la session |
 | GET | `/api/admin/state` | session | stats + contenu + réglages |

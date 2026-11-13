@@ -72,6 +72,9 @@ npm run dev          # http://localhost:3000
 Backend moderne (App Router) avec bascule automatique sur **Supabase**
 (PostgreSQL + Auth + RLS) dès que `NEXT_PUBLIC_SUPABASE_URL` et
 `SUPABASE_SERVICE_ROLE_KEY` sont renseignées — sinon stockage local JSON.
+Administration sur `/admin` : **bouton 🔒 Admin** sur le site, connexion par
+**code d'accès** (initial : `linksmartech`) et back-office complet
+(contenu, produits, messages, réglages).
 Guide complet (création du projet, schéma SQL, compte admin) :
 **[`next/README.md`](next/README.md)**.
 

@@ -16,12 +16,17 @@ function ipDe(requete) {
 
 export async function POST(requete) {
   const corps = await corpsRequete(requete);
-  const identifiant = nettoyer(corps.identifiant, 80);
-  const motDePasse = String(corps.motDePasse ?? '');
+
+  // Connexion par CODE D'ACCÈS (mode simplifié) : un seul champ.
+  // Compatibilité conservée avec l'ancien format identifiant + motDePasse.
+  const code = String(corps.code ?? '').trim();
+  const identifiantAncien = nettoyer(corps.identifiant, 80);
+  const identifiant = code && !identifiantAncien ? 'admin' : identifiantAncien;
+  const motDePasse = code || String(corps.motDePasse ?? '');
   const cle = `${identifiant}|${ipDe(requete)}`;
 
   if (!identifiant || !motDePasse) {
-    return json({ erreur: 'Identifiant et mot de passe requis.' }, { code: 400 });
+    return json({ erreur: 'Le code d’accès est requis.' }, { code: 400 });
   }
 
   if (tropDeTentatives(cle)) {
@@ -59,7 +64,7 @@ export async function POST(requete) {
       if (error || !data?.session) {
         noterEchec(cle);
         await journaliser('connexion-echouee', { identifiant });
-        return json({ erreur: 'Identifiant ou mot de passe incorrect.' }, { code: 401 });
+        return json({ erreur: 'Code d’accès incorrect.' }, { code: 401 });
       }
 
       reinitialiserTentatives(cle);
@@ -85,7 +90,7 @@ export async function POST(requete) {
   if (!utilisateur || !verifierHachage(motDePasse, utilisateur.motDePasse)) {
     noterEchec(cle);
     await journaliser('connexion-echouee', { identifiant });
-    return json({ erreur: 'Identifiant ou mot de passe incorrect.' }, { code: 401 });
+    return json({ erreur: 'Code d’accès incorrect.' }, { code: 401 });
   }
 
   reinitialiserTentatives(cle);

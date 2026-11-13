@@ -46,7 +46,9 @@ export default async function Accueil() {
             <a href="#produits">Boutique</a>
             <a href="#apropos">À propos</a>
             <a href="#contact">Contact</a>
-            <Link href="/admin">Administration</Link>
+            <Link href="/admin" className="nav-admin" title="Espace d'administration">
+              🔒 Admin
+            </Link>
           </nav>
         </div>
       </header>
@@ -140,8 +142,11 @@ export default async function Accueil() {
       <footer className="pied">
         <div className="conteneur">
           <span>
-            © {new Date().getFullYear()} {identite.nomLong || 'LK-TECH'} — RCCM{' '}
-            {identite.rccm || '—'}
+            © {new Date().getFullYear()} {identite.nomLong || 'LK-TECH'} · RCCM{' '}
+            {identite.rccm || '—'} ·{' '}
+            <Link href="/admin" className="lien-admin-pied">
+              Administration
+            </Link>
           </span>
           <span>
             Backend : Next.js + Supabase

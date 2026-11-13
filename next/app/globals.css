@@ -87,6 +87,31 @@ img {
   color: var(--vert);
 }
 
+.nav-admin {
+  background: var(--vert);
+  color: var(--blanc) !important;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: background 0.15s;
+}
+
+.nav-admin:hover {
+  background: var(--vert-fonce);
+  color: var(--blanc) !important;
+}
+
+.lien-admin-pied {
+  color: #8fe0b2;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lien-admin-pied:hover {
+  color: var(--blanc);
+}
+
 /* ---------- Hero ---------- */
 .hero {
   background:
@@ -564,6 +589,105 @@ img {
   padding: 0.7rem 1rem;
   font-size: 0.88rem;
   margin-bottom: 1rem;
+}
+
+/* ---------- Back-office : sections de contenu ---------- */
+.admin-section {
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-section h3 {
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.admin-section .aide-section {
+  color: var(--gris);
+  font-size: 0.84rem;
+  margin-bottom: 1rem;
+}
+
+.admin-section textarea {
+  font-family: inherit;
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.92rem;
+  width: 100%;
+  background: var(--blanc);
+  color: var(--texte);
+  resize: vertical;
+}
+
+.admin-section textarea:focus {
+  outline: 2px solid var(--vert);
+  border-color: transparent;
+}
+
+.grille-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.9rem;
+}
+
+.item-bloc {
+  border: 1px solid var(--bord);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  background: #fafbfc;
+}
+
+.item-bloc .entete-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.item-bloc .entete-item strong {
+  color: var(--navy);
+  font-size: 0.9rem;
+}
+
+.barre-actions {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.retour-admin {
+  font-size: 0.9rem;
+}
+
+.retour-admin.ok {
+  color: var(--vert-fonce);
+  font-weight: 600;
+}
+
+.retour-admin.erreur {
+  color: var(--rouge);
+  font-weight: 600;
+}
+
+textarea.json-zone {
+  width: 100%;
+  min-height: 200px;
+  font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  border: 1px solid var(--bord);
+  border-radius: 8px;
+  padding: 0.8rem;
+  background: #0f1930;
+  color: #d7e1f2;
+  resize: vertical;
 }
 
 @media (max-width: 640px) {
