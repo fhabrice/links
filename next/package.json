@@ -1,0 +1,20 @@
+{
+  "name": "linksmartech-next",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend Next.js + Supabase pour LK-TECH (Goma, RDC). Fonctionne sans Supabase (stockage local) et bascule automatiquement sur Supabase dès que les clés sont présentes.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}
