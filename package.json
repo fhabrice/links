@@ -1,25 +1,21 @@
 {
-  "name": "linksmartech",
+  "name": "linksmartech-next",
   "version": "1.0.0",
   "private": true,
-  "description": "Site institutionnel et e-commerce Linksmartech (Goma, Nord-Kivu, RDC). Aucune configuration MySQL obligatoire : le site et l'admin démarrent sans rien saisir.",
-  "main": "node/server.js",
+  "description": "Backend Next.js + Supabase pour LK-TECH (Goma, RDC). Fonctionne sans Supabase (stockage local) et bascule automatiquement sur Supabase dès que les clés sont présentes.",
   "scripts": {
-    "start": "node node/server.js",
-    "dev": "node node/server.js",
-    "build": "node tools/build-fallback.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "node start.js",
+    "start:direct": "next start"
   },
   "engines": {
     "node": ">=18"
   },
-  "optionalDependencies": {
-    "mysql2": "^3.11.0"
-  },
-  "keywords": [
-    "linksmartech",
-    "goma",
-    "ecommerce",
-    "vitrine"
-  ],
-  "license": "MIT"
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
 }
