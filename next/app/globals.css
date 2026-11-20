@@ -165,6 +165,51 @@ img {
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
 }
 
+/* Toutes les spécialités affichées dans le hero */
+.hero-specialites {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 2.75rem;
+}
+
+.hero-specialite {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+}
+
+.hero-specialite-icone {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 10px;
+  background: rgba(46, 158, 91, 0.3);
+  color: #8fe0b2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.hero-specialite strong {
+  display: block;
+  color: var(--blanc);
+  font-size: 0.98rem;
+  margin-bottom: 0.2rem;
+}
+
+.hero-specialite p {
+  color: #b9c4d8;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
 .hero {
   background:
     linear-gradient(135deg, rgba(22, 35, 63, 0.94), rgba(31, 49, 87, 0.9)),
@@ -381,6 +426,92 @@ img {
   color: var(--gris);
 }
 
+/* ---------- Logiciels (vitrine de vente) ---------- */
+.logiciels-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.carte-logiciel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.75rem;
+}
+
+.logiciel-entete {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.logiciel-entete h3 {
+  color: var(--navy);
+  font-size: 1.15rem;
+}
+
+.logiciel-icone {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 12px;
+  background: rgba(46, 158, 91, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.logiciel-pitch {
+  color: var(--gris);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.logiciel-explication {
+  color: var(--gris);
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+.logiciel-fonctions {
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  color: var(--texte);
+}
+
+.logiciel-fonctions li::before {
+  content: '✓ ';
+  color: var(--vert);
+  font-weight: 800;
+}
+
+.logiciel-pied {
+  margin-top: auto;
+  padding-top: 0.95rem;
+  border-top: 1px solid var(--bord);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.logiciel-prix .produit-prix {
+  margin-top: 0;
+  display: block;
+}
+
+.logiciel-type {
+  font-size: 0.75rem;
+  color: var(--gris);
+}
+
 /* ---------- Contact ---------- */
 .contact {
   background: var(--navy);
@@ -546,7 +677,8 @@ img {
 }
 
 .champ input,
-.champ select {
+.champ select,
+.champ textarea {
   width: 100%;
   padding: 0.65rem 0.8rem;
   border: 1px solid var(--bord);
@@ -557,9 +689,28 @@ img {
 }
 
 .champ input:focus,
-.champ select:focus {
+.champ select:focus,
+.champ textarea:focus {
   outline: 2px solid var(--vert);
   border-color: transparent;
+}
+
+.champ textarea {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.logiciel-check {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.logiciel-check input {
+  width: auto !important;
+  accent-color: var(--vert);
 }
 
 .tableau {
@@ -804,6 +955,11 @@ textarea.json-zone {
   .apropos-grille {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .hero-specialites {
+    grid-template-columns: 1fr;
+    margin-top: 2rem;
   }
 
   .nav {
