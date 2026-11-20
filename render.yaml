@@ -15,8 +15,8 @@ services:
     plan: starter            # « free » fonctionne aussi (voir la note sur le disque)
     region: frankfurt        # au plus près de la RDC (latence la plus faible)
     branch: main
-    buildCommand: node tools/build-fallback.js
-    startCommand: node node/server.js
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
 
@@ -35,7 +35,7 @@ services:
     # (Sur l'offre gratuite, le disque n'est pas disponible → voir DEPLOIEMENT.md)
     disk:
       name: donnees-linksmartec
-      mountPath: /opt/render/project/src/node/data
+      mountPath: /opt/render/project/src/data
       sizeGB: 1
 
     domains:

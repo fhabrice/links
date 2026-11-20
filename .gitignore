@@ -2,26 +2,20 @@
 node_modules/
 package-lock.json
 
-# Données locales générées à l'exécution (contenu, messages, images téléversées)
-# — version PHP (à la racine) et version Node.js (dossier node/)
-data/*
-!data/.htaccess
-uploads/*
-!uploads/.htaccess
-node/data/*
-!node/data/.gitkeep
-# version Next.js (dossier next/)
-next/.next/
-next/data/*
-!next/data/.gitkeep
+# Build Next.js
+.next/
+out/
 
-# Configuration réelle d'une éventuelle base (jamais versionnée)
-config/database.php
-node/config/database.json
+# Données locales générées à l'exécution
+data/*
+!data/.gitkeep
 
 # Environnement
 .env
 .env.local
+
+# Archives locales
+*.zip
 
 # Divers
 .DS_Store
@@ -29,6 +23,4 @@ Thumbs.db
 *.log
 npm-debug.log*
 .tmp/
-
-# Fichiers de travail et captures de validation
 .cache/
