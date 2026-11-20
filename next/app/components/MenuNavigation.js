@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const LIENS = [
   ['#specialites', 'Spécialités'],
-  ['#produits', 'Boutique'],
+  ['#logiciels', 'Logiciels'],
   ['#apropos', 'À propos'],
   ['#contact', 'Contact']
 ];

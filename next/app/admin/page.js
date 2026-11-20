@@ -5,11 +5,13 @@ import { api } from './api-client';
 import OngletMessages from './OngletMessages';
 import OngletProduits from './OngletProduits';
 import OngletContenu from './OngletContenu';
+import OngletLogiciels from './OngletLogiciels';
 import OngletReglages from './OngletReglages';
 
 const ONGLETS = [
   ['messages', '📨 Messages'],
   ['produits', '🛒 Produits'],
+  ['logiciels', '🧩 Logiciels'],
   ['contenu', '📝 Contenu du site'],
   ['reglages', '⚙️ Réglages & sécurité']
 ];
@@ -165,6 +167,12 @@ export default function Admin() {
 
           {onglet === 'messages' && <OngletMessages />}
           {onglet === 'produits' && <OngletProduits rafraichir={chargerEtat} />}
+          {onglet === 'logiciels' && (
+            <OngletLogiciels
+              logiciels={etat?.contenu?.logiciels}
+              rafraichir={chargerEtat}
+            />
+          )}
           {onglet === 'contenu' && etat?.contenu && (
             <OngletContenu contenu={etat.contenu} sauvegarder={sauvegarderContenu} />
           )}

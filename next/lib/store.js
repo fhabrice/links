@@ -138,6 +138,9 @@ async function semerSupabase() {
 /* ------------------------------------------------------------------ */
 
 async function lireContenu() {
+  // Les clés manquantes dans le contenu enregistré (ex. « logiciels »,
+  // ajoutées après coup) sont complétées depuis les défauts.
+  const base = defauts().contenu;
   if (await supabasePret()) {
     await semerSupabase();
     const { data, error } = await sb()
@@ -146,9 +149,9 @@ async function lireContenu() {
       .eq('cle', 'principal')
       .maybeSingle();
     if (error) throw error;
-    return data?.donnees || defauts().contenu;
+    return { ...base, ...(data?.donnees || {}) };
   }
-  return lireJson('contenu.json', defauts().contenu);
+  return { ...base, ...(lireJson('contenu.json', null) || {}) };
 }
 
 async function ecrireContenu(contenu) {

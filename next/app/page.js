@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { lireContenu, lireReglages, listerProduits, piloteActif } from '../lib/store';
+import { lireContenu, lireReglages, piloteActif } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
 import MenuNavigation from './components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
 
-const ICONES = { code: '</>', btp: '⌂', energie: '⚡' };
+const ICONES = { code: '</>', btp: '⌂', energie: '⚡', solaire: '☀️' };
 
 function formaterPrix(produit) {
   try {
@@ -20,10 +20,9 @@ function formaterPrix(produit) {
 }
 
 export default async function Accueil() {
-  const [contenu, reglages, produits, pilote] = await Promise.all([
+  const [contenu, reglages, pilote] = await Promise.all([
     lireContenu(),
     lireReglages(),
-    listerProduits(),
     piloteActif()
   ]);
 
@@ -33,7 +32,7 @@ export default async function Accueil() {
   ) || contenu.hero?.onglets?.[0];
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};
-  const vedette = produits.slice(0, 6);
+  const logiciels = contenu.logiciels || {};
 
   return (
     <>
@@ -69,7 +68,7 @@ export default async function Accueil() {
             </h1>
             <p>{hero?.description}</p>
             <div className="boutons">
-              <a className="bouton bouton-vert" href="#produits">
+              <a className="bouton bouton-vert" href="#logiciels">
                 {hero?.boutonTexte || 'Découvrir nos offres'}
               </a>
               <a className="bouton bouton-fantome" href="#contact">
@@ -88,6 +87,19 @@ export default async function Accueil() {
               height="480"
             />
           </div>
+        </div>
+        <div className="conteneur hero-specialites" aria-label="Nos spécialités">
+          {specialites.map((s) => (
+            <div className="hero-specialite" key={s.id}>
+              <span className="hero-specialite-icone" aria-hidden="true">
+                {ICONES[s.icone] || '★'}
+              </span>
+              <div>
+                <strong>{s.titre}</strong>
+                <p>{s.texte}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -109,35 +121,52 @@ export default async function Accueil() {
         </div>
       </section>
 
-      <section className="section" id="produits" style={{ background: '#eef2f7' }}>
+      <section className="section" id="logiciels" style={{ background: '#eef2f7' }}>
         <div className="conteneur">
-          <h2>Boutique</h2>
+          <h2>{logiciels.titre || 'Nos logiciels'}</h2>
           <p className="sous-titre">
-            Une sélection de matériel et de kits, disponibles à {identite.ville}.
+            {logiciels.sousTitre ||
+              'Des logiciels conçus par LK-TECH, avec pour chacun une explication complète.'}
           </p>
-          <div className="grille">
-            {vedette.map((p) => (
-              <div className="carte carte-produit" key={p.id}>
-                {p.image && (
-                  <img
-                    className="produit-image"
-                    src={p.image}
-                    alt={p.nom}
-                    loading="lazy"
-                    width="400"
-                    height="260"
-                  />
-                )}
-                {p.badge && <span className="produit-badge">{p.badge}</span>}
-                <h3>{p.nom}</h3>
-                <p>{p.description}</p>
-                <div className="produit-meta">
-                  <span className="produit-prix">{formaterPrix(p)}</span>
-                  <span className="produit-stock">{p.stock} en stock</span>
-                </div>
-              </div>
-            ))}
-            {!vedette.length && <p className="vide">Aucun produit disponible pour le moment.</p>}
+          <div className="logiciels-grille">
+            {(logiciels.items || [])
+              .filter((l) => l.actif !== false)
+              .map((l) => (
+                <article className="carte carte-logiciel" key={l.id}>
+                  <div className="logiciel-entete">
+                    <span className="logiciel-icone" aria-hidden="true">
+                      {l.icone || '💾'}
+                    </span>
+                    <div>
+                      <h3>{l.nom}</h3>
+                      <p className="logiciel-pitch">{l.pitch}</p>
+                    </div>
+                  </div>
+                  {l.badge && <span className="produit-badge">{l.badge}</span>}
+                  <p className="logiciel-explication">{l.explication}</p>
+                  {(l.fonctionnalites || []).length > 0 && (
+                    <ul className="logiciel-fonctions">
+                      {l.fonctionnalites.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="logiciel-pied">
+                    <div className="logiciel-prix">
+                      <span className="produit-prix">{formaterPrix(l)}</span>
+                      {l.typePrix && (
+                        <span className="logiciel-type">{l.typePrix}</span>
+                      )}
+                    </div>
+                    <a className="bouton bouton-vert" href="#contact">
+                      {logiciels.texteBouton || 'Demander une démo'}
+                    </a>
+                  </div>
+                </article>
+              ))}
+            {!(logiciels.items || []).length && (
+              <p className="vide">Les logiciels arrivent bientôt.</p>
+            )}
           </div>
         </div>
       </section>
