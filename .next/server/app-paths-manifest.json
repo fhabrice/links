@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/admin/logiciels/route": "app/api/admin/logiciels/route.js",
+  "/api/admin/logout/route": "app/api/admin/logout/route.js",
+  "/api/admin/messages/[id]/route": "app/api/admin/messages/[id]/route.js",
+  "/api/admin/messages/route": "app/api/admin/messages/route.js",
+  "/api/admin/produits/[id]/route": "app/api/admin/produits/[id]/route.js",
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/api/admin/contenu/route": "app/api/admin/contenu/route.js",
+  "/api/admin/produits/route": "app/api/admin/produits/route.js",
+  "/api/admin/code/route": "app/api/admin/code/route.js",
+  "/api/admin/reglages/route": "app/api/admin/reglages/route.js",
+  "/api/admin/session/route": "app/api/admin/session/route.js",
+  "/api/admin/state/route": "app/api/admin/state/route.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/site/route": "app/api/site/route.js",
+  "/admin/page": "app/admin/page.js",
+  "/page": "app/page.js"
+}

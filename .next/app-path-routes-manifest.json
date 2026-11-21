@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/admin/logiciels/route": "/api/admin/logiciels",
+  "/api/admin/logout/route": "/api/admin/logout",
+  "/api/admin/messages/[id]/route": "/api/admin/messages/[id]",
+  "/api/admin/messages/route": "/api/admin/messages",
+  "/api/admin/produits/[id]/route": "/api/admin/produits/[id]",
+  "/api/admin/login/route": "/api/admin/login",
+  "/api/admin/contenu/route": "/api/admin/contenu",
+  "/api/admin/produits/route": "/api/admin/produits",
+  "/api/admin/code/route": "/api/admin/code",
+  "/api/admin/reglages/route": "/api/admin/reglages",
+  "/api/admin/session/route": "/api/admin/session",
+  "/api/admin/state/route": "/api/admin/state",
+  "/api/contact/route": "/api/contact",
+  "/api/health/route": "/api/health",
+  "/api/site/route": "/api/site",
+  "/admin/page": "/admin",
+  "/page": "/"
+}
