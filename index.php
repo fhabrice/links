@@ -208,6 +208,12 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <?php
         $logiciels = $contenu['logiciels'] ?? [];
+        if (empty($logiciels['liste'])) {
+            $def = @json_decode((string) @file_get_contents(__DIR__ . '/app/defaults.json'), true);
+            if (!empty($def['contenu']['logiciels'])) {
+                $logiciels = $def['contenu']['logiciels'];
+            }
+        }
         $listeLogiciels = array_values(array_filter($logiciels['liste'] ?? [], fn($l) => !empty($l['actif'])));
       ?>
       <div class="section__entete">
