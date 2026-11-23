@@ -253,13 +253,16 @@ if ($membreConnecte) {
       <a class="marque" href="<?= $base ?>/">
         <img src="<?= $base ?>/assets/img/logo-lk-tech-clair.svg" alt="LK-TECH" class="marque__logo" height="36">
       </a>
-      <nav class="nav">
+      <nav class="nav" id="nav">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
         <a class="nav__lien" href="<?= $base ?>/#logiciels">Logiciels</a>
         <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
         <a class="nav__lien" href="<?= $base ?>/admin/">🔒 Admin</a>
       </nav>
+      <div class="entete__actions">
+        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
+      </div>
     </div>
   </header>
 

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" width="420" height="96" role="img" aria-label="Linksmartech">
+  <g>
+    <rect x="4" y="16" width="64" height="64" rx="16" fill="#1e3a8a"/>
+    <path d="M24 30h8v26h14v8H24z" fill="#fff"/>
+    <path d="M46 30h8v15h-8z" fill="#eab308"/>
+    <text x="84" y="58" font-family="Inter, Segoe UI, system-ui, sans-serif" font-size="34" font-weight="800" letter-spacing="-0.5" fill="#0f172a">LINKS<tspan fill="#1e3a8a">MARTECH</tspan></text>
+    <text x="86" y="78" font-family="Inter, Segoe UI, system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="3.2" fill="#64748b">GOMA · NORD-KIVU · RDC</text>
+  </g>
+</svg>

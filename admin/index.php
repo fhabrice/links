@@ -1,0 +1,490 @@
+<?php
+/**
+ * LK-TECH (Linksmartech) — interface d'administration
+ * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
+ *
+ * @package LK-TECH
+ */
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../app/bootstrap.php';
+
+$base = base_url();
+$contenu = lk_store()->contenu();
+$identite = $contenu['identite'] ?? [];
+$reglages = lk_store()->reglages();
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration | LK-TECH</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
+  <style>
+    /* ------------------------ Styles de l'administration ------------------------ */
+    body { background: #f1f5f9; }
+    .admin-entete { background: var(--ardoise-900); color: #fff; position: sticky; top: 0; z-index: 40; }
+    .admin-entete__inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.25rem; }
+    .admin-marque { display: flex; align-items: center; gap: .7rem; font-weight: 800; letter-spacing: -.02em; }
+    .admin-marque img { width: 38px; height: 38px; border-radius: 10px; background: #fff; }
+    .admin-corps { display: grid; grid-template-columns: 250px 1fr; min-height: calc(100vh - 60px); }
+    @media (max-width: 900px) { .admin-corps { grid-template-columns: 1fr; } }
+
+    .admin-menu { background: #fff; border-right: 1px solid var(--ardoise-200); padding: 1rem .75rem; display: flex; flex-direction: column; gap: .25rem; }
+    @media (max-width: 900px) { .admin-menu { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--ardoise-200); } }
+    .admin-menu button {
+      display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left;
+      background: none; border: 0; border-radius: 10px; padding: .7rem .85rem;
+      font-size: .9rem; font-weight: 600; color: var(--ardoise-700); cursor: pointer; white-space: nowrap;
+    }
+    .admin-menu button:hover { background: var(--ardoise-100); }
+    .admin-menu button.actif { background: var(--primaire); color: #fff; }
+
+    .admin-zone { padding: 1.75rem 1.5rem 4rem; max-width: 1080px; }
+    .admin-titre { font-size: 1.5rem; font-weight: 800; margin-bottom: .35rem; }
+    .admin-sous-titre { color: var(--ardoise-500); margin-bottom: 1.75rem; font-size: .92rem; }
+
+    .panneau { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .panneau h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 1rem; }
+
+    .grille-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat { background: #fff; border: 1px solid var(--ardoise-200); border-radius: var(--rayon); padding: 1.15rem; }
+    .stat strong { display: block; font-size: 1.9rem; font-weight: 800; color: var(--primaire); line-height: 1.1; }
+    .stat span { font-size: .74rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ardoise-500); font-weight: 700; }
+
+    .vue { display: none; }
+    .vue.active { display: block; }
+
+    .grille-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 720px) { .grille-2 { grid-template-columns: 1fr; } }
+
+    .tableau { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .tableau th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ardoise-500); padding: .6rem .5rem; border-bottom: 1px solid var(--ardoise-200); }
+    .tableau td { padding: .7rem .5rem; border-bottom: 1px solid var(--ardoise-100); vertical-align: middle; }
+    .tableau img { width: 54px; height: 42px; object-fit: cover; border-radius: 8px; background: var(--ardoise-100); }
+    .puce { display: inline-block; font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; padding: .22rem .5rem; border-radius: 999px; }
+    .puce--actif { background: #dcfce7; color: #166534; }
+    .puce--inactif { background: #fee2e2; color: #991b1b; }
+    .puce--info { background: #e0e7ff; color: #3730a3; }
+
+    .barre-actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+    .note { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; border-radius: var(--rayon-sm); padding: .9rem 1rem; font-size: .86rem; }
+    .note--succes { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+
+    /* Écran de connexion */
+    .connexion-fond { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
+      background: radial-gradient(900px 460px at 15% 0%, rgba(46,158,91,.28), transparent 60%), linear-gradient(135deg,#0a1120,#0d1729 45%,#16233F); }
+    .connexion-carte { background: #fff; border-radius: 18px; padding: 2.25rem; width: min(420px, 100%); box-shadow: var(--ombre-forte); }
+    .connexion-carte img { width: 54px; height: 54px; border-radius: 14px; margin-bottom: 1rem; }
+    .connexion-carte h1 { font-size: 1.35rem; font-weight: 800; margin-bottom: .25rem; }
+    .connexion-carte p { color: var(--ardoise-500); font-size: .88rem; margin-bottom: 1.5rem; }
+    .rappel { background: var(--ardoise-100); border-radius: var(--rayon-sm); padding: .75rem .9rem; font-size: .8rem; color: var(--ardoise-700); margin-bottom: 1.1rem; }
+    .lien-discret { font-size: .82rem; color: var(--ardoise-500); }
+    .lien-discret:hover { color: var(--primaire); }
+    .badge-pilote { display: inline-flex; align-items: center; gap: .45rem; font-size: .78rem; font-weight: 700; padding: .35rem .7rem; border-radius: 999px; background: rgba(255,255,255,.12); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================ CONNEXION ============================ -->
+  <div class="connexion-fond" id="vue-connexion">
+    <form class="connexion-carte" id="formulaire-connexion">
+      <img src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+      <h1>Espace d'administration</h1>
+      <p>Gérez le contenu du site LK-TECH.</p>
+
+      <div class="rappel">
+        <strong>Aucune base de données à configurer.</strong><br>
+        Le site enregistre automatiquement son contenu : rien à installer, aucun identifiant MySQL à saisir.
+      </div>
+
+      <div class="alerte alerte--erreur" id="connexion-erreur"></div>
+
+      <div class="champ" style="margin-bottom:1rem">
+        <label for="identifiant">Identifiant</label>
+        <input id="identifiant" name="identifiant" type="text" autocomplete="username" required value="admin">
+      </div>
+      <div class="champ" style="margin-bottom:1.25rem">
+        <label for="motDePasse">Mot de passe</label>
+        <input id="motDePasse" name="motDePasse" type="password" autocomplete="current-password" required>
+      </div>
+
+      <button class="btn btn--bloc" type="submit" id="bouton-connexion">Se connecter</button>
+      <p class="lien-discret" style="margin-top:1rem;text-align:center">
+        Première connexion : <strong>admin</strong> / <strong>linksmartech</strong> — à changer ensuite.
+      </p>
+      <p class="lien-discret" style="text-align:center"><a href="<?= $base ?>/">← Retour au site</a></p>
+    </form>
+  </div>
+
+  <!-- =========================== TABLEAU DE BORD ======================== -->
+  <div id="vue-admin" hidden>
+    <header class="admin-entete">
+      <div class="admin-entete__inner">
+        <div class="admin-marque">
+          <img src="<?= $base ?>/assets/img/logo.svg" alt="">
+          <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.75rem">
+          <span class="badge-pilote" id="badge-pilote">Stockage : …</span>
+          <a class="btn btn--fantome btn--petit" href="<?= $base ?>/" target="_blank" rel="noopener" style="--btn-texte:#fff;border-color:rgba(255,255,255,.3)">Voir le site</a>
+          <button class="btn btn--accent btn--petit" id="bouton-deconnexion">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-corps">
+      <nav class="admin-menu" id="menu-admin">
+        <button data-vue="tableau" class="actif">📊 Tableau de bord</button>
+        <button data-vue="identite">🏷️ Identité &amp; logo</button>
+        <button data-vue="hero">🖼️ Bannière d'accueil</button>
+        <button data-vue="specialites">🎯 Spécialités</button>
+        <button data-vue="apropos">ℹ️ À propos</button>
+        <button data-vue="produits">🛍️ Produits</button>
+        <button data-vue="services">🧰 Services</button>
+        <button data-vue="approche">🧭 Approche</button>
+        <button data-vue="messages">✉️ Messages <span id="puce-messages" class="puce puce--inactif" hidden>0</span></button>
+        <button data-vue="reglages">⚙️ Réglages</button>
+        <button data-vue="securite">🔒 Sécurité</button>
+        <button data-vue="systeme">💾 Stockage &amp; sauvegarde</button>
+      </nav>
+
+      <main class="admin-zone">
+
+        <!-- ------------------------------ TABLEAU ------------------------------ -->
+        <section class="vue active" id="vue-tableau">
+          <h2 class="admin-titre">Tableau de bord</h2>
+          <p class="admin-sous-titre">Vue d'ensemble de votre site et de son contenu.</p>
+
+          <div class="grille-stats">
+            <div class="stat"><strong id="stat-messages">0</strong><span>Messages reçus</span></div>
+            <div class="stat"><strong id="stat-non-lus">0</strong><span>Messages non lus</span></div>
+            <div class="stat"><strong id="stat-produits">0</strong><span>Produits</span></div>
+            <div class="stat"><strong id="stat-services">0</strong><span>Services</span></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Derniers messages</h3>
+            <div id="apercu-messages"></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Bon à savoir</h3>
+            <p style="font-size:.9rem;color:var(--ardoise-700);margin:0">
+              Toutes vos modifications sont enregistrées <strong>instantanément</strong> et visibles sur le site public.
+              Aucun réglage de base de données n'est nécessaire : le contenu est conservé automatiquement.
+            </p>
+          </div>
+        </section>
+
+        <!-- ------------------------------ IDENTITÉ ----------------------------- -->
+        <section class="vue" id="vue-identite">
+          <h2 class="admin-titre">Identité &amp; logo</h2>
+          <p class="admin-sous-titre">Nom, coordonnées, couleurs et logo affichés sur tout le site.</p>
+
+          <div class="panneau">
+            <h3>Logo</h3>
+            <div style="display:flex;gap:2rem;flex-wrap:wrap">
+              <div style="display:flex;gap:1rem;align-items:center">
+                <img id="apercu-logo" src="<?= $base ?>/assets/img/logo.svg" alt="Aperçu du logo" style="width:82px;height:82px;border-radius:16px;object-fit:contain;border:1px solid var(--ardoise-200);padding:.35rem;background:#fff">
+                <div>
+                  <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ardoise-500)">Logo principal</label><br>
+                  <input type="file" id="fichier-logo" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                  <p style="font-size:.76rem;color:var(--ardoise-500);margin:.45rem 0 0">Fonds clairs (en-tête, admin)</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:1rem;align-items:center">
+                <img id="apercu-logo-clair" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Aperçu du logo clair" style="width:82px;height:82px;border-radius:16px;object-fit:contain;border:1px solid var(--ardoise-200);padding:.35rem;background:#16233F">
+                <div>
+                  <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ardoise-500)">Logo variante claire</label><br>
+                  <input type="file" id="fichier-logo-clair" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                  <p style="font-size:.76rem;color:var(--ardoise-500);margin:.45rem 0 0">Fonds sombres (pied de page)</p>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:.78rem;color:var(--ardoise-500);margin:1rem 0 0">PNG, JPG, WEBP ou SVG — 4 Mo maximum par fichier.</p>
+          </div>
+
+          <div class="panneau">
+            <h3>Informations générales</h3>
+            <div class="formulaire" style="border:0;padding:0;box-shadow:none">
+              <div class="grille-2">
+                <div class="champ"><label for="i-nom">Nom affiché</label><input id="i-nom" type="text"></div>
+                <div class="champ"><label for="i-slogan">Slogan</label><input id="i-slogan" type="text"></div>
+              </div>
+              <div class="grille-2">
+                <div class="champ"><label for="i-rccm">RCCM</label><input id="i-rccm" type="text"></div>
+                <div class="champ"><label for="i-ville">Ville / adresse</label><input id="i-ville" type="text"></div>
+              </div>
+              <div class="grille-2">
+                <div class="champ"><label for="i-tel">Téléphone principal</label><input id="i-tel" type="text"></div>
+                <div class="champ"><label for="i-tel2">Téléphone secondaire</label><input id="i-tel2" type="text"></div>
+              </div>
+              <div class="grille-2">
+                <div class="champ"><label for="i-email">E-mail</label><input id="i-email" type="email"></div>
+                <div class="champ"><label for="i-site">Site web</label><input id="i-site" type="text" placeholder="www.linksmartec.com"></div>
+              </div>
+              <div class="champ"><label for="i-horaires">Horaires</label><input id="i-horaires" type="text"></div>
+              <div class="grille-2">
+                <div class="champ"><label for="i-couleur">Couleur principale</label><input id="i-couleur" type="color" style="height:44px;padding:.25rem"></div>
+                <div class="champ"><label for="i-accent">Couleur d'accent</label><input id="i-accent" type="color" style="height:44px;padding:.25rem"></div>
+              </div>
+              <div class="champ"><label for="i-description">Texte du pied de page</label><textarea id="i-description" rows="3"></textarea></div>
+            </div>
+            <div class="barre-actions" style="margin:1.25rem 0 0">
+              <button class="btn" id="enregistrer-identite">Enregistrer</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- -------------------------------- HERO ------------------------------- -->
+        <section class="vue" id="vue-hero">
+          <h2 class="admin-titre">Bannière d'accueil</h2>
+          <p class="admin-sous-titre">Les deux onglets de la page d'accueil (produits nationaux / solutions internationales).</p>
+          <div id="zones-hero"></div>
+        </section>
+
+        <!-- ---------------------------- SPÉCIALITÉS ---------------------------- -->
+        <section class="vue" id="vue-specialites">
+          <h2 class="admin-titre">Spécialités</h2>
+          <p class="admin-sous-titre">Les trois pôles d'expertise mis en avant sur la page d'accueil.</p>
+          <div id="zones-specialites"></div>
+          <div class="panneau">
+            <h3>Carte « demande d'étude »</h3>
+            <p class="note">Affichée dans la bannière lorsqu'aucun produit de la spécialité n'est disponible à la vente.</p>
+            <div class="grille-2">
+              <div class="champ"><label for="vd-badge">Badge</label><input id="vd-badge" type="text"></div>
+              <div class="champ"><label for="vd-titre">Titre</label><input id="vd-titre" type="text"></div>
+            </div>
+            <div class="champ"><label for="vd-texte">Texte</label><textarea id="vd-texte" rows="2"></textarea></div>
+            <div class="grille-2">
+              <div class="champ"><label for="vd-bouton">Texte du bouton</label><input id="vd-bouton" type="text"></div>
+              <div class="champ"><label for="vd-lien">Lien du bouton</label><input id="vd-lien" type="text"></div>
+            </div>
+          </div>
+          <div class="barre-actions"><button class="btn" id="enregistrer-specialites">Enregistrer les spécialités</button></div>
+        </section>
+
+        <!-- ------------------------------ À PROPOS ----------------------------- -->
+        <section class="vue" id="vue-apropos">
+          <h2 class="admin-titre">Page « À propos »</h2>
+          <p class="admin-sous-titre">Présentation de l'entreprise, mission, valeurs et parcours.</p>
+
+          <div class="panneau">
+            <h3>En-tête de la page</h3>
+            <div class="grille-2">
+              <div class="champ"><label for="ap-sur">Sur-titre</label><input id="ap-sur" type="text"></div>
+              <div class="champ"><label for="ap-soustitre">Sous-titre</label><input id="ap-soustitre" type="text"></div>
+            </div>
+            <div class="champ"><label for="ap-titre">Titre de la page</label><input id="ap-titre" type="text"></div>
+            <div class="champ"><label for="ap-intro">Présentation (un paragraphe par ligne vide)</label><textarea id="ap-intro" rows="8"></textarea></div>
+            <div class="champ"><label for="ap-image">Image de présentation (URL ou téléversement ci-dessous)</label><input id="ap-image" type="text"></div>
+            <div class="champ"><label for="ap-fichier">… ou téléverser une image</label><input id="ap-fichier" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Mission &amp; vision</h3>
+            <div class="champ" style="margin-bottom:1rem"><label for="ap-mission">Notre mission</label><textarea id="ap-mission" rows="3"></textarea></div>
+            <div class="champ"><label for="ap-vision">Notre vision</label><textarea id="ap-vision" rows="3"></textarea></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Chiffres clés</h3>
+            <div id="zones-chiffres"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-chiffre">+ Ajouter un chiffre</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Les trois spécialités (page À propos)</h3>
+            <div id="zones-piliers-apropos"></div>
+          </div>
+
+          <div class="panneau">
+            <h3>Valeurs</h3>
+            <div id="zones-valeurs"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-valeur">+ Ajouter une valeur</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Parcours</h3>
+            <div id="zones-histoire"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-histoire">+ Ajouter une étape</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Pourquoi nous choisir</h3>
+            <div id="zones-raisons"></div>
+            <button class="btn btn--petit btn--fantome" id="ajouter-raison">+ Ajouter un argument</button>
+          </div>
+
+          <div class="panneau">
+            <h3>Bandeau d'appel (bas de page)</h3>
+            <div class="grille-2">
+              <div class="champ"><label for="ap-cta-titre">Titre</label><input id="ap-cta-titre" type="text"></div>
+              <div class="champ"><label for="ap-cta-bouton">Texte du bouton</label><input id="ap-cta-bouton" type="text"></div>
+            </div>
+            <div class="champ" style="margin-bottom:1rem"><label for="ap-cta-texte">Texte</label><textarea id="ap-cta-texte" rows="2"></textarea></div>
+            <div class="champ"><label for="ap-cta-lien">Lien du bouton</label><input id="ap-cta-lien" type="text" placeholder="#contact"></div>
+          </div>
+
+          <div class="barre-actions">
+            <button class="btn" id="enregistrer-apropos">Enregistrer la page À propos</button>
+            <a class="btn btn--fantome" href="<?= $base ?>/a-propos" target="_blank" rel="noopener">Voir la page</a>
+          </div>
+        </section>
+
+        <!-- ------------------------------ PRODUITS ----------------------------- -->
+        <section class="vue" id="vue-produits">
+          <h2 class="admin-titre">Produits</h2>
+          <p class="admin-sous-titre">Ajoutez, modifiez ou masquez les articles de la boutique.</p>
+
+          <div class="barre-actions">
+            <button class="btn" id="nouveau-produit">+ Nouveau produit</button>
+            <button class="btn btn--fantome" id="rafraichir-produits">Rafraîchir</button>
+          </div>
+
+          <div class="panneau" id="panneau-produit" hidden>
+            <h3 id="titre-panneau-produit">Nouveau produit</h3>
+            <div class="formulaire" style="border:0;padding:0;box-shadow:none">
+              <input type="hidden" id="p-id">
+              <div class="grille-2">
+                <div class="champ"><label for="p-nom">Nom *</label><input id="p-nom" type="text"></div>
+                <div class="champ"><label for="p-prix">Prix</label><input id="p-prix" type="number" step="0.01" min="0"></div>
+              </div>
+              <div class="champ"><label for="p-description">Description</label><textarea id="p-description" rows="2"></textarea></div>
+              <div class="grille-2">
+                <div class="champ"><label for="p-filtre">Spécialité (filtre boutique)</label>
+                  <select id="p-filtre">
+                    <option value="informatique">Informatique</option>
+                    <option value="energie">Énergie renouvelable</option>
+                    <option value="terroir">Produits du terroir</option>
+                    <option value="">Autre</option>
+                  </select>
+                </div>
+                <div class="champ"><label for="p-stock">Stock</label><input id="p-stock" type="number" min="0"></div>
+              </div>
+              <div class="grille-2">
+                <div class="champ"><label for="p-badge">Badge (ex. Nouveau)</label><input id="p-badge" type="text"></div>
+                <div class="champ"><label for="p-image">Image (URL)</label><input id="p-image" type="text" placeholder="https://… ou /uploads/…"></div>
+              </div>
+              <div class="champ">
+                <label for="p-fichier">… ou téléverser une image</label>
+                <input id="p-fichier" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+              </div>
+              <div class="champ"><label><input id="p-actif" type="checkbox" checked> Visible sur le site</label></div>
+            </div>
+            <div class="barre-actions" style="margin:1.25rem 0 0">
+              <button class="btn" id="enregistrer-produit">Enregistrer</button>
+              <button class="btn btn--fantome" id="annuler-produit">Annuler</button>
+            </div>
+          </div>
+
+          <div class="panneau">
+            <table class="tableau">
+              <thead><tr><th></th><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>État</th><th></th></tr></thead>
+              <tbody id="corps-produits"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ------------------------------ SERVICES ----------------------------- -->
+        <section class="vue" id="vue-services">
+          <h2 class="admin-titre">Services</h2>
+          <p class="admin-sous-titre">Les piliers d'expertise présentés sur le site.</p>
+          <div class="barre-actions"><button class="btn" id="ajouter-service">+ Ajouter un service</button></div>
+          <div id="zones-services"></div>
+          <div class="barre-actions"><button class="btn" id="enregistrer-services">Enregistrer les services</button></div>
+        </section>
+
+        <!-- ------------------------------ APPROCHE ----------------------------- -->
+        <section class="vue" id="vue-approche">
+          <h2 class="admin-titre">Notre approche</h2>
+          <p class="admin-sous-titre">Les étapes de votre méthode de travail.</p>
+          <div class="panneau">
+            <div class="grille-2">
+              <div class="champ"><label for="a-titre">Titre de la section</label><input id="a-titre" type="text"></div>
+              <div class="champ"><label for="a-soustitre">Sous-titre</label><input id="a-soustitre" type="text"></div>
+            </div>
+          </div>
+          <div id="zones-etapes"></div>
+          <div class="barre-actions">
+            <button class="btn" id="enregistrer-approche">Enregistrer l'approche</button>
+            <button class="btn btn--fantome" id="ajouter-etape">+ Ajouter une étape</button>
+          </div>
+        </section>
+
+        <!-- ------------------------------ MESSAGES ----------------------------- -->
+        <section class="vue" id="vue-messages">
+          <h2 class="admin-titre">Messages reçus</h2>
+          <p class="admin-sous-titre">Les demandes envoyées depuis le formulaire de contact.</p>
+          <div id="liste-messages"></div>
+        </section>
+
+        <!-- ------------------------------ RÉGLAGES ----------------------------- -->
+        <section class="vue" id="vue-reglages">
+          <h2 class="admin-titre">Réglages</h2>
+          <p class="admin-sous-titre">Affichage général et modules du site.</p>
+          <div class="panneau">
+            <div class="champ" style="margin-bottom:1rem"><label for="r-devise">Devise affichée</label><input id="r-devise" type="text"></div>
+            <div class="champ" style="margin-bottom:1rem"><label><input type="checkbox" id="r-portail"> Afficher le bouton « Portail Client »</label></div>
+            <div class="champ"><label><input type="checkbox" id="r-maintenance"> Afficher le bandeau de maintenance</label></div>
+            <div class="barre-actions" style="margin:1.25rem 0 0"><button class="btn" id="enregistrer-reglages">Enregistrer les réglages</button></div>
+          </div>
+        </section>
+
+        <!-- ------------------------------ SÉCURITÉ ----------------------------- -->
+        <section class="vue" id="vue-securite">
+          <h2 class="admin-titre">Sécurité</h2>
+          <p class="admin-sous-titre">Modifiez le mot de passe d'accès à l'administration.</p>
+          <div class="panneau" style="max-width:520px">
+            <div class="alerte alerte--succes" id="mdp-succes"></div>
+            <div class="alerte alerte--erreur" id="mdp-erreur"></div>
+            <div class="champ" style="margin-bottom:1rem"><label for="mdp-actuel">Mot de passe actuel</label><input id="mdp-actuel" type="password" autocomplete="current-password"></div>
+            <div class="champ" style="margin-bottom:1.25rem"><label for="mdp-nouveau">Nouveau mot de passe</label><input id="mdp-nouveau" type="password" autocomplete="new-password"></div>
+            <button class="btn" id="enregistrer-mdp">Changer le mot de passe</button>
+          </div>
+        </section>
+
+        <!-- ------------------------------ SYSTÈME ------------------------------ -->
+        <section class="vue" id="vue-systeme">
+          <h2 class="admin-titre">Stockage &amp; sauvegarde</h2>
+          <p class="admin-sous-titre">Où sont enregistrées vos données — sans aucune configuration de votre part.</p>
+
+          <div class="panneau">
+            <h3>Mode de stockage actif</h3>
+            <p class="note note--succes" id="info-stockage">Détection en cours…</p>
+            <p style="font-size:.86rem;color:var(--ardoise-700);margin:1rem 0 0">
+              <strong>Aucune coordonnée MySQL n'est demandée.</strong> Le site fonctionne immédiatement :
+              il crée un espace de stockage local et y range votre contenu, vos images et vos messages.
+              Si votre hébergeur fournit <em>déjà</em> un accès MySQL (variables d'environnement <code>MYSQL_HOST</code>,
+              <code>MYSQL_USER</code>, <code>MYSQL_PASSWORD</code>, <code>MYSQL_DATABASE</code>), le site l'utilisera
+              automatiquement, sans que vous ayez quoi que ce soit à saisir.
+            </p>
+          </div>
+
+          <div class="panneau">
+            <h3>Sauvegarde &amp; maintenance</h3>
+            <div class="barre-actions">
+              <a class="btn" href="<?= $base ?>/api/admin/export" id="bouton-export" download>⬇️ Exporter mes données (JSON)</a>
+              <button class="btn btn--fantome" id="bouton-reinitialiser">Réinitialiser le contenu</button>
+            </div>
+            <p style="font-size:.82rem;color:var(--ardoise-500);margin:0">
+              L'export contient tout le contenu (textes, produits, services) et les messages reçus.
+              La réinitialisation restaure le contenu d'origine du site.
+            </p>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>window.LK_BASE = "<?= $base ?>";</script>
+  <script src="<?= $base ?>/assets/js/admin.js"></script>
+</body>
+</html>
