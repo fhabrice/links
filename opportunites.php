@@ -386,5 +386,49 @@ if ($membreConnecte) {
       </section>
     </div>
   </main>
+
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div>
+          <img class="pied__logo" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte">LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.</p>
+        </div>
+        <div>
+          <h4 class="pied__titre">Navigation</h4>
+          <div class="pied__liens">
+            <a href="<?= $base ?>/">Accueil</a>
+            <a href="<?= $base ?>/#specialites">Spécialités</a>
+            <a href="<?= $base ?>/#logiciels">Logiciels</a>
+            <a href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
+            <a href="<?= $base ?>/a-propos">À propos</a>
+            <a href="<?= $base ?>/#contact">Contact</a>
+            <a href="<?= $base ?>/admin/">🔒 Espace admin</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="pied__titre">Coordonnées</h4>
+          <div class="pied__liens">
+            <span>Goma, Nord-Kivu, RDC</span>
+            <a href="mailto:contact@linksmartec.com">contact@linksmartec.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var burger = document.getElementById('burger');
+      var nav = document.getElementById('nav');
+      if (burger && nav) {
+        burger.addEventListener('click', function () {
+          var ouvert = nav.classList.toggle('nav--ouvert');
+          burger.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
