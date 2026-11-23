@@ -249,14 +249,19 @@ if ($membreConnecte) {
 </head>
 <body>
   <header class="entete">
-    <div class="conteneur entete__ligne">
-      <a class="marque" href="<?= $base ?>/">
-        <img src="<?= $base ?>/assets/img/logo-lk-tech-clair.svg" alt="LK-TECH" class="marque__logo" height="36">
+    <div class="conteneur entete__inner">
+      <a class="marque" href="<?= $base ?>/" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+        <span class="marque__texte">
+          <span class="marque__nom">LK<i class="tiret">-</i>TECH</span>
+          <span class="marque__slogan">LINKS MARTECH</span>
+        </span>
       </a>
       <nav class="nav" id="nav">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
         <a class="nav__lien" href="<?= $base ?>/#logiciels">Logiciels</a>
-        <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
+        <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets</a>
+        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
         <a class="nav__lien" href="<?= $base ?>/admin/">🔒 Admin</a>
       </nav>
