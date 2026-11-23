@@ -1,9 +1,10 @@
 ---
-# Déploiement cPanel — Next.js
-# Copie l'arbre de travail dans le dossier nextapp/ du compte.
+# Déploiement cPanel — version PHP
+# Copie les fichiers PHP dans /home2/wqmetrvw/public_html/linksmartec.com/
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/wqmetrvw/nextapp/
+    - export DEPLOYPATH=/home2/wqmetrvw/public_html/linksmartec.com/
     - /bin/mkdir -p "$DEPLOYPATH"
     - /bin/cp -R * "$DEPLOYPATH"
+    - /bin/cp -f .htaccess "$DEPLOYPATH"/
     - /bin/cp -f .cpanel.yml "$DEPLOYPATH"/

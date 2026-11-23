@@ -1,0 +1,409 @@
+<?php
+/**
+ * LK-TECH (Linksmartech) — page d'accueil
+ * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
+ *
+ * @package LK-TECH
+ */
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/app/bootstrap.php';
+
+$base = base_url();
+$contenu = lk_store()->contenu();
+$identite = $contenu['identite'] ?? [];
+$reglages = lk_store()->reglages();
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><?= htmlspecialchars(($identite['nom'] ?? 'LK-TECH'), ENT_QUOTES, 'UTF-8') ?> | Construire, digitaliser et connecter vos projets</title>
+  <meta name="description" content="LK-TECH accompagne vos projets en construction, solutions digitales et énergie renouvelable, de la conception à la réalisation. Basée à Goma, RDC.">
+  <meta name="theme-color" content="#16233F">
+  <meta property="og:title" content="LK-TECH | Construire, digitaliser et connecter vos projets">
+  <meta property="og:description" content="Construction, technologie et énergie : un partenaire pour concrétiser vos projets.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.linksmartec.com/">
+  <meta property="og:site_name" content="LK-TECH">
+  <link rel="canonical" href="https://www.linksmartec.com/">
+  <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
+  <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "LK-TECH (Linksmartech)",
+    "url": "https://www.linksmartec.com",
+    "email": "contact@linksmartec.com",
+    "telephone": "+243 976 459 970",
+    "description": "Construction, technologie et énergie renouvelable à Goma, RDC.",
+    "areaServed": "Nord-Kivu, République Démocratique du Congo",
+    "knowsAbout": ["Informatique", "Développement logiciel", "Réseaux", "Construction", "BTP", "Énergie renouvelable", "Énergie solaire"]
+  }
+  </script>
+</head>
+<body>
+  <a class="lien-evitement" href="#contenu-principal">Aller au contenu</a>
+
+  <div class="bandeau-info" id="bandeau-maintenance" hidden>
+    Site en cours de maintenance — certaines fonctions peuvent être momentanément indisponibles.
+  </div>
+
+  <!-- ============================== TOPBAR ============================== -->
+  <div class="topbar">
+    <div class="conteneur topbar__inner">
+      <span class="topbar__rccm">CONSTRUCTION <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
+      <div class="topbar__infos">
+        <span data-champ="ville">Goma, RDC</span>
+        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+        <div class="langues" data-sans-traduction>
+          <label class="sr-only" for="choix-langue">Choisir la langue</label>
+          <span class="langues__icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9M12 3C9.6 5.5 8.4 8.5 8.4 12s1.2 6.5 3.6 9"/></svg></span>
+          <select id="choix-langue" name="langue" aria-label="Choisir la langue">
+            <option value="fr" lang="fr">Français</option>
+            <option value="en" lang="en">English</option>
+            <option value="sw" lang="sw">Kiswahili</option>
+            <option value="ln" lang="ln">Lingala</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================== ENTÊTE ============================= -->
+  <header class="entete">
+    <div class="conteneur entete__inner">
+      <a class="marque" href="#accueil" aria-label="Accueil LK-TECH">
+        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+        <span class="marque__texte">
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
+          <span class="marque__slogan">LINKS MARTECH</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a class="nav__lien" href="#accueil">Accueil</a>
+        <a class="nav__lien" href="#specialites">Expertises</a>
+        <a class="nav__lien" href="#services">Solutions</a>
+        <a class="nav__lien" href="#approche">Notre méthode</a>
+        <a class="nav__lien" href="#logiciels">Logiciels</a>
+        <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets</a>
+        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="#contact">Contact</a>
+        <a class="nav__lien" href="<?= $base ?>/admin/">🔒 Admin</a>
+      </nav>
+
+      <div class="entete__actions">
+        <button class="btn btn--fantome btn--petit panier-btn" id="btn-panier" aria-label="Ouvrir le panier">
+          Panier
+          <span class="panier-btn__compteur" id="panier-compteur" hidden>0</span>
+        </button>
+        <a class="btn btn--petit" id="btn-portail" href="#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================== ACCUEIL ============================== -->
+  <main id="contenu-principal">
+  <section class="hero" id="accueil" aria-labelledby="hero-titre">
+    <div class="conteneur hero__inner">
+      <div class="hero__grille">
+        <div class="hero__contenu">
+          <span class="badge-pilule" id="hero-badge">Ingénierie &amp; solutions intégrées · Goma, RDC</span>
+          <h1 class="hero__titre" id="hero-titre">Construire, digitaliser, <span class="accent">faire avancer vos projets</span>.</h1>
+          <p class="hero__texte" id="hero-texte">De l'étude technique aux solutions numériques et énergétiques, LK-TECH réunit les expertises qui donnent vie à vos ambitions.</p>
+          <div class="hero__boutons">
+            <a class="btn btn--accent" id="hero-bouton" href="#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
+            <a class="btn btn--fantome hero__secondaire" href="#specialites">Découvrir nos expertises <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="hero__reperes" aria-label="Nos domaines d'activité">
+            <span><i></i> Construction</span><span><i></i> Technologie</span><span><i></i> Énergie</span>
+          </div>
+        </div>
+        <div class="hero__visuel">
+          <img src="<?= $base ?>/assets/img/vedette-construction.jpg" alt="Chantier de construction, équipes au travail" fetchpriority="high">
+          <div class="hero__visuel-note"><span class="hero__note-signe">LK<span>·</span></span><span>Des idées solides.<br><strong>Des solutions concrètes.</strong></span></div>
+        </div>
+      </div>
+      <div class="hero__bas"><span>01 / UNE VISION INTÉGRÉE</span><a href="#presentation">Découvrir LK-TECH <span aria-hidden="true">↓</span></a></div>
+    </div>
+  </section>
+
+  <div class="ruban" aria-label="Nos domaines d'expertise">
+    <div class="conteneur ruban__inner">
+      <span class="ruban__intro">NOS DOMAINES</span>
+      <div class="ruban__liste" id="ruban-specialites"></div>
+      <a class="ruban__contact" href="#contact">Nous contacter <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  <section class="presentation" id="presentation">
+    <div class="conteneur presentation__grille">
+      <div class="presentation__image">
+        <img src="<?= $base ?>/assets/img/portrait-expertise.jpg" alt="Illustration d’une collaboration autour de plans et d’outils numériques" loading="lazy">
+        <div class="presentation__cartouche"><strong>De l'idée au terrain.</strong><span>Un accompagnement à chaque étape.</span></div>
+        <small class="illustration-note">Visuel d’illustration généré par IA</small>
+      </div>
+      <div class="presentation__contenu">
+        <p class="section__sur">À PROPOS DE LK-TECH <span class="section__trait"></span> 01</p>
+        <h2 class="section__titre">Un seul partenaire.<br><em>Plusieurs façons d'avancer.</em></h2>
+        <p>Basée à Goma, LK-TECH (Links Martech) associe construction, informatique et énergie renouvelable pour répondre aux besoins des entreprises, institutions et particuliers.</p>
+        <p>Notre approche est simple : écouter, concevoir avec précision et accompagner chaque projet jusqu'à sa réalisation.</p>
+        <div class="presentation__atouts"><span>✳ &nbsp; Expertise pluridisciplinaire</span><span>✳ &nbsp; Solutions adaptées au terrain</span></div>
+        <a class="lien-fleche" href="<?= $base ?>/a-propos">En savoir plus sur nous <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SPÉCIALITÉS =========================== -->
+  <section class="section" id="specialites">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">CE QUE NOUS FAISONS <span class="section__trait"></span> 02</p>
+        <h2 class="section__titre">Des expertises qui font <em>la différence.</em></h2>
+        <p class="section__texte">Trois domaines complémentaires pour concevoir, bâtir et faire grandir vos projets. Sélectionnez une expertise pour en savoir plus.</p>
+      </div>
+      <div class="grille-specialites" id="grille-specialites"></div>
+    </div>
+  </section>
+
+  <!-- ============================== SERVICES ============================ -->
+  <section class="section section--gris" id="services">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">NOS SOLUTIONS <span class="section__trait"></span> 03</p>
+        <h2 class="section__titre">Des réponses concrètes à <em>vos défis.</em></h2>
+      </div>
+      <div class="solutions-detail" id="solutions-detail">
+        <div class="onglets" id="onglets-hero" role="tablist" aria-label="Explorer nos expertises"></div>
+        <div class="solutions-detail__contenu" id="expertise-panel" role="tabpanel" tabindex="0">
+          <div><span class="solutions-detail__badge" id="expertise-badge">Spécialité Informatique</span><h3 id="expertise-titre">Des solutions pensées pour votre activité.</h3></div>
+          <div><p id="expertise-texte">Du diagnostic au déploiement, découvrez un accompagnement adapté à vos besoins.</p><a class="btn btn--accent" id="expertise-bouton" href="#contact">Parlons de votre besoin <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </div>
+      <div class="grille-services" id="grille-services"></div>
+    </div>
+  </section>
+
+  <!-- ============================== APPROCHE ============================ -->
+  <section class="section" id="approche">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">NOTRE MÉTHODE <span class="section__trait"></span> 04</p>
+        <h2 class="section__titre" id="approche-titre">Notre Approche</h2>
+        <p class="section__texte" id="approche-soustitre">Une méthode éprouvée, du diagnostic à la pérennisation</p>
+      </div>
+      <div class="grille-etapes" id="grille-etapes"></div>
+    </div>
+  </section>
+
+  <!-- ============================== BOUTIQUE ============================ -->
+  <section class="section section--gris" id="logiciels">
+    <div class="conteneur">
+      <?php
+        $logiciels = $contenu['logiciels'] ?? [];
+        $listeLogiciels = array_values(array_filter($logiciels['liste'] ?? [], fn($l) => !empty($l['actif'])));
+      ?>
+      <div class="section__entete">
+        <p class="section__sur">SOLUTIONS LOGICIELLES <span class="section__trait"></span> 05</p>
+        <h2 class="section__titre"><?= e($logiciels['titre'] ?? 'Nos logiciels') ?></h2>
+        <p class="section__texte"><?= e($logiciels['sousTitre'] ?? 'Des logiciels conçus par LK-TECH pour simplifier la gestion de votre entreprise') ?></p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;">
+        <?php foreach ($listeLogiciels as $log): ?>
+          <article class="carte" style="display:flex;flex-direction:column;justify-content:space-between;background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(15,23,42,.08);box-shadow:0 8px 24px rgba(15,23,42,.04);">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+                <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0284c7;background:#e0f2fe;padding:4px 10px;border-radius:999px;"><?= e($log['categorie'] ?? 'Logiciel') ?></span>
+                <?php if (!empty($log['badge'])): ?>
+                  <span style="font-size:.75rem;font-weight:600;color:#475569;"><?= e($log['badge']) ?></span>
+                <?php endif; ?>
+              </div>
+              <h3 style="margin:0 0 8px;font-size:1.25rem;color:#0f172a;"><?= e($log['nom'] ?? '') ?></h3>
+              <p style="margin:0 0 12px;font-weight:600;color:#334155;font-size:.95rem;"><?= e($log['resume'] ?? '') ?></p>
+              <p style="margin:0 0 16px;color:#475569;font-size:.9rem;line-height:1.55;"><?= e($log['explication'] ?? '') ?></p>
+              <?php if (!empty($log['fonctionnalites']) && is_array($log['fonctionnalites'])): ?>
+                <ul style="margin:0 0 20px;padding-left:18px;color:#334155;font-size:.88rem;line-height:1.6;">
+                  <?php foreach ($log['fonctionnalites'] as $f): ?>
+                    <li><?= e($f) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(15,23,42,.08);">
+              <div>
+                <strong style="font-size:1.15rem;color:#0f172a;"><?= e((string)($log['prix'] ?? '0')) ?> $US</strong>
+                <?php if (!empty($log['typePrix'])): ?>
+                  <span style="display:block;font-size:.75rem;color:#64748b;"><?= e($log['typePrix']) ?></span>
+                <?php endif; ?>
+              </div>
+              <a href="#contact" class="btn btn--petit"><?= e($logiciels['texteBouton'] ?? 'Demander une démo') ?></a>
+            </div>
+          </article>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+
+  <section class="appel appel--accueil">
+    <div class="conteneur appel__inner">
+      <div><p class="section__sur">UNE IDÉE À CONCRÉTISER ?</p><h2 class="appel__titre">Construisons la suite, <em>ensemble.</em></h2><p class="appel__texte">Construction, digital ou énergie : échangeons sur les besoins de votre projet.</p></div>
+      <a class="btn btn--accent" href="#contact">Discuter de mon projet <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+
+  <!-- =============================== CONTACT ============================ -->
+  <section class="section" id="contact">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">PARLONS DE VOTRE PROJET <span class="section__trait"></span> 06</p>
+        <h2 class="section__titre" id="contact-titre">Votre projet commence <em>ici.</em></h2>
+        <p class="section__texte" id="contact-soustitre">Parlons de votre projet</p>
+      </div>
+
+      <div class="grille-contact">
+        <div class="contact-infos">
+          <div class="info-bloc">
+            <div class="info-bloc__icone">📍</div>
+            <div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur" data-champ="adresse">Avenue du Lac, Goma, Nord-Kivu, RDC</div></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">📞</div>
+            <div><div class="info-bloc__titre">Téléphone</div><a class="info-bloc__valeur" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">✉️</div>
+            <div><div class="info-bloc__titre">E-mail</div><a class="info-bloc__valeur" data-champ="email" data-lien="mailto" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">🌐</div>
+            <div><div class="info-bloc__titre">Site web</div><div class="info-bloc__valeur"><a data-champ="siteWeb" data-lien="web" href="https://www.linksmartec.com">www.linksmartec.com</a></div></div>
+          </div>
+          <div class="info-bloc">
+            <div class="info-bloc__icone">🕒</div>
+            <div><div class="info-bloc__titre">Horaires</div><div class="info-bloc__valeur" data-champ="horaires">Lundi – Samedi : 08h00 – 18h00</div></div>
+          </div>
+        </div>
+
+        <form class="formulaire" id="formulaire-contact" novalidate>
+          <div class="alerte alerte--succes" id="contact-succes" role="status"></div>
+          <div class="alerte alerte--erreur" id="contact-erreur" role="alert"></div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="c-nom">Nom complet *</label>
+              <input id="c-nom" name="nom" type="text" autocomplete="name" required placeholder="Votre nom et prénom">
+            </div>
+            <div class="champ">
+              <label for="c-email">E-mail *</label>
+              <input id="c-email" name="email" type="email" autocomplete="email" required placeholder="vous@exemple.com">
+            </div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="c-tel">Téléphone</label>
+              <input id="c-tel" name="telephone" type="tel" autocomplete="tel" placeholder="+243 …">
+            </div>
+            <div class="champ">
+              <label for="c-sujet">Spécialité concernée</label>
+              <select id="c-sujet" name="sujet">
+                <option value="Informatique &amp; digital">Informatique &amp; digital</option>
+                <option value="Construction &amp; BTP">Construction &amp; BTP</option>
+                <option value="Énergie renouvelable">Énergie renouvelable</option>
+                <option value="Commande boutique">Commande boutique</option>
+                <option value="Partenariat">Partenariat</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="champ">
+            <label for="c-message">Message *</label>
+            <textarea id="c-message" name="message" rows="5" required placeholder="Décrivez votre besoin…"></textarea>
+          </div>
+
+          <button class="btn btn--bloc" type="submit" id="contact-envoyer">Envoyer le message</button>
+          <p style="margin:0;font-size:.78rem;color:var(--ardoise-500)">Vos données servent uniquement à vous répondre.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- =============================== PIED =============================== -->
+  <footer class="pied">
+    <div class="conteneur">
+      <div class="pied__grille">
+        <div>
+          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte" id="pied-description">LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.</p>
+        </div>
+        <div>
+          <h4 class="pied__titre">Navigation</h4>
+          <div class="pied__liens">
+            <a href="#accueil">Accueil</a>
+            <a href="#specialites">Spécialités</a>
+            <a href="#logiciels">Logiciels</a>
+            <a href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
+            <a href="#services">Services</a>
+            <a href="<?= $base ?>/a-propos">À propos</a>
+            <a href="#contact">Contact</a>
+            <a href="<?= $base ?>/admin/">🔒 Espace admin</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="pied__titre">Nos spécialités</h4>
+          <div class="pied__liens" id="pied-specialites"></div>
+        </div>
+        <div>
+          <h4 class="pied__titre">Coordonnées</h4>
+          <div class="pied__liens">
+            <span data-champ="ville">Goma, Nord-Kivu, RDC</span>
+            <a data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+            <a data-champ="email" data-lien="mailto" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a>
+            <a data-champ="siteWeb" data-lien="web" href="https://www.linksmartec.com">www.linksmartec.com</a>
+            <span data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+          </div>
+          <div class="pied__liens" id="reseaux-sociaux" style="margin-top:1rem"></div>
+        </div>
+      </div>
+      <div class="pied__bas">
+        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
+        <span>Goma, République démocratique du Congo</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================== PANIER ============================= -->
+  <div class="voile" id="voile"></div>
+  <aside class="panier" id="panier" role="dialog" aria-modal="true" aria-label="Panier" aria-hidden="true" inert>
+    <div class="panier__entete">
+      <h2 class="panier__titre">Votre panier</h2>
+      <button class="panier__fermer" id="panier-fermer" aria-label="Fermer le panier">×</button>
+    </div>
+    <div class="panier__liste" id="panier-liste"></div>
+    <div class="panier__pied">
+      <div class="panier__total"><span>Total</span><span id="panier-total">$0.00</span></div>
+      <a class="btn btn--accent btn--bloc" id="panier-commander" href="#contact">Commander via WhatsApp</a>
+      <button class="btn btn--fantome btn--bloc btn--petit" id="panier-vider">Vider le panier</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>window.LK_BASE = "<?= $base ?>";</script>
+  <script>window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
+  <script src="<?= $base ?>/assets/i18n/traductions.js"></script>
+  <script src="<?= $base ?>/assets/js/site.js"></script>
+</body>
+</html>

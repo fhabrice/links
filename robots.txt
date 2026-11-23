@@ -1,0 +1,8 @@
+# LK-TECH — www.linksmartec.com
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /uploads
+Disallow: /api/
+
+Sitemap: https://www.linksmartec.com/sitemap.xml

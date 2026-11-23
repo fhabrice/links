@@ -1,0 +1,16 @@
+# Dossier des images téléversées depuis l'administration.
+# Aucun code ne doit pouvoir y être exécuté.
+
+Option -Indexes -ExecCGI
+
+<FilesMatch "\.(php|phtml|php[0-9]|phar|cgi|pl|py|sh|htaccess)$">
+    Require all denied
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
