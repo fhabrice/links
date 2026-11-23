@@ -17,7 +17,7 @@ function base_url(): string
 
     $script = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
     $script = (string) preg_replace('#/(api|admin)/index\.php$#', '', $script);
-    $script = (string) preg_replace('#/(index|a-propos)\.php$#', '', $script);
+    $script = (string) preg_replace('#/(index|a-propos|opportunites)\.php$#', '', $script);
 
     $base = rtrim($script, '/');
     return $base;
