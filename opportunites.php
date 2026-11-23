@@ -232,8 +232,8 @@ if ($membreConnecte) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Appels à projets &amp; Offres d'emploi — LK-TECH</title>
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=2">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=2">
   <style>
     .opp-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 24px; }
     .opp-carte { background: #fff; border: 1px solid rgba(15,23,42,.1); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 6px 20px rgba(15,23,42,.04); }
@@ -424,7 +424,7 @@ if ($membreConnecte) {
       var nav = document.getElementById('nav');
       if (burger && nav) {
         burger.addEventListener('click', function () {
-          var ouvert = nav.classList.toggle('nav--ouvert');
+          var ouvert = nav.classList.toggle('ouvert');
           burger.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
         });
       }
