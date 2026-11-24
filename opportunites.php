@@ -271,13 +271,18 @@ if ($membreConnecte) {
       </a>
       <nav class="nav" id="nav">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
+        <a class="nav__lien" href="<?= $base ?>/#specialites">Expertises</a>
+        <a class="nav__lien" href="<?= $base ?>/#services">Solutions</a>
         <a class="nav__lien" href="<?= $base ?>/#logiciels">Logiciels</a>
         <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets</a>
         <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
         <a class="nav__lien" href="<?= $base ?>/admin/">🔒 Admin</a>
       </nav>
       <div class="entete__actions">
+        <a class="btn btn--fantome btn--petit" href="tel:+243976459970" title="Appeler">📞 Appeler</a>
+        <a class="btn btn--fantome btn--petit" href="<?= $base ?>/travailler-avec-nous.php" style="border-color:#2e9e5b;">Travailler avec nous</a>
         <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>
     </div>

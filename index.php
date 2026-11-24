@@ -94,11 +94,14 @@ $reglages = lk_store()->reglages();
         <a class="nav__lien" href="#logiciels">Logiciels</a>
         <a class="nav__lien" href="<?= $base ?>/opportunites.php">Appels à projets</a>
         <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="#travailler-avec-nous">Travailler avec nous</a>
         <a class="nav__lien" href="#contact">Contact</a>
         <a class="nav__lien" href="<?= $base ?>/admin/">🔒 Admin</a>
       </nav>
 
       <div class="entete__actions">
+        <a class="btn btn--fantome btn--petit" href="tel:+243976459970" title="Appeler LK-TECH" aria-label="Appeler">📞 Appeler</a>
+        <a class="btn btn--fantome btn--petit" href="#travailler-avec-nous" style="border-color:#2e9e5b; color:#16233f;">Travailler avec nous</a>
         <button class="btn btn--fantome btn--petit panier-btn" id="btn-panier" aria-label="Ouvrir le panier">
           Panier
           <span class="panier-btn__compteur" id="panier-compteur" hidden>0</span>
@@ -344,9 +347,134 @@ $reglages = lk_store()->reglages();
     </div>
   </section>
 
+
+  <!-- =================== TRAVAILLER AVEC NOUS ========================= -->
+  <section class="section section--gris" id="travailler-avec-nous">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">REJOIGNEZ L’AVENTURE <span class="section__trait"></span> 07</p>
+        <h2 class="section__titre">Travailler <em>avec nous</em></h2>
+        <p class="section__texte" id="tw-soustitre">Envie de construire, coder ou électrifier l’avenir avec nous ? Rejoignez LK-TECH à Goma.</p>
+        <p style="margin:.8rem 0 0; color:#475569; max-width:48rem; line-height:1.7;" id="tw-texte">Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté : envoyez votre candidature. Chaque envoi est enregistré et notifié directement par e-mail à fabricenzarubara@gmail.com (copie dans l'admin).</p>
+      </div>
+
+      <div class="grille" style="margin:0 0 2rem; gap:1rem;" id="tw-avantages">
+        <div class="carte"><div style="font-size:1.5rem;">🏗️</div><h3 style="margin:.5rem 0 .3rem;">Projets d’impact</h3><p style="color:#64748b; font-size:.92rem; line-height:1.6;">Participez à des chantiers et solutions qui transforment Goma et l’Est de la RDC.</p></div>
+        <div class="carte"><div style="font-size:1.5rem;">💡</div><h3 style="margin:.5rem 0 .3rem;">Équipe pluridisciplinaire</h3><p style="color:#64748b; font-size:.92rem; line-height:1.6;">Collaborez avec ingénieurs, architectes, développeurs et techniciens solaires.</p></div>
+        <div class="carte"><div style="font-size:1.5rem;">🌱</div><h3 style="margin:.5rem 0 .3rem;">Évolution continue</h3><p style="color:#64748b; font-size:.92rem; line-height:1.6;">Formations, accompagnement et opportunités d’évolution au sein des 4 pôles.</p></div>
+      </div>
+
+      <div class="grille-contact">
+        <div class="contact-infos">
+          <div class="info-bloc"><div class="info-bloc__icone">📞</div><div><div class="info-bloc__titre">Appeler</div><a class="info-bloc__valeur" href="tel:+243976459970">+243 976 459 970</a><p style="font-size:.82rem;color:#64748b;margin-top:.3rem;">Lun–Sam 08h00–18h00</p><a class="btn btn--petit" href="tel:+243976459970" style="margin-top:.6rem;">📞 Appeler maintenant</a></div></div>
+          <div class="info-bloc"><div class="info-bloc__icone">✉️</div><div><div class="info-bloc__titre">E-mail RH</div><a class="info-bloc__valeur" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a></div></div>
+          <div class="info-bloc"><div class="info-bloc__icone">📍</div><div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur">Goma, Nord-Kivu, RDC</div></div></div>
+          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque candidature est : 1) enregistrée, 2) envoyée directement à <strong>fabricenzarubara@gmail.com</strong>, 3) consultable dans l'admin. <span style="color:#64748b;">Google Form optionnel.</span></p></div></div>
+        </div>
+
+        <form class="formulaire formulaire--candidature" id="formulaire-candidature" novalidate>
+          <div class="alerte alerte--succes" id="cand-succes" role="status"></div>
+          <div class="alerte alerte--erreur" id="cand-erreur" role="alert"></div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="cand-civilite">Civilité</label>
+              <select id="cand-civilite" name="civilite"><option value="M.">M.</option><option value="Mme">Mme</option><option value="Autre">Autre</option></select>
+            </div>
+            <div class="champ">
+              <label for="cand-domaine">Domaine / Pôle *</label>
+              <select id="cand-domaine" name="domaine" required>
+                <option value="">— Choisir —</option>
+                <option value="Génie Civil">Génie Civil</option>
+                <option value="Architecture & Design">Architecture & Design</option>
+                <option value="Informatique">Informatique</option>
+                <option value="Énergie renouvelable">Énergie renouvelable</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ"><label for="cand-nom">Nom *</label><input id="cand-nom" name="nom" type="text" required placeholder="Votre nom" autocomplete="family-name"></div>
+            <div class="champ"><label for="cand-prenom">Prénom *</label><input id="cand-prenom" name="prenom" type="text" required placeholder="Votre prénom" autocomplete="given-name"></div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ"><label for="cand-email">E-mail *</label><input id="cand-email" name="email" type="email" required placeholder="vous@exemple.com" autocomplete="email"></div>
+            <div class="champ"><label for="cand-tel">Téléphone *</label><input id="cand-tel" name="telephone" type="tel" required placeholder="+243 ..." autocomplete="tel"></div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ"><label for="cand-ville">Ville / Pays</label><input id="cand-ville" name="ville" type="text" placeholder="Goma, RDC"></div>
+            <div class="champ"><label for="cand-naissance">Date de naissance</label><input id="cand-naissance" name="dateNaissance" type="date"></div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="cand-type">Type de collaboration *</label>
+              <select id="cand-type" name="typeCollaboration" required>
+                <option value="">— Choisir —</option>
+                <option value="Emploi">Emploi (CDI/CDD)</option>
+                <option value="Stage">Stage</option>
+                <option value="Freelance / Consultant">Freelance / Consultant</option>
+                <option value="Partenariat">Partenariat</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div class="champ">
+              <label for="cand-exp">Expérience</label>
+              <select id="cand-exp" name="experience">
+                <option value="">— Choisir —</option>
+                <option value="0-1 an">0-1 an</option>
+                <option value="1-3 ans">1-3 ans</option>
+                <option value="3-5 ans">3-5 ans</option>
+                <option value="5+ ans">5+ ans</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ligne-2">
+            <div class="champ">
+              <label for="cand-dispo">Disponibilité</label>
+              <select id="cand-dispo" name="disponibilite">
+                <option value="">— Choisir —</option>
+                <option value="Immédiate">Immédiate</option>
+                <option value="1 mois">1 mois</option>
+                <option value="3 mois">3 mois</option>
+                <option value="À discuter">À discuter</option>
+              </select>
+            </div>
+            <div class="champ"><label for="cand-liencv">Lien CV / Portfolio</label><input id="cand-liencv" name="lienCv" type="url" placeholder="https://drive.google.com/... ou LinkedIn"></div>
+          </div>
+
+          <div class="champ"><label for="cand-message">Motivation / Message *</label><textarea id="cand-message" name="message" rows="5" required placeholder="Présentez-vous, vos compétences et pourquoi vous souhaitez rejoindre LK-TECH…"></textarea></div>
+
+          <div class="champ champ--check">
+            <label class="check-label" style="display:flex; gap:.6rem; align-items:flex-start; font-size:.85rem; line-height:1.5; color:#475569;">
+              <input type="checkbox" name="consentement" required style="margin-top:.3rem;"> <span>J’accepte que mes données soient utilisées pour traiter ma candidature et transmises à notre Google Form / Gmail conformément à la politique de confidentialité. *</span>
+            </label>
+          </div>
+
+          <button class="btn btn--bloc" type="submit" id="cand-envoyer">Envoyer ma candidature <span aria-hidden="true">↗</span></button>
+          <p style="margin:.6rem 0 0; font-size:.78rem; color:#64748b; text-align:center;">Vos données sont envoyées à notre équipe, à notre Google Form et notifiées par e-mail (Gmail). Aucune utilisation commerciale.</p>
+          <p style="margin:.4rem 0 0; font-size:.78rem; color:#64748b; text-align:center;">Vous préférez le Google Form direct ? <a href="#" id="lien-google-form" style="text-decoration:underline; display:none;">Ouvrir le Google Form</a> <span id="google-form-hint" style="color:#94a3b8;">(configurable dans l’admin)</span></p>
+        </form>
+      </div>
+
+      <div style="margin-top:2rem; background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between;">
+        <div><strong style="color:#0f172a;">Vous avez une question avant de postuler ?</strong><br><span style="font-size:.88rem; color:#64748b;">Appelez-nous ou écrivez-nous : réponse sous 24 h.</span></div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+          <a class="btn btn--petit" href="tel:+243976459970">📞 +243 976 459 970</a>
+          <a class="btn btn--fantome btn--petit" href="mailto:contact@linksmartec.com">✉️ Envoyer un e-mail</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   </main>
 
   <!-- =============================== PIED =============================== -->
+
   <footer class="pied">
     <div class="conteneur">
       <div class="pied__grille">
@@ -364,6 +492,7 @@ $reglages = lk_store()->reglages();
             <a href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
             <a href="#services">Services</a>
             <a href="<?= $base ?>/a-propos">À propos</a>
+            <a href="#travailler-avec-nous">Travailler avec nous</a>
             <a href="#contact">Contact</a>
             <a href="<?= $base ?>/admin/">🔒 Espace admin</a>
           </div>
@@ -406,11 +535,18 @@ $reglages = lk_store()->reglages();
     </div>
   </aside>
 
+    <!-- Barre d'appel rapide (mobile) -->
+  <div class="barre-appel" aria-label="Actions rapides">
+    <a class="barre-appel__btn barre-appel__btn--tel" href="tel:+243976459970">📞 Appeler</a>
+    <a class="barre-appel__btn barre-appel__btn--cta" href="#travailler-avec-nous">Travailler avec nous ↗</a>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>window.LK_BASE = "<?= $base ?>";</script>
   <script>window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
   <script src="<?= $base ?>/assets/i18n/traductions.js"></script>
   <script src="<?= $base ?>/assets/js/site.js"></script>
+  <script src="<?= $base ?>/assets/js/candidature.js"></script>
 </body>
 </html>
