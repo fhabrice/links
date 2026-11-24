@@ -106,9 +106,11 @@ final class Api
             }
             $enregistre = $this->store->ajouterCandidature($candidature);
             $this->store->journaliser('candidature-recue', ['id' => $enregistre['id'], 'email' => $candidature['email'], 'domaine' => $candidature['domaine']]);
-            // Transfert vers Google Form si configuré (non bloquant)
+            // Envoi direct par e-mail à fabricenzarubara@gmail.com (non bloquant)
+            $emailResult = $this->store->envoyerCandidatureParEmail($enregistre);
+            // Transfert optionnel vers Google Form si configuré (non bloquant)
             $transfert = $this->store->transfererVersGoogleForm($enregistre);
-            return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Candidature enregistrée.', 'googleForm' => $transfert], 201);
+            return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Candidature enregistrée et envoyée à fabricenzarubara@gmail.com.', 'email' => $emailResult, 'googleForm' => $transfert], 201);
         }
 
         /* ========================= AUTHENTIFICATION ========================= */

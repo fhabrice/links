@@ -1,5 +1,5 @@
 import { json, corpsRequete, nettoyer, emailValide } from '../../../lib/http';
-import { ajouterCandidature, journaliser, lireContenu, transfererVersGoogleForm } from '../../../lib/store';
+import { ajouterCandidature, journaliser, lireContenu, envoyerCandidatureParEmail, transfererVersGoogleForm } from '../../../lib/store';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,14 +32,16 @@ export async function POST(requete) {
   const enregistre = await ajouterCandidature(candidature);
   await journaliser('candidature-recue', { id: enregistre.id, email: candidature.email, domaine: candidature.domaine });
 
-  // Transfert Google Form non bloquant
+  // Envoi direct par e-mail à fabricenzarubara@gmail.com (non bloquant)
+  let emailResult = { ok: false, raison: 'non-tente' };
   let transfert = { ok: false, raison: 'non-tente' };
   try {
     const contenu = await lireContenu();
+    emailResult = await envoyerCandidatureParEmail(enregistre, contenu);
     transfert = await transfererVersGoogleForm(enregistre, contenu);
   } catch {}
 
-  return json({ ok: true, id: enregistre.id, message: 'Candidature enregistrée.', googleForm: transfert }, { code: 201 });
+  return json({ ok: true, id: enregistre.id, message: 'Candidature enregistrée et envoyée à fabricenzarubara@gmail.com.', email: emailResult, googleForm: transfert }, { code: 201 });
 }
 
 export async function GET() {

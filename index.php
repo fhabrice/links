@@ -355,7 +355,7 @@ $reglages = lk_store()->reglages();
         <p class="section__sur">REJOIGNEZ L’AVENTURE <span class="section__trait"></span> 07</p>
         <h2 class="section__titre">Travailler <em>avec nous</em></h2>
         <p class="section__texte" id="tw-soustitre">Envie de construire, coder ou électrifier l’avenir avec nous ? Rejoignez LK-TECH à Goma.</p>
-        <p style="margin:.8rem 0 0; color:#475569; max-width:48rem; line-height:1.7;" id="tw-texte">Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté : envoyez votre candidature. Chaque envoi est enregistré, transmis à notre Google Form et notifié par e-mail (Gmail).</p>
+        <p style="margin:.8rem 0 0; color:#475569; max-width:48rem; line-height:1.7;" id="tw-texte">Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté : envoyez votre candidature. Chaque envoi est enregistré et notifié directement par e-mail à fabricenzarubara@gmail.com (copie dans l'admin).</p>
       </div>
 
       <div class="grille" style="margin:0 0 2rem; gap:1rem;" id="tw-avantages">
@@ -369,7 +369,7 @@ $reglages = lk_store()->reglages();
           <div class="info-bloc"><div class="info-bloc__icone">📞</div><div><div class="info-bloc__titre">Appeler</div><a class="info-bloc__valeur" href="tel:+243976459970">+243 976 459 970</a><p style="font-size:.82rem;color:#64748b;margin-top:.3rem;">Lun–Sam 08h00–18h00</p><a class="btn btn--petit" href="tel:+243976459970" style="margin-top:.6rem;">📞 Appeler maintenant</a></div></div>
           <div class="info-bloc"><div class="info-bloc__icone">✉️</div><div><div class="info-bloc__titre">E-mail RH</div><a class="info-bloc__valeur" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a></div></div>
           <div class="info-bloc"><div class="info-bloc__icone">📍</div><div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur">Goma, Nord-Kivu, RDC</div></div></div>
-          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque candidature est : 1) enregistrée, 2) transmise à notre <a href="#travailler-avec-nous" style="text-decoration:underline;">Google Form</a>, 3) notifiée par Gmail. <a href="<?= $base ?>/docs/CONFIG_GOOGLE_FORM.md" target="_blank" style="text-decoration:underline;">Configurer</a>.</p></div></div>
+          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque candidature est : 1) enregistrée, 2) envoyée directement à <strong>fabricenzarubara@gmail.com</strong>, 3) consultable dans l'admin. <span style="color:#64748b;">Google Form optionnel.</span></p></div></div>
         </div>
 
         <form class="formulaire formulaire--candidature" id="formulaire-candidature" novalidate>

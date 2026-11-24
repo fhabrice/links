@@ -81,7 +81,7 @@ $gform = $tw['googleForm'] ?? [];
           <li>Formation continue et évolution au sein des 4 pôles</li>
           <li>Réponse rapide à chaque candidature via e-mail / Google Form</li>
         </ul>
-        <p style="margin:1rem 0 0; font-size:.8rem; color:#64748b;">📧 Chaque candidature est enregistrée, envoyée à notre Google Form et notifiée par Gmail.</p>
+        <p style="margin:1rem 0 0; font-size:.8rem; color:#64748b;">📧 Chaque candidature est envoyée directement à fabricenzarubara@gmail.com et enregistrée dans l'admin.</p>
       </div>
     </div>
   </section>
@@ -120,7 +120,7 @@ $gform = $tw['googleForm'] ?? [];
           <div class="info-bloc"><div class="info-bloc__icone">📞</div><div><div class="info-bloc__titre">Appeler</div><a class="info-bloc__valeur" href="tel:+243976459970" data-champ="telephone" data-lien="tel">+243 976 459 970</a><p style="font-size:.82rem;color:#64748b;margin-top:.3rem;">Lun–Sam 08h00–18h00 · Réponse rapide</p><a class="btn btn--petit" href="tel:+243976459970" style="margin-top:.6rem;">📞 Appeler maintenant</a></div></div>
           <div class="info-bloc"><div class="info-bloc__icone">✉️</div><div><div class="info-bloc__titre">E-mail RH</div><a class="info-bloc__valeur" href="mailto:contact@linksmartec.com" data-champ="email" data-lien="mailto">contact@linksmartec.com</a><p style="font-size:.82rem;color:#64748b;">Candidatures &amp; partenariats</p></div></div>
           <div class="info-bloc"><div class="info-bloc__icone">📍</div><div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur" data-champ="ville">Goma, Nord-Kivu, RDC</div><div class="info-bloc__valeur" data-champ="adresse">Avenue du Lac, Goma</div></div></div>
-          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque envoi est : 1) enregistré sur le site, 2) transféré à votre Google Form (si configuré), 3) notifié par e-mail. Configurez l'URL Form Response dans l'admin pour activer le flux complet.</p></div></div>
+          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque envoi est : 1) enregistré, 2) envoyé directement à fabricenzarubara@gmail.com, 3) consultable dans l'admin (Google Form optionnel). Configurez l'URL Form Response dans l'admin pour activer le flux complet.</p></div></div>
         </div>
 
         <form class="formulaire formulaire--candidature" id="formulaire-candidature" novalidate>

@@ -258,8 +258,8 @@ export default async function Accueil() {
               <div className="carte" style={{marginTop:'1rem'}}>
                 <h3>🔗 Google Form / Gmail</h3>
                 <p style={{fontSize:'.88rem', color:'#475569', lineHeight:1.6}}>
-                  Chaque candidature est : 1) enregistrée, 2) transmise à votre Google Form, 3) notifiée par Gmail.
-                  {tw.googleForm?.actionUrl ? ` Connecté → ${tw.googleForm.gmailDestination || identite.email}` : ' À configurer dans l’admin.'}
+                  Chaque candidature est : 1) enregistrée, 2) envoyée directement à fabricenzarubara@gmail.com, 3) consultable dans l'admin.
+                  {tw.googleForm?.actionUrl ? ` Envoyé à ${tw.emailDestination || tw.googleForm?.gmailDestination || 'fabricenzarubara@gmail.com'}` : ' À configurer dans l’admin.'}
                 </p>
                 <Link href="/travailler-avec-nous" className="bouton bouton-fantome" style={{marginTop:'.6rem'}}>Page dédiée ↗</Link>
               </div>

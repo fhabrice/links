@@ -333,6 +333,36 @@ final class Store
         return true;
     }
 
+    public function envoyerCandidatureParEmail(array $candidature): array
+    {
+        $contenu = $this->contenu();
+        $dest = trim((string)($contenu['travaillerAvecNous']['emailDestination'] ?? $contenu['travaillerAvecNous']['googleForm']['gmailDestination'] ?? 'fabricenzarubara@gmail.com'));
+        if ($dest === '') $dest = 'fabricenzarubara@gmail.com';
+        $sujet = 'Nouvelle candidature LK-TECH : ' . ($candidature['prenom'] ?? '') . ' ' . ($candidature['nom'] ?? '') . ' — ' . ($candidature['domaine'] ?? 'Candidature');
+        $corps = "Nouvelle candidature reçue via le site LK-TECH\n\n";
+        foreach (['civilite','nom','prenom','email','telephone','ville','dateNaissance','domaine','typeCollaboration','experience','disponibilite','message','lienCv'] as $k) {
+            $v = $candidature[$k] ?? '';
+            if ($v !== '') $corps .= ucfirst($k) . " : " . $v . "\n";
+        }
+        $corps .= "\nReçu le : " . date('c') . "\nID : " . ($candidature['id'] ?? '') . "\n";
+        $corps .= "\n—\nCeci est un message automatique du site LK-TECH (Travailler avec nous).\n";
+        $headers = "From: LK-TECH <no-reply@linksmartec.com>\r\n";
+        $headers .= "Reply-To: " . ($candidature['email'] ?? $dest) . "\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $headers .= "X-Mailer: LK-TECH PHP\r\n";
+        // Tentative d'envoi via mail() — fonctionne sur la plupart des hébergements cPanel
+        $ok = false;
+        $err = '';
+        if (function_exists('mail')) {
+            $ok = @mail($dest, $sujet, $corps, $headers);
+            if (!$ok) $err = 'mail() a échoué (vérifiez la config SMTP de l hébergeur)';
+        } else {
+            $err = 'mail() non disponible sur ce serveur';
+        }
+        $this->journaliser('candidature-email', ['dest' => $dest, 'ok' => $ok, 'id' => $candidature['id'] ?? '', 'erreur' => $err]);
+        return ['ok' => $ok, 'dest' => $dest, 'erreur' => $err];
+    }
+
     public function transfererVersGoogleForm(array $candidature): array
     {
         $contenu = $this->contenu();
