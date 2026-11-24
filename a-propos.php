@@ -21,10 +21,10 @@ $reglages = lk_store()->reglages();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>À propos | <?= htmlspecialchars(($identite['nom'] ?? 'LK-TECH'), ENT_QUOTES, 'UTF-8') ?> — spécialiste informatique, construction &amp; énergie renouvelable</title>
-  <meta name="description" content="Qui sommes-nous ? LK-TECH (Linksmartech), entreprise congolaise basée à Goma : notre mission, nos valeurs, nos trois spécialités — informatique, construction et énergie renouvelable.">
+  <meta name="description" content="Qui sommes-nous ? LK-TECH (Linksmartech), entreprise congolaise basée à Goma : notre mission, nos valeurs, nos quatre expertises — informatique, génie civil, architecture & design et énergie renouvelable.">
   <meta name="theme-color" content="#16233F">
   <meta property="og:title" content="À propos de LK-TECH">
-  <meta property="og:description" content="Une entreprise congolaise, trois spécialités : informatique, construction et énergie renouvelable.">
+  <meta property="og:description" content="Une entreprise congolaise, quatre expertises : informatique, génie civil, architecture & design et énergie renouvelable.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.linksmartec.com/a-propos.php">
   <link rel="canonical" href="https://www.linksmartec.com/a-propos.php">
@@ -38,7 +38,7 @@ $reglages = lk_store()->reglages();
   <!-- ============================== TOPBAR ============================== -->
   <div class="topbar">
     <div class="conteneur topbar__inner">
-      <span class="topbar__rccm">CONSTRUCTION <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
+      <span class="topbar__rccm">GÉNIE CIVIL <span>·</span> ARCHITECTURE <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
       <div class="topbar__infos">
         <span data-champ="ville">Goma, RDC</span>
         <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
@@ -92,7 +92,7 @@ $reglages = lk_store()->reglages();
       </nav>
       <p class="section__sur" id="apropos-sur">Notre entreprise</p>
       <h1 class="page-entete__titre" id="apropos-titre">À propos de LK-TECH</h1>
-      <p class="page-entete__texte" id="apropos-soustitre">Trois spécialités, une même exigence de qualité</p>
+      <p class="page-entete__texte" id="apropos-soustitre">Quatre expertises, une même exigence de qualité</p>
     </div>
   </section>
 
@@ -121,7 +121,7 @@ $reglages = lk_store()->reglages();
     <div class="conteneur">
       <div class="section__entete">
         <p class="section__sur">Ce que nous maîtrisons</p>
-        <h2 class="section__titre">Nos trois spécialités</h2>
+        <h2 class="section__titre">Nos expertises</h2>
       </div>
       <div class="grille-piliers" id="apropos-piliers"></div>
     </div>
@@ -197,7 +197,7 @@ $reglages = lk_store()->reglages();
         <div>
           <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
           <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, construction et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.</p>
+          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, génie civil, architecture & design et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>

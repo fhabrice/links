@@ -230,7 +230,7 @@
             <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(specialite.titre)}"></div>
             <div class="champ"><label>Icône</label>
               <select data-cle="icone">
-                ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Construction'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
+                ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Génie Civil'], ['architecture', 'Architecture & Design'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
                   .map(([valeur, libelle]) => `<option value="${valeur}"${specialite.icone === valeur ? ' selected' : ''}>${libelle}</option>`)
                   .join('')}
               </select>
@@ -331,7 +331,7 @@
              <div class="champ"><label>Titre</label><input data-cle="titre" value="${echapper(pilier.titre)}"></div>
              <div class="champ"><label>Icône</label>
                <select data-cle="icone">
-                 ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Construction'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
+                 ${[['code', 'Informatique / code'], ['reseau', 'Réseau'], ['btp', 'Génie Civil'], ['architecture', 'Architecture & Design'], ['solaire', 'Solaire'], ['electricite', 'Électricité'], ['cloud', 'Cloud & sécurité']]
                    .map(([v, l]) => `<option value="${v}"${pilier.icone === v ? ' selected' : ''}>${l}</option>`)
                    .join('')}
                </select>
@@ -466,7 +466,7 @@
             <span style="font-size:.78rem;color:var(--ardoise-500)">${echapper(produit.description || '')}</span>
           </td>
           <td><span class="puce puce--info">${
-            { informatique: 'Informatique', energie: 'Énergie', terroir: 'Terroir' }[produit.filtre] ||
+            { informatique: 'Informatique', construction: 'Génie Civil', architecture: 'Architecture & Design', energie: 'Énergie', terroir: 'Terroir' }[produit.filtre] ||
             (produit.categorie === 'intl' ? 'International' : 'National')
           }</span></td>
           <td>$${Number(produit.prix || 0).toFixed(2)}</td>

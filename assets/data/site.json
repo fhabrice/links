@@ -46,8 +46,8 @@
         },
         {
           "id": "construction",
-          "libelle": "Construction",
-          "badge": "Spécialité Construction",
+          "libelle": "Génie Civil",
+          "badge": "Spécialité Génie Civil",
           "titre": "Nous bâtissons des",
           "titreAccent": "infrastructures durables",
           "description": "Études, gros œuvre, second œuvre et réhabilitation : nous réalisons vos bâtiments et ouvrages dans le respect des normes et des délais.",
@@ -55,9 +55,19 @@
           "boutonLien": "#contact"
         },
         {
+          "id": "architecture",
+          "libelle": "Architecture & Design",
+          "badge": "Spécialité Architecture & Design",
+          "titre": "Nous dessinons vos",
+          "titreAccent": "espaces de demain",
+          "description": "Plans 2D/3D, modélisation BIM, design intérieur et suivi esthétique : une architecture fonctionnelle, durable et ancrée dans le contexte local.",
+          "boutonTexte": "Imaginer mon projet",
+          "boutonLien": "#contact"
+        },
+        {
           "id": "energie",
-          "libelle": "Énergie renouvelable",
-          "badge": "Spécialité Énergie",
+          "libelle": "Énergie renouvelable et environnement",
+          "badge": "Spécialité Énergie renouvelable et environnement",
           "titre": "L'énergie solaire",
           "titreAccent": "pour tous",
           "description": "Dimensionnement, installation et maintenance de kits solaires et systèmes hybrides : produisez votre propre électricité, sans coupure.",
@@ -76,13 +86,19 @@
       {
         "id": "construction",
         "icone": "btp",
-        "titre": "Construction",
-        "texte": "Constructeur : études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments solides, livrés dans les délais et aux normes."
+        "titre": "Génie Civil",
+        "texte": "Génie Civil : études techniques, gros œuvre, second œuvre et réhabilitation. Notre branche Architecture & Design assure la conception, les plans et le suivi esthétique de vos ouvrages."
+      },
+      {
+        "id": "architecture",
+        "icone": "architecture",
+        "titre": "Architecture & Design",
+        "texte": "Branche du département Génie Civil : conception architecturale, plans d’exécution, design intérieur et maîtrise d’œuvre esthétique et technique."
       },
       {
         "id": "energie",
         "icone": "solaire",
-        "titre": "Énergie renouvelable",
+        "titre": "Énergie renouvelable et environnement",
         "texte": "Solaire, hybridation et pompage : produisez une énergie propre, fiable et rentable, même hors réseau."
       }
     ],
@@ -100,9 +116,15 @@
         "image": ""
       },
       {
-        "titre": "Construction & BTP",
-        "description": "Constructeur général : études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments résidentiels et institutionnels.",
+        "titre": "Génie Civil & BTP",
+        "description": "Constructeur général : études techniques, gros œuvre, second œuvre et réhabilitation de bâtiments résidentiels et institutionnels. Notre branche Architecture & Design prend en charge les plans et le design.",
         "icone": "btp",
+        "image": ""
+      },
+      {
+        "titre": "Architecture & Design",
+        "description": "Esquisses, plans d’exécution 2D/3D, modélisation BIM, design intérieur et suivi de chantier esthétique pour des espaces fonctionnels et durables.",
+        "icone": "architecture",
         "image": ""
       },
       {
@@ -259,9 +281,10 @@
     "apropos": {
       "sur": "Notre entreprise",
       "titre": "À propos de LK-TECH",
-      "sousTitre": "Trois spécialités, une même exigence de qualité",
+      "sousTitre": "Quatre expertises, une même exigence de qualité",
       "intro": [
-        "LK-TECH (Linksmartech) est une entreprise congolaise basée à Goma, au Nord-Kivu. Née de la rencontre entre des ingénieurs informaticiens, des professionnels du bâtiment et des techniciens en énergie, elle réunit sous un même toit trois compétences complémentaires : l'informatique, la construction et l'énergie renouvelable.",
+        "LK-TECH (Linksmartech) est une entreprise congolaise basée à Goma, au Nord-Kivu. Née de la rencontre entre des ingénieurs informaticiens, des professionnels du bâtiment, des architectes et des techniciens en énergie, elle réunit sous un même toit quatre compétences complémentaires : l'informatique, le génie civil, l'architecture & design et l'énergie renouvelable.",
+        "Le département Génie Civil intègre une branche Architecture & Design dédiée : conception architecturale, plans 2D/3D et BIM, design intérieur, choix des matériaux et suivi esthétique du chantier. Cette intégration garantit des ouvrages à la fois solides, fonctionnels et élégants.",
         "Nous accompagnons les institutions publiques, les organisations humanitaires, les entreprises et les particuliers, de l'étude technique jusqu'à la maintenance. Chaque projet est traité comme une responsabilité : comprendre le besoin réel, proposer la solution la plus juste, la réaliser dans les délais et rester disponibles après la livraison.",
         "Notre ancrage local est une force : nous connaissons les contraintes du terrain — accès, climat, disponibilité de l'énergie — et nous concevons des solutions qui y répondent réellement."
       ],
@@ -276,7 +299,7 @@
           "libelle": "Projets livrés"
         },
         {
-          "valeur": "3",
+          "valeur": "4",
           "libelle": "Pôles d'expertise"
         },
         {
@@ -284,8 +307,8 @@
           "libelle": "Clients satisfaits"
         }
       ],
-      "mission": "Rendre accessibles, au Nord-Kivu et partout en RDC, des solutions numériques, des bâtiments et des installations énergétiques de qualité professionnelle, adaptées aux réalités locales.",
-      "vision": "Devenir la référence congolaise de l'ingénierie intégrée : une entreprise capable de concevoir, construire et équiper un site de bout en bout.",
+      "mission": "Rendre accessibles, au Nord-Kivu et partout en RDC, des solutions numériques, des bâtiments bien conçus et des installations énergétiques de qualité professionnelle, adaptées aux réalités locales.",
+      "vision": "Devenir la référence congolaise de l'ingénierie intégrée : une entreprise capable de concevoir, dessiner, construire et équiper un site de bout en bout.",
       "piliers": [
         {
           "id": "informatique",
@@ -296,8 +319,14 @@
         {
           "id": "construction",
           "icone": "btp",
-          "titre": "Construction",
-          "texte": "Constructeur général : études techniques, plans, gros œuvre, second œuvre, électricité du bâtiment et réhabilitation. Nous livrons des ouvrages conformes aux normes."
+          "titre": "Génie Civil",
+          "texte": "Département Génie Civil : études techniques, plans d’exécution, gros œuvre, second œuvre, électricité du bâtiment et réhabilitation. Nous livrons des ouvrages conformes aux normes, solides et durables."
+        },
+        {
+          "id": "architecture",
+          "icone": "architecture",
+          "titre": "Architecture & Design",
+          "texte": "Branche Architecture & Design du Génie Civil : conception architecturale, modélisation 3D/BIM, design intérieur, choix des matériaux et harmonie esthétique. Des espaces fonctionnels, lumineux et ancrés dans le contexte local."
         },
         {
           "id": "energie",
@@ -336,8 +365,13 @@
         },
         {
           "annee": "2019",
-          "titre": "Pôle construction",
-          "texte": "Ouverture du pôle construction : études, gros œuvre et réhabilitation de bâtiments."
+          "titre": "Pôle Génie Civil",
+          "texte": "Ouverture du pôle Génie Civil : études, gros œuvre et réhabilitation de bâtiments."
+        },
+        {
+          "annee": "2020",
+          "titre": "Branche Architecture & Design",
+          "texte": "Création de la branche Architecture & Design au sein du Génie Civil : plans 2D/3D, BIM, design intérieur et maîtrise d’œuvre esthétique."
         },
         {
           "annee": "2022",
@@ -347,21 +381,21 @@
         {
           "annee": "2024",
           "titre": "Ingénierie intégrée",
-          "texte": "LK-TECH réunit les trois pôles et conduit des projets de bout en bout."
+          "texte": "LK-TECH réunit ses quatre pôles et conduit des projets de bout en bout, de la conception architecturale à la mise en service."
         }
       ],
       "raisons": [
         {
           "titre": "Un interlocuteur unique",
-          "texte": "Un seul partenaire pour vos besoins informatiques, de construction et d'énergie : moins de coordination, plus de cohérence."
+          "texte": "Un seul partenaire pour vos besoins informatiques, de génie civil, d’architecture & design et d’énergie : moins de coordination, plus de cohérence."
         },
         {
           "titre": "Un devis détaillé",
           "texte": "Chaque prestation est chiffrée ligne par ligne, avec le matériel et les délais annoncés."
         },
         {
-          "titre": "Une équipe technique",
-          "texte": "Ingénieurs, développeurs, techniciens solaires et chefs de chantier travaillent ensemble."
+          "titre": "Une équipe pluridisciplinaire",
+          "texte": "Ingénieurs civils, architectes, designers, développeurs, techniciens solaires et chefs de chantier travaillent ensemble."
         },
         {
           "titre": "Un suivi durable",
@@ -384,6 +418,85 @@
       "boutonTexte": "Demander une étude",
       "boutonLien": "#contact"
     },
+    "logiciels": {
+      "titre": "Nos logiciels",
+      "sousTitre": "Des logiciels conçus par LK-TECH pour les entreprises et institutions de la région — et d'autres solutions sur mesure sur demande.",
+      "texteBouton": "Demander une démo",
+      "items": [
+        {
+          "id": "gomagest",
+          "nom": "GomaGest",
+          "icone": "📦",
+          "badge": "Conçu par LK-TECH",
+          "pitch": "Gestion de stock & point de vente",
+          "explication": "GomaGest est notre logiciel de gestion de stock et de point de vente, pensé pour les commerces de Goma et de l'Est de la RDC. Il fonctionne même sans connexion internet et synchronise les ventes dès que le réseau revient : plus de cahiers perdus, plus de ruptures inattendues.",
+          "fonctionnalites": [
+            "Stock et ventes en temps réel",
+            "Factures et tickets imprimables",
+            "Mode hors-ligne, synchronisation automatique",
+            "Rapports journaliers par caissier"
+          ],
+          "prix": 240,
+          "devise": "USD",
+          "typePrix": "licence à l'unité",
+          "actif": true
+        },
+        {
+          "id": "batisuivi",
+          "nom": "BatiSuivi",
+          "icone": "🏗️",
+          "badge": "Conçu par LK-TECH",
+          "pitch": "Pilotage de chantiers BTP",
+          "explication": "BatiSuivi digitalise le suivi de vos chantiers : devis, planning, avancement photo par photo et rapports hebdomadaires partagés avec le client. Idéal pour les entreprises de construction qui veulent garder la main sur les coûts et les délais.",
+          "fonctionnalites": [
+            "Devis et avenants en quelques clics",
+            "Planning et jalons par chantier",
+            "Photos datées de l'avancement",
+            "Rapport client automatique"
+          ],
+          "prix": 390,
+          "devise": "USD",
+          "typePrix": "licence annuelle",
+          "actif": true
+        },
+        {
+          "id": "solarwatch",
+          "nom": "SolarWatch",
+          "icone": "☀️",
+          "badge": "Conçu par LK-TECH",
+          "pitch": "Supervision des installations solaires",
+          "explication": "SolarWatch surveille vos kits solaires et centrales : production, état des batteries, alertes de panne. Vous savez en un coup d'œil si une installation tourne bien, à Goma comme à 300 km de là.",
+          "fonctionnalites": [
+            "Production et consommation en direct",
+            "Alertes SMS ou WhatsApp",
+            "Historique par installation",
+            "Maintenance préventive"
+          ],
+          "prix": 290,
+          "devise": "USD",
+          "typePrix": "licence annuelle",
+          "actif": true
+        },
+        {
+          "id": "ecolesuivi",
+          "nom": "EcoleSuivi",
+          "icone": "🎓",
+          "badge": "Conçu par LK-TECH",
+          "pitch": "Gestion scolaire simplifiée",
+          "explication": "EcoleSuivi accompagne les écoles dans la gestion des inscriptions, des notes, des paiements de frais et des conseils de classe. Les parents reçoivent le bulletin et l'appel des frais directement sur leur téléphone.",
+          "fonctionnalites": [
+            "Inscriptions et matricules",
+            "Notes, bulletins et conseils de classe",
+            "Frais scolaires et reçus",
+            "Espace parent par SMS/WhatsApp"
+          ],
+          "prix": 350,
+          "devise": "USD",
+          "typePrix": "licence annuelle",
+          "actif": true
+        }
+      ]
+    },
     "boutique": {
       "titre": "Boutique",
       "sousTitre": "Équipements informatiques, solutions solaires et produits locaux.",
@@ -395,6 +508,14 @@
         {
           "id": "informatique",
           "libelle": "Informatique"
+        },
+        {
+          "id": "construction",
+          "libelle": "Génie Civil"
+        },
+        {
+          "id": "architecture",
+          "libelle": "Architecture & Design"
         },
         {
           "id": "energie",
@@ -415,7 +536,7 @@
       "messageSucces": "Merci ! Votre message a bien été envoyé."
     },
     "pied": {
-      "description": "LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.",
+      "description": "LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.",
       "mentions": "Tous droits réservés."
     }
   },
@@ -424,6 +545,6 @@
     "portailClientActif": true,
     "maintenance": false
   },
-  "genereLe": "2026-09-28T14:16:15.379Z",
+  "genereLe": "2026-11-24T00:00:00.000Z",
   "note": "Fichier de secours statique généré par tools/build-fallback.js."
 }

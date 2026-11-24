@@ -5,7 +5,7 @@ import MenuNavigation from './components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
 
-const ICONES = { code: '</>', btp: '⌂', energie: '⚡', solaire: '☀️' };
+const ICONES = { code: '</>', btp: '⌂', architecture: '◧', energie: '⚡', solaire: '☀️' };
 
 function formaterPrix(produit) {
   try {

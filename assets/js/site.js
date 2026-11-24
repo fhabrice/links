@@ -36,6 +36,7 @@
     reseau:
       '<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v3.5M10.3 12.7 6.6 16.6M13.7 12.7l3.7 3.9"/>',
     btp: '<path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-6h4v6"/>',
+    architecture: '<path d="M3 21h18"/><path d="M6 21V8l6-4 6 4v13"/><path d="M8 21V11h2v10M11 21V11h2v10M14 21V11h2v10"/>',
     solaire:
       '<circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/>',
     electricite: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
@@ -597,6 +598,8 @@
     const filtres = etat.contenu.boutique?.filtres || [
       { id: 'tout', libelle: 'Tout' },
       { id: 'informatique', libelle: 'Informatique' },
+      { id: 'construction', libelle: 'Génie Civil' },
+      { id: 'architecture', libelle: 'Architecture & Design' },
       { id: 'energie', libelle: 'Énergie renouvelable' },
       { id: 'terroir', libelle: 'Produits du terroir' }
     ];
@@ -670,7 +673,7 @@
   }
 
   function libelleCategorie(produit) {
-    const libelles = { informatique: 'Informatique', energie: 'Énergie renouvelable', terroir: 'Produit du terroir' };
+    const libelles = { informatique: 'Informatique', construction: 'Génie Civil', architecture: 'Architecture & Design', energie: 'Énergie renouvelable', terroir: 'Produit du terroir' };
     return libelles[produit.filtre] || (produit.categorie === 'intl' ? 'Solution internationale' : 'Produit national');
   }
 
