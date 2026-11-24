@@ -74,10 +74,14 @@ $reglages = lk_store()->reglages();
         <a class="nav__lien" href="<?= $base ?>/#approche">Notre méthode</a>
         <a class="nav__lien" href="<?= $base ?>/#boutique">Boutique</a>
         <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="<?= $base ?>/opportunites.php">Opportunités</a>
+        <a class="nav__lien" href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
       </nav>
 
       <div class="entete__actions">
+        <a class="btn btn--fantome btn--petit" href="tel:+243976459970" title="Appeler">📞 Appeler</a>
+        <a class="btn btn--fantome btn--petit" href="<?= $base ?>/travailler-avec-nous.php" style="border-color:#2e9e5b;">Travailler avec nous</a>
         <a class="btn btn--petit" id="btn-portail" href="<?= $base ?>/#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
         <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>

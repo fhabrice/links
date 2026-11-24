@@ -538,11 +538,65 @@
     "pied": {
       "description": "LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.",
       "mentions": "Tous droits réservés."
+    },
+    "travaillerAvecNous": {
+      "surTitre": "REJOIGNEZ L'AVENTURE",
+      "titre": "Travailler avec nous",
+      "soustitre": "Envie de construire, coder ou électrifier l'avenir avec nous ? Rejoignez LK-TECH.",
+      "texte": "Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté, envoyez-nous votre candidature : notre équipe vous recontacte rapidement. Chaque candidature est également transmise à notre Google Form et notifiée par e-mail.",
+      "avantages": [
+        {
+          "icone": "🏗️",
+          "titre": "Projets d'impact",
+          "texte": "Participez à des chantiers et solutions qui transforment Goma et l'Est de la RDC."
+        },
+        {
+          "icone": "💡",
+          "titre": "Équipe pluridisciplinaire",
+          "texte": "Collaborez avec ingénieurs, architectes, développeurs et techniciens solaires."
+        },
+        {
+          "icone": "🌱",
+          "titre": "Évolution continue",
+          "texte": "Formations, accompagnement et opportunités d'évolution au sein des 4 pôles."
+        }
+      ],
+      "boutonAppelerTexte": "📞 Appeler",
+      "boutonTravaillerTexte": "Travailler avec nous",
+      "googleForm": {
+        "actionUrl": "",
+        "mode": "api",
+        "gmailDestination": "contact@linksmartec.com",
+        "fieldMap": {
+          "nom": "",
+          "prenom": "",
+          "email": "",
+          "telephone": "",
+          "ville": "",
+          "domaine": "",
+          "typeCollaboration": "",
+          "experience": "",
+          "disponibilite": "",
+          "message": "",
+          "lienCv": ""
+        },
+        "notice": "Configurez l'URL de votre Google Form (FormResponse) et les IDs entry.XXX dans l'admin ou directement dans app/defaults.json. Activez les notifications e-mail dans Google Form > Réponses > Recevoir les notifications par e-mail."
+      },
+      "formulaire": {
+        "titre": "Candidature complète",
+        "sousTitre": "Remplissez ce formulaire : il est envoyé à notre équipe, à notre Google Form et à notre Gmail.",
+        "champsObligatoiresNote": "* Champs obligatoires",
+        "boutonTexte": "Envoyer ma candidature",
+        "messageSucces": "Merci ! Votre candidature a bien été envoyée. Nous vous recontactons rapidement.",
+        "messageErreur": "Veuillez corriger les champs indiqués."
+      }
     }
   },
   "reglages": {
     "devise": "USD",
     "portailClientActif": true,
-    "maintenance": false
+    "maintenance": false,
+    "candidaturesActives": true,
+    "googleFormActif": false
   }
 }

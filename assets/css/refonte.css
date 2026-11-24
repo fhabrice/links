@@ -228,3 +228,34 @@ html:not([lang="fr"]) .hero__visuel > img { max-height: none; }
   .btn { white-space: normal; }
   .hero__bas { gap: .6rem; }
 }
+
+/* --- Travailler avec nous : formulaire candidature --- */
+.formulaire--candidature { border-top: 3px solid var(--accent); }
+.formulaire--candidature .champ--check { background: #f8faf8; border: 1px solid #e2e8f0; border-radius: 4px; padding: .8rem 1rem; }
+.formulaire--candidature .form-note { font-size: .76rem; color: #94a3b8; text-align: center; margin: 0; }
+#travailler-avec-nous .section__entete { max-width: 48rem; }
+#travailler-avec-nous .section__titre em { color: var(--accent); font-style: italic; font-family: Georgia, serif; }
+
+/* Bouton Appeler toujours visible : effet hover */
+.entete__actions .btn[href^="tel:"] { background: #f0fdf4; border-color: #86efac !important; }
+.entete__actions .btn[href^="tel:"]:hover { background: #dcfce7; }
+
+/* Footer : s'assurer qu'il est toujours visible et non masqué */
+.pied { display: block !important; visibility: visible !important; opacity: 1 !important; }
+.pied a { text-decoration: none; }
+.pied a:hover { color: var(--accent-clair); text-decoration: underline; }
+
+/* Alerte visible quand .visible ou quand contenu */
+.alerte:not(:empty) { display: block; }
+.alerte[hidden] { display: none !important; }
+
+/* Barre d'appel flottante (visible surtout sur mobile) */
+.barre-appel { position: fixed; bottom: 0; left: 0; right: 0; z-index: 90; display: flex; gap: .6rem; padding: .6rem .9rem calc(.6rem + env(safe-area-inset-bottom)); background: rgba(255,255,255,.97); border-top: 1px solid #e2e8f0; box-shadow: 0 -8px 30px rgba(15,23,42,.08); backdrop-filter: blur(10px); }
+.barre-appel__btn { flex:1; display:inline-flex; align-items:center; justify-content:center; gap:.4rem; padding:.85rem 1rem; border-radius: 4px; font-weight: 700; font-size:.88rem; text-decoration:none; }
+.barre-appel__btn--tel { background:#f0fdf4; color:#166534; border:1px solid #86efac; }
+.barre-appel__btn--cta { background:#2e9e5b; color:#fff; border:1px solid #2e9e5b; }
+.barre-appel__btn--tel:hover { background:#dcfce7; }
+.barre-appel__btn--cta:hover { background:#248a4b; }
+@media(min-width: 800px){ .barre-appel{ display:none; } }
+body:has(.barre-appel) { padding-bottom: 78px; }
+@media(min-width:800px){ body:has(.barre-appel){ padding-bottom:0; } }

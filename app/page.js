@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { lireContenu, lireReglages, piloteActif } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
+import FormulaireTravaillerAvecNous from './components/FormulaireTravaillerAvecNous';
 import MenuNavigation from './components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
@@ -33,6 +34,8 @@ export default async function Accueil() {
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};
   const logiciels = contenu.logiciels || {};
+  const tw = contenu.travaillerAvecNous || {};
+  const pied = contenu.pied || {};
 
   return (
     <>
@@ -51,6 +54,12 @@ export default async function Accueil() {
             </span>
           </div>
           <div className="entete-actions">
+            <a className="btn btn--fantome btn--petit" href={`tel:${(identite.telephone || '+243976459970').replace(/\s/g,'')}`} title="Appeler LK-TECH">
+              📞 Appeler
+            </a>
+            <Link className="btn btn--fantome btn--petit" href="/travailler-avec-nous" style={{borderColor:'#2e9e5b'}}>
+              Travailler avec nous
+            </Link>
             <MenuNavigation />
             <Link href="/admin" className="nav-admin" title="Espace d'administration">
               🔒 Admin
@@ -74,6 +83,9 @@ export default async function Accueil() {
               <a className="bouton bouton-fantome" href="#contact">
                 Nous contacter
               </a>
+              <Link className="bouton bouton-fantome" href="/travailler-avec-nous">
+                Travailler avec nous ↗
+              </Link>
             </div>
           </div>
           <div className="hero-visuel">
@@ -211,27 +223,98 @@ export default async function Accueil() {
         </div>
       </section>
 
+      {/* Travailler avec nous */}
+      <section className="section section--gris" id="travailler-avec-nous">
+        <div className="conteneur">
+          <div className="section__entete">
+            <p className="section__sur">REJOIGNEZ L’AVENTURE</p>
+            <h2 className="section__titre">Travailler <em>avec nous</em></h2>
+            <p className="section__texte">{tw.soustitre || tw.sousTitre || 'Envie de construire, coder ou électrifier l’avenir avec nous ? Rejoignez LK-TECH à Goma.'}</p>
+            <p style={{marginTop:'.6rem', color:'#475569', maxWidth:'48rem', lineHeight:1.7}}>{tw.texte}</p>
+          </div>
+
+          {(tw.avantages||[]).length>0 && (
+            <div className="grille" style={{marginBottom:'2rem'}}>
+              {tw.avantages.map(a=>(
+                <div key={a.titre} className="carte">
+                  <div style={{fontSize:'1.5rem'}}>{a.icone}</div>
+                  <h3>{a.titre}</h3>
+                  <p>{a.texte}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="grille" style={{gridTemplateColumns:'1fr 1.4fr', gap:'2rem'}}>
+            <div>
+              <div className="carte" style={{textAlign:'left'}}>
+                <h3>📞 Appeler</h3>
+                <p>Une question avant de postuler ? Appelez-nous directement.</p>
+                <a className="bouton bouton-vert" href={`tel:${(identite.telephone||'+243976459970').replace(/\s/g,'')}`}>
+                  {identite.telephone || '+243 976 459 970'}
+                </a>
+                <p style={{fontSize:'.82rem', color:'#64748b', marginTop:'.6rem'}}>Lun–Sam 08h00–18h00 · Réponse rapide</p>
+              </div>
+              <div className="carte" style={{marginTop:'1rem'}}>
+                <h3>🔗 Google Form / Gmail</h3>
+                <p style={{fontSize:'.88rem', color:'#475569', lineHeight:1.6}}>
+                  Chaque candidature est : 1) enregistrée, 2) transmise à votre Google Form, 3) notifiée par Gmail.
+                  {tw.googleForm?.actionUrl ? ` Connecté → ${tw.googleForm.gmailDestination || identite.email}` : ' À configurer dans l’admin.'}
+                </p>
+                <Link href="/travailler-avec-nous" className="bouton bouton-fantome" style={{marginTop:'.6rem'}}>Page dédiée ↗</Link>
+              </div>
+            </div>
+            <div>
+              <h3 style={{marginBottom:'1rem'}}>{tw.formulaire?.titre || 'Candidature complète'}</h3>
+              <p style={{color:'#64748b', marginBottom:'1rem', fontSize:'.9rem'}}>{tw.formulaire?.sousTitre || 'Remplissez ce formulaire : il est envoyé à notre équipe, à notre Google Form et à notre Gmail.'}</p>
+              <FormulaireTravaillerAvecNous />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="pied">
         <div className="conteneur">
-          <span className="pied-signature">
-            <img
-              className="pied-marque"
-              src={identite.logoClair || '/assets/img/logo-clair.svg'}
-              alt=""
-              width="26"
-              height="30"
-            />
-            © {new Date().getFullYear()} {identite.nomLong || 'LK-TECH'} · RCCM{' '}
-            {identite.rccm || '—'} ·{' '}
-            <Link href="/admin" className="lien-admin-pied">
-              Administration
-            </Link>
-          </span>
-          <span>
-            Backend : Next.js + Supabase
-            {pilote === 'supabase' ? ' (connecté)' : ' (stockage local)'}
-            {reglages.maintenance ? ' · Mode maintenance' : ''}
-          </span>
+          <div className="pied__grille">
+            <div>
+              <img className="pied__logo" src={identite.logoClair || '/assets/img/logo-clair.svg'} alt="Logo LK-TECH" width="46" height="46" />
+              <div className="pied__nom">LK<i className="tiret">-</i>TECH</div>
+              <p className="pied__texte">{pied.description || 'LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.'}</p>
+            </div>
+            <div>
+              <h4 className="pied__titre">Navigation</h4>
+              <div className="pied__liens">
+                <Link href="/">Accueil</Link>
+                <Link href="/#specialites">Expertises</Link>
+                <Link href="/travailler-avec-nous">Travailler avec nous</Link>
+                <Link href="/a-propos">À propos</Link>
+                <Link href="/opportunites">Opportunités</Link>
+                <Link href="/#contact">Contact</Link>
+                <Link href="/admin">🔒 Admin</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="pied__titre">Nos spécialités</h4>
+              <div className="pied__liens">
+                {specialites.map(s => <span key={s.id}>{s.titre}</span>)}
+                {specialites.length===0 && <><span>Génie Civil</span><span>Architecture & Design</span><span>Informatique</span><span>Énergie</span></>}
+              </div>
+            </div>
+            <div>
+              <h4 className="pied__titre">Coordonnées</h4>
+              <div className="pied__liens">
+                <span>{identite.ville || 'Goma, Nord-Kivu, RDC'}</span>
+                <a href={`tel:${(identite.telephone||'+243976459970').replace(/\s/g,'')}`}>{identite.telephone || '+243 976 459 970'}</a>
+                <a href={`mailto:${identite.email || 'contact@linksmartec.com'}`}>{identite.email || 'contact@linksmartec.com'}</a>
+                <a href={`https://${identite.siteWeb || 'www.linksmartec.com'}`} target="_blank" rel="noreferrer">{identite.siteWeb || 'www.linksmartec.com'}</a>
+                <span>{identite.rccm ? `RCCM : ${identite.rccm}` : ''}</span>
+              </div>
+            </div>
+          </div>
+          <div className="pied__bas">
+            <span>© {new Date().getFullYear()} LK-TECH — {pied.mentions || 'Tous droits réservés.'}</span>
+            <span>Goma, République démocratique du Congo {reglages.maintenance ? '· Mode maintenance' : ''} · {pilote === 'supabase' ? 'Supabase connecté' : 'Stockage local'}</span>
+          </div>
         </div>
       </footer>
     </>

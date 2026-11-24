@@ -31,6 +31,17 @@ final class Store
             recuLe DATETIME NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
+        'lm_candidatures' => "CREATE TABLE IF NOT EXISTS lm_candidatures (
+            id VARCHAR(64) NOT NULL PRIMARY KEY,
+            civilite VARCHAR(30) NULL, nom VARCHAR(190) NULL, prenom VARCHAR(190) NULL,
+            email VARCHAR(190) NULL, telephone VARCHAR(60) NULL, ville VARCHAR(190) NULL,
+            dateNaissance VARCHAR(30) NULL, domaine VARCHAR(190) NULL,
+            typeCollaboration VARCHAR(120) NULL, experience VARCHAR(120) NULL,
+            disponibilite VARCHAR(120) NULL, message TEXT NULL, lienCv VARCHAR(500) NULL,
+            consentement TINYINT(1) NOT NULL DEFAULT 0, lu TINYINT(1) NOT NULL DEFAULT 0,
+            recuLe DATETIME NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
         'lm_journal' => "CREATE TABLE IF NOT EXISTS lm_journal (
             id INT AUTO_INCREMENT PRIMARY KEY,
             date DATETIME NOT NULL, action VARCHAR(120) NULL, details TEXT NULL
@@ -235,9 +246,131 @@ final class Store
         return true;
     }
 
+
+    /* ------------------------------------------------------------------ */
+    /* Candidatures « Travailler avec nous »                               */
+    /* ------------------------------------------------------------------ */
+
+    public function candidatures(): array
+    {
+        if ($this->pdo !== null) {
+            $lignes = $this->pdo
+                ->query('SELECT id, civilite, nom, prenom, email, telephone, ville, dateNaissance, domaine, typeCollaboration, experience, disponibilite, message, lienCv, consentement, lu, recuLe FROM lm_candidatures ORDER BY recuLe DESC LIMIT 500')
+                ->fetchAll();
+            return array_map(static function (array $ligne): array {
+                $ligne['lu'] = (bool) $ligne['lu'];
+                $ligne['consentement'] = (bool) $ligne['consentement'];
+                return $ligne;
+            }, $lignes);
+        }
+        return lire_json($this->dossierData . '/candidatures.json', []);
+    }
+
+    public function ajouterCandidature(array $donnees): array
+    {
+        $complet = array_merge($donnees, [
+            'id' => identifiant('cand'),
+            'recuLe' => date('Y-m-d H:i:s'),
+            'lu' => false,
+        ]);
+        if ($this->pdo !== null) {
+            $requete = $this->pdo->prepare(
+                'INSERT INTO lm_candidatures (id, civilite, nom, prenom, email, telephone, ville, dateNaissance, domaine, typeCollaboration, experience, disponibilite, message, lienCv, consentement, lu, recuLe) VALUES (:id, :civilite, :nom, :prenom, :email, :telephone, :ville, :dateNaissance, :domaine, :typeCollaboration, :experience, :disponibilite, :message, :lienCv, :consentement, 0, NOW())'
+            );
+            $requete->execute([
+                ':id' => $complet['id'],
+                ':civilite' => $donnees['civilite'] ?? null,
+                ':nom' => $donnees['nom'] ?? null,
+                ':prenom' => $donnees['prenom'] ?? null,
+                ':email' => $donnees['email'] ?? null,
+                ':telephone' => $donnees['telephone'] ?? null,
+                ':ville' => $donnees['ville'] ?? null,
+                ':dateNaissance' => $donnees['dateNaissance'] ?? null,
+                ':domaine' => $donnees['domaine'] ?? null,
+                ':typeCollaboration' => $donnees['typeCollaboration'] ?? null,
+                ':experience' => $donnees['experience'] ?? null,
+                ':disponibilite' => $donnees['disponibilite'] ?? null,
+                ':message' => $donnees['message'] ?? null,
+                ':lienCv' => $donnees['lienCv'] ?? null,
+                ':consentement' => !empty($donnees['consentement']) ? 1 : 0,
+            ]);
+            return $complet;
+        }
+        $list = $this->candidatures();
+        array_unshift($list, $complet);
+        ecrire_json($this->dossierData . '/candidatures.json', array_slice($list, 0, 1000));
+        return $complet;
+    }
+
+    public function marquerCandidature(string $id, bool $lu = true): ?array
+    {
+        if ($this->pdo !== null) {
+            $requete = $this->pdo->prepare('UPDATE lm_candidatures SET lu = :lu WHERE id = :id');
+            $requete->execute([':lu' => $lu ? 1 : 0, ':id' => $id]);
+            return ['id' => $id, 'lu' => $lu];
+        }
+        $list = $this->candidatures();
+        $trouve = null;
+        foreach ($list as $index => $c) {
+            if (($c['id'] ?? null) === $id) {
+                $list[$index]['lu'] = $lu;
+                $trouve = $list[$index];
+            }
+        }
+        ecrire_json($this->dossierData . '/candidatures.json', $list);
+        return $trouve;
+    }
+
+    public function supprimerCandidature(string $id): bool
+    {
+        if ($this->pdo !== null) {
+            $requete = $this->pdo->prepare('DELETE FROM lm_candidatures WHERE id = :id');
+            $requete->execute([':id' => $id]);
+            return true;
+        }
+        $list = array_values(array_filter($this->candidatures(), static fn (array $c): bool => ($c['id'] ?? null) !== $id));
+        ecrire_json($this->dossierData . '/candidatures.json', $list);
+        return true;
+    }
+
+    public function transfererVersGoogleForm(array $candidature): array
+    {
+        $contenu = $this->contenu();
+        $cfg = $contenu['travaillerAvecNous']['googleForm'] ?? [];
+        $actionUrl = trim((string)($cfg['actionUrl'] ?? ''));
+        if ($actionUrl === '' || strpos($actionUrl, 'docs.google.com') === false) {
+            return ['ok' => false, 'raison' => 'non-configure'];
+        }
+        $map = $cfg['fieldMap'] ?? [];
+        $params = [];
+        foreach (['civilite','nom','prenom','email','telephone','ville','dateNaissance','domaine','typeCollaboration','experience','disponibilite','message','lienCv'] as $k) {
+            $entry = trim((string)($map[$k] ?? ''));
+            if ($entry !== '' && !empty($candidature[$k])) {
+                $params[$entry] = (string)$candidature[$k];
+            }
+        }
+        if (!$params) return ['ok' => false, 'raison' => 'map-vide'];
+        $ch = curl_init($actionUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query($params),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+        ]);
+        $rep = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $err = curl_error($ch);
+        curl_close($ch);
+        $this->journaliser('candidature-googleform', ['id' => $candidature['id'] ?? '', 'code' => $code, 'erreur' => $err]);
+        return ['ok' => $code >= 200 && $code < 400, 'code' => $code, 'erreur' => $err];
+    }
+
     /* ------------------------------------------------------------------ */
     /* Comptes d'administration                                            */
     /* ------------------------------------------------------------------ */
+
 
     public function securite(): array
     {
@@ -467,6 +600,9 @@ final class Store
         }
         if (!is_file($this->dossierData . '/messages.json')) {
             ecrire_json($this->dossierData . '/messages.json', []);
+        }
+        if (!is_file($this->dossierData . '/candidatures.json')) {
+            ecrire_json($this->dossierData . '/candidatures.json', []);
         }
         if (!is_file($this->dossierData . '/security.json')) {
             ecrire_json($this->dossierData . '/security.json', ['utilisateurs' => [$this->compteInitial()]]);

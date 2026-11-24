@@ -81,6 +81,36 @@ final class Api
             return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Message enregistré.'], 201);
         }
 
+        if (($chemin === '/api/candidature' || $chemin === '/api/travailler-avec-nous') && $methode === 'POST') {
+            $candidature = [
+                'civilite' => nettoyer($corps['civilite'] ?? '', 20),
+                'nom' => nettoyer($corps['nom'] ?? '', 120),
+                'prenom' => nettoyer($corps['prenom'] ?? '', 120),
+                'email' => nettoyer($corps['email'] ?? '', 160),
+                'telephone' => nettoyer($corps['telephone'] ?? '', 40),
+                'ville' => nettoyer($corps['ville'] ?? '', 120),
+                'dateNaissance' => nettoyer($corps['dateNaissance'] ?? '', 20),
+                'domaine' => nettoyer($corps['domaine'] ?? '', 140),
+                'typeCollaboration' => nettoyer($corps['typeCollaboration'] ?? '', 80),
+                'experience' => nettoyer($corps['experience'] ?? '', 80),
+                'disponibilite' => nettoyer($corps['disponibilite'] ?? '', 80),
+                'message' => nettoyer($corps['message'] ?? $corps['motivation'] ?? '', 5000),
+                'lienCv' => nettoyer($corps['lienCv'] ?? '', 500),
+                'consentement' => !empty($corps['consentement']),
+            ];
+            if ($candidature['nom'] === '' || $candidature['prenom'] === '' || !email_valide($candidature['email']) || mb_strlen($candidature['message']) < 10) {
+                return $this->reponse(['erreur' => 'Merci de renseigner nom, prénom, un e-mail valide et votre motivation (10 caractères min).'], 400);
+            }
+            if (!$candidature['consentement']) {
+                return $this->reponse(['erreur' => 'Veuillez accepter la politique de confidentialité.'], 400);
+            }
+            $enregistre = $this->store->ajouterCandidature($candidature);
+            $this->store->journaliser('candidature-recue', ['id' => $enregistre['id'], 'email' => $candidature['email'], 'domaine' => $candidature['domaine']]);
+            // Transfert vers Google Form si configuré (non bloquant)
+            $transfert = $this->store->transfererVersGoogleForm($enregistre);
+            return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Candidature enregistrée.', 'googleForm' => $transfert], 201);
+        }
+
         /* ========================= AUTHENTIFICATION ========================= */
 
         if ($chemin === '/api/admin/login' && $methode === 'POST') {
@@ -235,6 +265,22 @@ final class Api
 
         if ($chemin === '/api/admin/messages' && $methode === 'GET') {
             return $this->reponse(['messages' => $this->store->messages()]);
+        }
+
+        if ($chemin === '/api/admin/candidatures' && $methode === 'GET') {
+            return $this->reponse(['candidatures' => $this->store->candidatures()]);
+        }
+
+        if (str_starts_with($chemin, '/api/admin/candidatures/')) {
+            $id = substr($chemin, strlen('/api/admin/candidatures/'));
+            if ($methode === 'PATCH') {
+                $cand = $this->store->marquerCandidature($id, ($corps['lu'] ?? true) !== false);
+                return $this->reponse(['ok' => true, 'candidature' => $cand]);
+            }
+            if ($methode === 'DELETE') {
+                $this->store->supprimerCandidature($id);
+                return $this->reponse(['ok' => true]);
+            }
         }
 
         if (str_starts_with($chemin, '/api/admin/messages/')) {
