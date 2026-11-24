@@ -52,6 +52,18 @@ $defautOpportunites = [
         'creeLe' => '2026-11-20',
     ],
     [
+        'id' => 'opp-archi-2026',
+        'type' => 'Offre d\'emploi',
+        'titre' => 'Architecte & Designer d\'intérieur (Génie Civil)',
+        'categorie' => 'Architecture & Design',
+        'lieu' => 'Goma, Nord-Kivu',
+        'budget' => 'Selon profil',
+        'dateLimite' => '2026-12-20',
+        'description' => 'Au sein du département Génie Civil, concevez plans 2D/3D, maquettes BIM et aménagements intérieurs pour nos projets résidentiels et institutionnels. Maîtrise d’AutoCAD, Revit ou ArchiCAD souhaitée.',
+        'auteur' => 'LK-TECH',
+        'creeLe' => '2026-11-24',
+    ],
+    [
         'id' => 'opp-3',
         'type' => 'Offre d\'emploi',
         'titre' => 'Technicien(ne) Énergie Solaire & Installations',
@@ -393,7 +405,7 @@ if ($membreConnecte) {
         <div>
           <img class="pied__logo" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
           <div class="pied__nom">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte">LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.</p>
+          <p class="pied__texte">LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.</p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>

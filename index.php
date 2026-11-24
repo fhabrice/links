@@ -21,10 +21,10 @@ $reglages = lk_store()->reglages();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= htmlspecialchars(($identite['nom'] ?? 'LK-TECH'), ENT_QUOTES, 'UTF-8') ?> | Construire, digitaliser et connecter vos projets</title>
-  <meta name="description" content="LK-TECH accompagne vos projets en construction, solutions digitales et énergie renouvelable, de la conception à la réalisation. Basée à Goma, RDC.">
+  <meta name="description" content="LK-TECH accompagne vos projets en génie civil, architecture & design, solutions digitales et énergie renouvelable, de la conception à la réalisation. Basée à Goma, RDC.">
   <meta name="theme-color" content="#16233F">
   <meta property="og:title" content="LK-TECH | Construire, digitaliser et connecter vos projets">
-  <meta property="og:description" content="Construction, technologie et énergie : un partenaire pour concrétiser vos projets.">
+  <meta property="og:description" content="Génie civil, architecture, technologie et énergie : un partenaire pour concrétiser vos projets.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.linksmartec.com/">
   <meta property="og:site_name" content="LK-TECH">
@@ -41,9 +41,9 @@ $reglages = lk_store()->reglages();
     "url": "https://www.linksmartec.com",
     "email": "contact@linksmartec.com",
     "telephone": "+243 976 459 970",
-    "description": "Construction, technologie et énergie renouvelable à Goma, RDC.",
+    "description": "Génie civil, architecture & design, technologie et énergie renouvelable à Goma, RDC.",
     "areaServed": "Nord-Kivu, République Démocratique du Congo",
-    "knowsAbout": ["Informatique", "Développement logiciel", "Réseaux", "Construction", "BTP", "Énergie renouvelable", "Énergie solaire"]
+    "knowsAbout": ["Informatique", "Développement logiciel", "Réseaux", "Génie Civil", "Architecture", "BTP", "Énergie renouvelable", "Énergie solaire"]
   }
   </script>
 </head>
@@ -57,7 +57,7 @@ $reglages = lk_store()->reglages();
   <!-- ============================== TOPBAR ============================== -->
   <div class="topbar">
     <div class="conteneur topbar__inner">
-      <span class="topbar__rccm">CONSTRUCTION <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
+      <span class="topbar__rccm">GÉNIE CIVIL <span>·</span> ARCHITECTURE <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
       <div class="topbar__infos">
         <span data-champ="ville">Goma, RDC</span>
         <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
@@ -123,7 +123,7 @@ $reglages = lk_store()->reglages();
             <a class="btn btn--fantome hero__secondaire" href="#specialites">Découvrir nos expertises <span aria-hidden="true">→</span></a>
           </div>
           <div class="hero__reperes" aria-label="Nos domaines d'activité">
-            <span><i></i> Construction</span><span><i></i> Technologie</span><span><i></i> Énergie</span>
+            <span><i></i> Génie Civil</span><span><i></i> Architecture</span><span><i></i> Technologie</span><span><i></i> Énergie</span>
           </div>
         </div>
         <div class="hero__visuel">
@@ -167,7 +167,7 @@ $reglages = lk_store()->reglages();
       <div class="section__entete">
         <p class="section__sur">CE QUE NOUS FAISONS <span class="section__trait"></span> 02</p>
         <h2 class="section__titre">Des expertises qui font <em>la différence.</em></h2>
-        <p class="section__texte">Trois domaines complémentaires pour concevoir, bâtir et faire grandir vos projets. Sélectionnez une expertise pour en savoir plus.</p>
+        <p class="section__texte">Quatre domaines complémentaires pour concevoir, dessiner, bâtir et faire grandir vos projets. Sélectionnez une expertise pour en savoir plus.</p>
       </div>
       <div class="grille-specialites" id="grille-specialites"></div>
     </div>
@@ -322,7 +322,8 @@ $reglages = lk_store()->reglages();
               <label for="c-sujet">Spécialité concernée</label>
               <select id="c-sujet" name="sujet">
                 <option value="Informatique &amp; digital">Informatique &amp; digital</option>
-                <option value="Construction &amp; BTP">Construction &amp; BTP</option>
+                <option value="Génie Civil">Génie Civil</option>
+                <option value="Architecture &amp; Design">Architecture &amp; Design</option>
                 <option value="Énergie renouvelable">Énergie renouvelable</option>
                 <option value="Commande boutique">Commande boutique</option>
                 <option value="Partenariat">Partenariat</option>

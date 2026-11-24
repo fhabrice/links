@@ -251,7 +251,7 @@ $reglages = lk_store()->reglages();
         <!-- ---------------------------- SPÉCIALITÉS ---------------------------- -->
         <section class="vue" id="vue-specialites">
           <h2 class="admin-titre">Spécialités</h2>
-          <p class="admin-sous-titre">Les trois pôles d'expertise mis en avant sur la page d'accueil.</p>
+          <p class="admin-sous-titre">Les pôles d'expertise mis en avant sur la page d'accueil (dont la branche Architecture & Design du Génie Civil).</p>
           <div id="zones-specialites"></div>
           <div class="panneau">
             <h3>Carte « demande d'étude »</h3>
@@ -299,7 +299,7 @@ $reglages = lk_store()->reglages();
           </div>
 
           <div class="panneau">
-            <h3>Les trois spécialités (page À propos)</h3>
+            <h3>Les spécialités (page À propos)</h3>
             <div id="zones-piliers-apropos"></div>
           </div>
 
@@ -360,6 +360,8 @@ $reglages = lk_store()->reglages();
                 <div class="champ"><label for="p-filtre">Spécialité (filtre boutique)</label>
                   <select id="p-filtre">
                     <option value="informatique">Informatique</option>
+                    <option value="construction">Génie Civil</option>
+                    <option value="architecture">Architecture & Design</option>
                     <option value="energie">Énergie renouvelable</option>
                     <option value="terroir">Produits du terroir</option>
                     <option value="">Autre</option>
