@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { lireContenu, lireReglages, piloteActif } from '../lib/store';
+import { lireContenu, lireReglages } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
 import MenuNavigation from './components/MenuNavigation';
 
@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 const ICONES = { code: '</>', btp: '⌂', architecture: '◧', energie: '⚡', solaire: '☀️' };
 
 function formaterPrix(produit) {
+  if (produit.prix == null || produit.prix === '') return 'Sur devis';
   try {
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
@@ -20,19 +21,16 @@ function formaterPrix(produit) {
 }
 
 export default async function Accueil() {
-  const [contenu, reglages, pilote] = await Promise.all([
+  const [contenu, reglages] = await Promise.all([
     lireContenu(),
-    lireReglages(),
-    piloteActif()
+    lireReglages()
   ]);
 
   const identite = contenu.identite || {};
-  const hero = (contenu.hero?.onglets || []).find(
-    (t) => t.id === contenu.hero?.actif
-  ) || contenu.hero?.onglets?.[0];
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};
   const logiciels = contenu.logiciels || {};
+  const logicielsPublies = (logiciels.items || []).filter((l) => l.actif !== false);
   const tw = contenu.travaillerAvecNous || {};
   const pied = contenu.pied || {};
 
@@ -67,17 +65,17 @@ export default async function Accueil() {
       <section className="hero">
         <div className="conteneur hero-grille">
           <div className="hero-contenu">
-            {hero?.badge && <span className="badge">{hero.badge}</span>}
+            <span className="badge">Ingénierie &amp; solutions intégrées · Goma, RDC</span>
             <h1>
-              {hero?.titre} <em>{hero?.titreAccent}</em>
+              Construire, digitaliser, <em>faire avancer vos projets.</em>
             </h1>
-            <p>{hero?.description}</p>
+            <p>Vous souhaitez bâtir, développer votre activité ou gagner en autonomie énergétique ? Depuis Goma, LK-TECH associe ingénierie, architecture et numérique pour transformer vos ambitions en projets structurés, adaptés à votre budget et aux réalités du terrain.</p>
             <div className="boutons">
-              <a className="bouton bouton-vert" href="#logiciels">
-                {hero?.boutonTexte || 'Découvrir nos offres'}
+              <a className="bouton bouton-vert" href="#contact">
+                Parlons de votre projet ↗
               </a>
-              <a className="bouton bouton-fantome" href="#contact">
-                Nous contacter
+              <a className="bouton bouton-fantome" href="#collaborations">
+                Explorer les collaborations
               </a>
               <Link className="bouton bouton-fantome" href="/travailler-avec-nous">
                 Travailler avec nous ↗
@@ -111,9 +109,42 @@ export default async function Accueil() {
         </div>
       </section>
 
+  <section className="section section--gris" id="collaborations" aria-labelledby="collaborations-titre">
+    <div className="conteneur">
+      <div className="section__entete">
+        <p className="section__sur">CLIENTS · INVESTISSEURS · PARTENAIRES · TALENTS</p>
+        <h2 className="section__titre" id="collaborations-titre">Votre ambition, <em>notre point de départ.</em></h2>
+        <p className="section__texte">Chaque collaboration commence par un objectif partagé. Découvrez comment avancer avec LK-TECH, selon votre projet et le rôle que vous souhaitez y jouer.</p>
+      </div>
+      <div className="grille">
+        <article className="carte">
+          <h3>Clients &amp; porteurs de projets</h3>
+          <p>Construire un bâtiment, digitaliser une entreprise ou équiper un site en énergie : bénéficiez d’une lecture technique de vos besoins et d’une proposition adaptée à vos priorités.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Présenter mon projet <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Investisseurs &amp; diaspora</h3>
+          <p>Vous souhaitez explorer un projet immobilier, numérique ou énergétique en RDC ? Échangeons sur sa faisabilité technique, ses besoins et les modalités possibles de collaboration avant tout engagement.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Échanger sur un investissement <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Entreprises &amp; partenaires</h3>
+          <p>Bureaux d’études, fournisseurs, institutions et ONG : rapprochons nos compétences pour répondre à un appel à projets, équiper un site ou concevoir une intervention adaptée aux besoins locaux.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Proposer un partenariat <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Talents &amp; professionnels</h3>
+          <p>Ingénieurs, architectes, développeurs et techniciens : faites connaître votre savoir-faire et vos disponibilités pour contribuer aux projets de LK-TECH.</p>
+          <a className="accueil-collaboration-lien" href="/travailler-avec-nous">Faire connaître mes compétences <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
       <section className="section" id="specialites">
         <div className="conteneur">
-          <h2>Nos spécialités</h2>
+          <h2>Quatre expertises pour faire avancer vos projets</h2>
           <p className="sous-titre">
             {identite.nomLong || 'LK-TECH'} — {identite.slogan}
           </p>
@@ -137,9 +168,7 @@ export default async function Accueil() {
               'Des logiciels conçus par LK-TECH, avec pour chacun une explication complète.'}
           </p>
           <div className="logiciels-grille">
-            {(logiciels.items || [])
-              .filter((l) => l.actif !== false)
-              .map((l) => (
+            {logicielsPublies.map((l) => (
                 <article className="carte carte-logiciel" key={l.id}>
                   <div className="logiciel-entete">
                     <span className="logiciel-icone" aria-hidden="true">
@@ -172,8 +201,8 @@ export default async function Accueil() {
                   </div>
                 </article>
               ))}
-            {!(logiciels.items || []).length && (
-              <p className="vide">Les logiciels arrivent bientôt.</p>
+            {!logicielsPublies.length && (
+              <p className="vide">Notre catalogue évolue. Contactez-nous pour découvrir les solutions disponibles.</p>
             )}
           </div>
         </div>
@@ -211,7 +240,8 @@ export default async function Accueil() {
 
       <section className="section contact" id="contact">
         <div className="conteneur">
-          <h2>Parlons de votre projet</h2>
+          <h2>Votre projet commence ici.</h2>
+          <p className="sous-titre">Un besoin à résoudre, un projet à développer ou une collaboration à proposer ? Présentez vos objectifs, votre localisation et votre calendrier pour préparer un premier échange utile.</p>
           <p className="sous-titre">
             {identite.telephone} · {identite.email} · {identite.ville}
           </p>
@@ -343,8 +373,12 @@ export default async function Accueil() {
         </div>
       </section>
 
-      <footer className="pied">
+      <footer className="pied" aria-label="Pied de page LK-TECH">
         <div className="conteneur">
+          <div className="pied__invitation">
+            <div><h2>Un logiciel ou un projet en tête ?</h2><p>Échangeons sur la solution adaptée à vos besoins.</p></div>
+            <a className="bouton bouton-vert" href="#contact">Contacter LK-TECH ↗</a>
+          </div>
           <div className="pied__grille">
             <div>
               <img className="pied__logo" src={identite.logoClair || '/assets/img/logo-clair.svg'} alt="Logo LK-TECH" width="46" height="46" />
@@ -356,7 +390,8 @@ export default async function Accueil() {
               <div className="pied__liens">
                 <Link href="/">Accueil</Link>
                 <Link href="/#specialites">Spécialités</Link>
-                <Link href="/#logiciels">Logiciels</Link>
+                <Link href="/#logiciels">Nos logiciels</Link>
+                <Link href="/#collaborations">Investir &amp; collaborer</Link>
                 <Link href="/#apropos">À propos</Link>
                 <Link href="/travailler-avec-nous">Travailler avec nous</Link>
                 <Link href="/#contact">Contact</Link>
@@ -383,7 +418,7 @@ export default async function Accueil() {
           </div>
           <div className="pied__bas">
             <span>© {new Date().getFullYear()} LK-TECH — {pied.mentions || 'Tous droits réservés.'}</span>
-            <span>Goma, République démocratique du Congo {reglages.maintenance ? '· Mode maintenance' : ''} · {pilote === 'supabase' ? 'Supabase connecté' : 'Stockage local'}</span>
+            <span>Goma, République démocratique du Congo {reglages.maintenance ? '· Mode maintenance' : ''}</span>
           </div>
         </div>
       </footer>
