@@ -7,7 +7,7 @@
 
 from docx import Document
 from docx.shared import Pt, RGBColor, Cm
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
@@ -90,17 +90,15 @@ def tache(doc, numero, titre, etapes, points):
     p = doc.add_paragraph()
     p.paragraph_format.space_before = Pt(10)
     p.paragraph_format.space_after = Pt(2)
+    p.paragraph_format.tab_stops.add_tab_stop(Cm(17), WD_TAB_ALIGNMENT.RIGHT)
     r = p.add_run(f"TÂCHE {numero} : {titre}")
     r.font.bold = True
     r.font.size = Pt(11)
     r.font.color.rgb = NOIR
-
-    pt = doc.add_paragraph()
-    rr = pt.add_run(f"(Sur {points} points)")
-    rr.font.italic = True
-    rr.font.size = Pt(9)
-    rr.font.color.rgb = NOIR
-    pt.paragraph_format.space_after = Pt(2)
+    r2 = p.add_run(f"\t{points} pts")
+    r2.font.bold = True
+    r2.font.size = Pt(11)
+    r2.font.color.rgb = NOIR
 
     for i, etape in enumerate(etapes, 1):
         e = doc.add_paragraph(style='List Number')

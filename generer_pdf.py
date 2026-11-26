@@ -79,12 +79,16 @@ def consigne(pdf, texte):
 
 
 def tache(pdf, numero, titre, etapes, points):
+    y = pdf.get_y()
     pdf.set_font("DejaVu", "B", 9.5)
     pdf.set_text_color(*NOIR)
-    pdf.multi_cell(0, 4.6, f"TÂCHE {numero} : {titre}",
-                   new_x=XPos.LMARGIN, new_y=YPos.NEXT)
-    pdf.set_font("DejaVu", "I", 7.5)
-    pdf.multi_cell(0, 3.6, f"(Sur {points} points)",
+    # Points à droite (à côté de la tâche)
+    pdf.set_xy(pdf.l_margin + 160, y)
+    pdf.cell(24, 4.6, f"{points} pts", align="R",
+             new_x=XPos.LMARGIN, new_y=YPos.TOP)
+    # Titre de la tâche à gauche
+    pdf.set_xy(pdf.l_margin, y)
+    pdf.multi_cell(158, 4.6, f"TÂCHE {numero} : {titre}",
                    new_x=XPos.LMARGIN, new_y=YPos.NEXT)
     pdf.set_font("DejaVu", "", 8)
     for i, etape in enumerate(etapes, 1):
