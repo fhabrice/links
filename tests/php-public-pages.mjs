@@ -101,6 +101,34 @@ try {
   html = await render('index.php');
   assert.match(html, /<h3[^>]*>Catalogue personnalisé<\/h3>/);
 
+  // Une installation existante peut encore contenir l'ancien texte exposant le destinataire.
+  const privateContent = structuredClone(defaults.contenu);
+  const destination = privateContent.travaillerAvecNous.emailDestination;
+  privateContent.travaillerAvecNous.texte = `Nous recrutons : les candidatures sont envoyées à ${destination}`;
+  privateContent.travaillerAvecNous.formulaire.sousTitre = `Écrivez à ${destination}`;
+  php.writeFile('/site/data/content.json', JSON.stringify(privateContent));
+  html = await render('travailler-avec-nous.php');
+  assert.ok(!html.includes(destination), 'texte historique masqué dans le HTML');
+  assert.ok(html.includes('Nous vous recontacterons après examen de votre profil.'));
+  const apiSite = await php.run({code: `<?php require '/site/app/bootstrap.php'; $api = new Api(lk_store(), lk_auth(), LK_RACINE); echo json_encode($api->traiter('GET', '/api/site'));`});
+  assert.equal(apiSite.exitCode, 0, apiSite.errors);
+  assert.ok(!apiSite.text.includes(destination));
+  const publicData = JSON.parse(apiSite.text).corps.contenu.travaillerAvecNous;
+  assert.equal(publicData.emailDestination, undefined);
+  assert.equal(publicData.googleForm.gmailDestination, undefined);
+  const prive = JSON.parse(php.readFileAsText('/site/data/content.json'));
+  assert.equal(prive.travaillerAvecNous.emailDestination, destination, 'destination privée conservée');
+  assert.equal(prive.travaillerAvecNous.texte, privateContent.travaillerAvecNous.texte, 'édition admin inchangée');
+  for (const endpoint of ['/api/candidature', '/api/travailler-avec-nous']) {
+    const post = await php.run({code: `<?php require '/site/app/bootstrap.php'; $api = new Api(lk_store(), lk_auth(), LK_RACINE); echo json_encode($api->traiter('POST', '${endpoint}', ['nom'=>'Test', 'prenom'=>'Confidentialité', 'email'=>'candidat@example.invalid', 'message'=>'Candidature de test de confidentialité', 'consentement'=>true]));`});
+    assert.equal(post.exitCode, 0, post.errors);
+    const response = JSON.parse(post.text);
+    assert.equal(response.code, 201);
+    assert.deepEqual(Object.keys(response.corps.email), ['ok']);
+    assert.deepEqual(Object.keys(response.corps.googleForm), ['ok']);
+    assert.ok(!post.text.includes(destination), 'réponse de candidature sans destinataire');
+  }
+
   const fallback = JSON.parse(fs.readFileSync(path.join(root, 'assets/data/site.json')));
   assert.deepEqual(fallback.contenu.logiciels, defaults.contenu.logiciels);
   console.log('OK : 8 pages PHP complètes, footer unique, racine/sous-dossier, échantillons SSR, édition/masquage/suppression et secours synchronisé.');

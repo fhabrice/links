@@ -44,7 +44,7 @@ final class Api
         }
 
         if ($chemin === '/api/site' && $methode === 'GET') {
-            $contenu = $this->store->contenu();
+            $contenu = contenu_public($this->store->contenu());
             $reglages = $this->store->reglages();
 
             $contenu['produits'] = array_values(array_filter(
@@ -106,11 +106,11 @@ final class Api
             }
             $enregistre = $this->store->ajouterCandidature($candidature);
             $this->store->journaliser('candidature-recue', ['id' => $enregistre['id'], 'email' => $candidature['email'], 'domaine' => $candidature['domaine']]);
-            // Envoi direct par e-mail à fabricenzarubara@gmail.com (non bloquant)
+            // Envoi au destinataire privé configuré côté serveur (non bloquant)
             $emailResult = $this->store->envoyerCandidatureParEmail($enregistre);
             // Transfert optionnel vers Google Form si configuré (non bloquant)
             $transfert = $this->store->transfererVersGoogleForm($enregistre);
-            return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Candidature enregistrée et envoyée à fabricenzarubara@gmail.com.', 'email' => $emailResult, 'googleForm' => $transfert], 201);
+            return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Votre candidature a bien été enregistrée. Notre équipe examinera votre dossier.', 'email' => ['ok' => !empty($emailResult['ok'])], 'googleForm' => ['ok' => !empty($transfert['ok'])]], 201);
         }
 
         /* ================= ESPACE MEMBRE (Appel à projet) ================= */

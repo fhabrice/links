@@ -1,3 +1,4 @@
+import { contenuPublic } from '../../lib/contenu-public';
 import Link from 'next/link';
 import { lireContenu } from '../../lib/store';
 import FormulaireTravaillerAvecNous from '../components/FormulaireTravaillerAvecNous';
@@ -72,7 +73,7 @@ const POLES_RECRUTEMENT = [
 ];
 
 export default async function TravaillerAvecNous() {
-  const contenu = await lireContenu();
+  const contenu = contenuPublic(await lireContenu());
   const identite = contenu.identite || {};
   const tw = contenu.travaillerAvecNous || {};
   const gform = tw.googleForm || {};

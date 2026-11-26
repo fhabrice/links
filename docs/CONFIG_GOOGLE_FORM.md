@@ -147,3 +147,15 @@ Si le Google Form n'est pas encore configuré, le site conserve quand même la c
 
 Besoin d'aide ? Ouvrez le fichier `app/defaults.json` et remplacez les `entry.` vides par vos vrais IDs : le transfert s'activera automatiquement au prochain déploiement (Vercel redéploie dès que vous poussez sur `main`).
 
+
+## Confidentialité des candidatures
+
+Le destinataire configuré dans `travaillerAvecNous.emailDestination` (ou l’ancien champ `googleForm.gmailDestination`) reste réservé au serveur et à l’administration authentifiée. Il n’est pas transmis dans `/api/site`, le fichier de secours public, les pages publiques ni les confirmations d’envoi.
+
+Les versions PHP et Next.js utilisent une projection publique (`contenu_public` / `contenuPublic`) qui retire ces réglages et filtre également les anciens textes enregistrés contenant le destinataire. Le paragraphe public et l’introduction du formulaire sont alors remplacés par les textes neutres de `lib/recrutement-public.json`, sans modifier le contenu privé ou l’adresse de réception en base.
+
+Les réponses de candidature conservent les indicateurs `email.ok` et `googleForm.ok`, mais ne renvoient plus de destinataire, d’aperçu du courriel ni d’erreurs techniques de transport. Les détails de diagnostic restent côté serveur. Le succès public confirme l’enregistrement du dossier, pas une livraison de courriel garantie.
+
+Sur Apache/cPanel, déployer aussi les règles `.htaccess` à la racine et dans `lib/` : elles protègent les fichiers internes et les archives de sources. Pour un autre serveur web, prévoir des règles équivalentes. Ne pas écraser les données ou la configuration existantes.
+
+Vérifications : `npm run test:confidentialite`, `npm run test:php` et `npm run build`. Le test PHP couvre également les deux routes de dépôt de candidature et les textes historiques en stockage. La configuration des destinataires reste inchangée ; aucun test ne valide la livraison SMTP réelle.

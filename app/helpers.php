@@ -152,3 +152,34 @@ function lire_corps(): array
     $corps = $formulaire ?: [];
     return $corps;
 }
+
+/** Ne jamais transmettre les destinataires privés de recrutement au navigateur. */
+function contenu_public(array $contenu): array
+{
+    $textes = lire_json(dirname(__DIR__) . '/lib/recrutement-public.json', []);
+    $defauts = lire_json(__DIR__ . '/defaults.json', []);
+    $tw = $contenu['travaillerAvecNous'] ?? [];
+    $privees = array_values(array_filter(array_map('trim', [
+        (string) ($defauts['contenu']['travaillerAvecNous']['emailDestination'] ?? ''),
+        (string) ($tw['emailDestination'] ?? ''),
+        (string) ($tw['googleForm']['gmailDestination'] ?? ''),
+    ])));
+    $contientAdresse = static function ($texte) use ($privees): bool {
+        if (!is_string($texte)) return false;
+        foreach ($privees as $adresse) {
+            if (stripos($texte, $adresse) !== false) return true;
+        }
+        return false;
+    };
+    if ($contientAdresse($tw['texte'] ?? null)) $tw['texte'] = $textes['texte'];
+    if ($contientAdresse($tw['formulaire']['sousTitre'] ?? null)) {
+        $tw['formulaire']['sousTitre'] = $textes['sousTitre'];
+    }
+    unset($tw['emailDestination']);
+    if (isset($tw['googleForm'])) $tw['googleForm'] = ['actionUrl' => $tw['googleForm']['actionUrl'] ?? ''];
+    if (isset($contenu['travaillerAvecNous'])) $contenu['travaillerAvecNous'] = $tw;
+    array_walk_recursive($contenu, static function (&$valeur) use ($privees): void {
+        if (is_string($valeur)) $valeur = str_ireplace($privees, 'notre équipe de recrutement', $valeur);
+    });
+    return $contenu;
+}
