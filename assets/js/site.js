@@ -169,7 +169,7 @@
       if (!lien || lien.getAttribute('href').startsWith('#')) return;
       const url = new URL(lien.href, window.location.href);
       if (url.origin === window.location.origin && !url.pathname.includes('/admin') &&
-          /\/(?:a-propos(?:\.html|\.php)?|index\.(?:html|php))?$/.test(url.pathname)) {
+          /\/(?:(?:a-propos|travailler-avec-nous|opportunites)(?:\.html|\.php)?|index\.(?:html|php))?$/.test(url.pathname)) {
         lien.href = lienLocalLangue(lien.href);
       }
     });
@@ -269,7 +269,9 @@
 
   function appliquerIdentite(identite) {
     if (!identite) return;
-    document.title = `${identite.nomComplet || identite.nom} | Construire, digitaliser et connecter vos projets`;
+    if ($('#hero-titre')) {
+      document.title = `${identite.nomComplet || identite.nom} | Construire, digitaliser et connecter vos projets`;
+    }
 
     const logo = identite.logo || '/assets/img/logo.svg';
     const logoClair = identite.logoClair || logo;
@@ -866,9 +868,43 @@
     $$('.apparait:not(.visible)').forEach((el) => observateur.observe(el));
   }
 
+  function brancherMenu() {
+    const burger = $('#burger');
+    const nav = $('#nav');
+    if (!burger || !nav || burger.dataset.menuBranche) return;
+    burger.dataset.menuBranche = '1';
+
+    const fermerMenu = () => {
+      if (!nav.classList.contains('ouvert')) return;
+      nav.classList.remove('ouvert');
+      burger.setAttribute('aria-expanded', 'false');
+      burger.textContent = '☰';
+    };
+
+    burger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const ouvert = nav.classList.toggle('ouvert');
+      burger.setAttribute('aria-expanded', String(ouvert));
+      burger.textContent = ouvert ? '✕' : '☰';
+    });
+
+    $$('#nav a').forEach((lien) => {
+      lien.addEventListener('click', () => {
+        fermerMenu();
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (nav.classList.contains('ouvert') && !nav.contains(e.target) && !burger.contains(e.target)) {
+        fermerMenu();
+      }
+    });
+  }
+
   /* --------------------------------- init --------------------------------- */
 
   async function initialiser() {
+    brancherMenu();
     brancherLangues();
     traduirePage();
     const donnees = await chargerContenu();
@@ -940,24 +976,14 @@
         ouvrirPanier(false);
         if ($('#nav')?.classList.contains('ouvert')) {
           $('#nav').classList.remove('ouvert');
-          $('#burger')?.setAttribute('aria-expanded', 'false');
-          $('#burger')?.focus();
+          if ($('#burger')) {
+            $('#burger').setAttribute('aria-expanded', 'false');
+            $('#burger').textContent = '☰';
+            $('#burger').focus();
+          }
         }
       }
     });
-
-    const burger = $('#burger');
-    burger?.addEventListener('click', () => {
-      const nav = $('#nav');
-      const ouvert = nav.classList.toggle('ouvert');
-      burger.setAttribute('aria-expanded', String(ouvert));
-    });
-    $$('#nav .nav__lien').forEach((lien) =>
-      lien.addEventListener('click', () => {
-        $('#nav').classList.remove('ouvert');
-        $('#burger').setAttribute('aria-expanded', 'false');
-      })
-    );
 
     // Spécialité transmise par une autre page : /?specialite=energie#accueil
     const specialiteDemandee = new URLSearchParams(window.location.search).get('specialite');

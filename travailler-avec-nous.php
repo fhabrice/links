@@ -1,270 +1,570 @@
 <?php
+/**
+ * LK-TECH (Linksmartech) — page « Travailler avec nous » (Recrutement & Collaborations)
+ * Version PHP : fonctionne sur tout hébergement classique (cPanel, Apache, Nginx).
+ *
+ * @package LK-TECH
+ */
+
 declare(strict_types=1);
+
 require_once __DIR__ . '/app/bootstrap.php';
+
 $base = base_url();
 $contenu = lk_store()->contenu();
 $identite = $contenu['identite'] ?? [];
 $tw = $contenu['travaillerAvecNous'] ?? [];
 $gform = $tw['googleForm'] ?? [];
+
+$telephoneBrut = (string) ($identite['telephone'] ?? '+243 976 459 970');
+$telephoneLien = preg_replace('/[^+\d]/', '', $telephoneBrut) ?: '+243976459970';
+$emailContact = (string) ($identite['email'] ?? 'contact@linksmartec.com');
+$villeContact = (string) ($identite['ville'] ?? 'Goma, Nord-Kivu, RDC');
+
+$avantages = !empty($tw['avantages']) && is_array($tw['avantages']) ? $tw['avantages'] : [
+    [
+        'icone' => '🏗️',
+        'titre' => 'Projets d’impact concret',
+        'texte' => 'Participez à des chantiers, infrastructures et solutions numériques qui transforment durablement Goma et l’Est de la RDC.',
+    ],
+    [
+        'icone' => '💡',
+        'titre' => 'Équipe pluridisciplinaire',
+        'texte' => 'Collaborez au quotidien avec des ingénieurs civils, architectes, développeurs logiciels et spécialistes en énergie solaire.',
+    ],
+    [
+        'icone' => '🌱',
+        'titre' => 'Progression & mentorat',
+        'texte' => 'Bénéficiez d’un encadrement technique rigoureux, de formations terrain et de perspectives d’évolution au sein de nos 4 pôles.',
+    ],
+];
+
+$polesRecrutement = [
+    [
+        'num' => 'PÔLE 01',
+        'icone' => '🏗️',
+        'valeur' => 'Génie Civil',
+        'titre' => 'Génie Civil & BTP',
+        'texte' => 'Études techniques, dimensionnement d’ouvrages, suivi d’exécution, gros œuvre, second œuvre et réhabilitation de bâtiments.',
+        'profils' => ['Ingénieur civil', 'Conducteur de travaux', 'Chef de chantier', 'Métreur / Technicien BTP'],
+    ],
+    [
+        'num' => 'PÔLE 02',
+        'icone' => '📐',
+        'valeur' => 'Architecture & Design',
+        'titre' => 'Architecture & Design',
+        'texte' => 'Conception architecturale bioclimatique, plans 2D/3D, modélisation BIM, aménagement intérieur et maîtrise d’œuvre esthétique.',
+        'profils' => ['Architecte', 'Projeteur 3D / BIM', 'Designer d’intérieur', 'Dessinateur bâtiment'],
+    ],
+    [
+        'num' => 'PÔLE 03',
+        'icone' => '💻',
+        'valeur' => 'Informatique',
+        'titre' => 'Informatique & Solutions Digitales',
+        'texte' => 'Développement d’applications web/mobiles et progiciels métiers, réseaux d’entreprise, serveurs, cloud et cybersécurité.',
+        'profils' => ['Développeur Full-Stack', 'Ingénieur systèmes & réseaux', 'Technicien IT', 'UI/UX Designer'],
+    ],
+    [
+        'num' => 'PÔLE 04',
+        'icone' => '☀️',
+        'valeur' => 'Énergie renouvelable',
+        'titre' => 'Énergie Renouvelable & Électricité',
+        'texte' => 'Audit énergétique, dimensionnement photovoltaïque, installation de systèmes solaires hybrides, autonomie et maintenance.',
+        'profils' => ['Ingénieur énergéticien', 'Technicien solaire PV', 'Électricien bâtiment', 'Chargé de maintenance'],
+    ],
+];
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travailler avec nous | <?= htmlspecialchars($identite['nom'] ?? 'LK-TECH', ENT_QUOTES, 'UTF-8') ?> — Recrutement</title>
-  <meta name="description" content="Rejoignez LK-TECH à Goma : génie civil, architecture & design, informatique, énergie. Candidature transmise à notre Google Form et Gmail.">
+  <title>Travailler avec nous | <?= htmlspecialchars($identite['nom'] ?? 'LK-TECH', ENT_QUOTES, 'UTF-8') ?> — Carrières &amp; Recrutement</title>
+  <meta name="description" content="Rejoignez LK-TECH à Goma : carrières, stages, freelances et partenariats en génie civil, architecture &amp; design, informatique et énergie renouvelable.">
   <meta name="theme-color" content="#16233F">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
-  <style>
-    .hero-cand { background: linear-gradient(135deg,#111d34 0%,#16233f 55%,#1e3a2f 100%); color:#fff; padding:3.5rem 1.25rem; }
-    .hero-cand__grid { display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center; }
-    @media(max-width:880px){ .hero-cand__grid{grid-template-columns:1fr} }
-    .hero-cand h1{ font-size:clamp(2rem,4vw,3rem); line-height:1.1; margin:.6rem 0 1rem; }
-    .hero-cand p{ color:#cbd5e1; line-height:1.7; max-width:36rem; }
-    .hero-cand .btn{ margin-top:1rem; }
-    .cand-avantages{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
-    @media(max-width:780px){ .cand-avantages{grid-template-columns:1fr} }
-  </style>
+  <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
 </head>
 <body>
+  <a class="lien-evitement" href="#contenu-principal">Aller au contenu</a>
+
+  <!-- ============================== TOPBAR ============================== -->
   <div class="topbar">
     <div class="conteneur topbar__inner">
       <span class="topbar__rccm">GÉNIE CIVIL <span>·</span> ARCHITECTURE <span>·</span> TECHNOLOGIE <span>·</span> ÉNERGIE</span>
       <div class="topbar__infos">
-        <span data-champ="ville">Goma, RDC</span>
-        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
+        <span data-champ="ville"><?= htmlspecialchars($villeContact, ENT_QUOTES, 'UTF-8') ?></span>
+        <a class="topbar__tel" data-champ="telephone" data-lien="tel" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($telephoneBrut, ENT_QUOTES, 'UTF-8') ?></a>
+        <div class="langues" data-sans-traduction>
+          <label class="sr-only" for="choix-langue">Choisir la langue</label>
+          <span class="langues__icone" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9M12 3C9.6 5.5 8.4 8.5 8.4 12s1.2 6.5 3.6 9"/></svg></span>
+          <select id="choix-langue" name="langue" aria-label="Choisir la langue">
+            <option value="fr" lang="fr">Français</option>
+            <option value="en" lang="en">English</option>
+            <option value="sw" lang="sw">Kiswahili</option>
+            <option value="ln" lang="ln">Lingala</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- =============================== ENTÊTE ============================= -->
   <header class="entete">
     <div class="conteneur entete__inner">
       <a class="marque" href="<?= $base ?>/" aria-label="Accueil LK-TECH">
-        <img class="marque__logo" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
-        <span class="marque__texte"><span class="marque__nom">LK<i class="tiret">-</i>TECH</span><span class="marque__slogan">LINKS MARTECH</span></span>
+        <img class="marque__logo" id="logo-entete" src="<?= $base ?>/assets/img/logo.svg" alt="Logo LK-TECH">
+        <span class="marque__texte">
+          <span class="marque__nom" id="nom-entete">LK<i class="tiret">-</i>TECH</span>
+          <span class="marque__slogan">LINKS MARTECH</span>
+        </span>
       </a>
-      <nav class="nav" id="nav">
+
+      <nav class="nav" id="nav" aria-label="Navigation principale">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
-        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="<?= $base ?>/#specialites">Expertises</a>
+        <a class="nav__lien" href="<?= $base ?>/#services">Solutions</a>
+        <a class="nav__lien" href="<?= $base ?>/#logiciels">Logiciels</a>
         <a class="nav__lien" href="<?= $base ?>/opportunites.php">Opportunités</a>
-        <a class="nav__lien" href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
+        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien nav__lien--actif" href="#candidature" aria-current="page">Travailler avec nous</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
       </nav>
+
       <div class="entete__actions">
-        <a class="btn btn--fantome btn--petit" href="tel:+243976459970">📞 Appeler</a>
-        <a class="btn btn--petit" href="#candidature">Postuler</a>
-        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
+        <a class="btn btn--fantome btn--petit" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>" title="Appeler LK-TECH">📞 Appeler</a>
+        <a class="btn btn--accent btn--petit" href="#candidature">Postuler <span aria-hidden="true">↓</span></a>
+        <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
 
-  <section class="hero-cand">
-    <div class="conteneur hero-cand__grid">
-      <div>
-        <p class="section__sur" style="color:#57bb7b"><?= htmlspecialchars($tw['surTitre'] ?? 'REJOIGNEZ L’AVENTURE', ENT_QUOTES, 'UTF-8') ?></p>
-        <h1><?= htmlspecialchars($tw['titre'] ?? 'Travailler avec nous', ENT_QUOTES, 'UTF-8') ?></h1>
-        <p><?= htmlspecialchars($tw['soustitre'] ?? $tw['sousTitre'] ?? 'Envie de construire, coder ou électrifier l’avenir avec nous ?', ENT_QUOTES, 'UTF-8') ?></p>
-        <p style="margin-top:1rem; font-size:.92rem; color:#e2e8f0;"><?= htmlspecialchars($tw['texte'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-        <div style="display:flex; gap:.8rem; flex-wrap:wrap; margin-top:1.4rem;">
-          <a class="btn btn--accent" href="#candidature">✉️ Envoyer ma candidature</a>
-          <a class="btn btn--fantome" style="color:#fff; border-color:rgba(255,255,255,.35)" href="tel:+243976459970">📞 Appeler maintenant</a>
+  <!-- ============================ CONTENU =============================== -->
+  <main id="contenu-principal">
+
+    <!-- 00 · HERO CARRIÈRES -->
+    <section class="cand-hero">
+      <div class="conteneur">
+        <nav class="fil-ariane" aria-label="Fil d'Ariane">
+          <a href="<?= $base ?>/">Accueil</a> <span aria-hidden="true">›</span> <span>Travailler avec nous</span>
+        </nav>
+
+        <div class="cand-hero__grille">
+          <div>
+            <span class="cand-badge"><?= htmlspecialchars($tw['surTitre'] ?? 'CARRIÈRES & COLLABORATIONS · GOMA, RDC', ENT_QUOTES, 'UTF-8') ?></span>
+            <h1 class="cand-hero__titre">Construisez l’avenir <em>avec LK-TECH.</em></h1>
+            <p class="cand-hero__soustitre"><?= htmlspecialchars($tw['soustitre'] ?? $tw['sousTitre'] ?? 'Envie de bâtir, concevoir, coder ou électrifier des projets durables ? Rejoignez nos équipes.', ENT_QUOTES, 'UTF-8') ?></p>
+            <p class="cand-hero__texte"><?= htmlspecialchars($tw['texte'] ?? 'Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, ingénieur confirmé, stagiaire ou consultant freelance, déposez votre candidature en quelques minutes.', ENT_QUOTES, 'UTF-8') ?></p>
+
+            <div class="cand-hero__actions">
+              <a class="btn btn--accent" href="#candidature">Déposer ma candidature <span aria-hidden="true">↓</span></a>
+              <a class="btn btn--contour-clair" href="#poles-recrutement">Découvrir nos 4 pôles <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <aside class="cand-hero__carte" aria-label="Synthèse recrutement LK-TECH">
+            <p class="cand-hero__carte-sur">ENGAGEMENT RH · LK-TECH</p>
+            <h2>Pourquoi nous rejoindre ?</h2>
+            <div class="cand-chiffres">
+              <div class="cand-chiffre"><strong>4 pôles</strong><span>Métiers complémentaires</span></div>
+              <div class="cand-chiffre"><strong>48 h</strong><span>Délai moyen d’analyse</span></div>
+              <div class="cand-chiffre"><strong>4 formats</strong><span>CDI, Stage, Freelance, Partenariat</span></div>
+              <div class="cand-chiffre"><strong>Goma</strong><span>Rayonnement Nord-Kivu &amp; RDC</span></div>
+            </div>
+            <ul class="cand-points">
+              <li>Chantiers et projets numériques à fort impact local</li>
+              <li>Encadrement par des ingénieurs et architectes expérimentés</li>
+              <li>Culture de rigueur, d’innovation et de transparence</li>
+              <li>Traitement confidentiel et retour personnalisé sur chaque dossier</li>
+            </ul>
+            <div class="cand-hero__carte-pied">
+              <span aria-hidden="true">✉️</span>
+              <span>Réception directe par notre cellule recrutement &amp; direction technique.</span>
+            </div>
+          </aside>
         </div>
       </div>
-      <div style="background:#fff; color:#0f172a; border-radius:6px; padding:1.4rem; box-shadow:0 12px 40px rgba(0,0,0,.18);">
-        <h3 style="margin:0 0 .6rem;">Pourquoi nous rejoindre ?</h3>
-        <ul style="margin:0; padding-left:1.2rem; line-height:1.7; color:#475569; font-size:.92rem;">
-          <li>Projets concrets à Goma et dans l'Est de la RDC</li>
-          <li>Équipe pluridisciplinaire (ingénieurs, architectes, développeurs)</li>
-          <li>Formation continue et évolution au sein des 4 pôles</li>
-          <li>Réponse rapide à chaque candidature via e-mail / Google Form</li>
-        </ul>
-        <p style="margin:1rem 0 0; font-size:.8rem; color:#64748b;">📧 Chaque candidature est envoyée directement à fabricenzarubara@gmail.com et enregistrée dans l'admin.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <?php if (!empty($tw['avantages'])): ?>
-  <section class="section">
-    <div class="conteneur">
-      <div class="cand-avantages">
-        <?php foreach ($tw['avantages'] as $av): ?>
-          <div class="carte">
-            <div style="font-size:1.6rem;"><?= htmlspecialchars($av['icone'] ?? '★', ENT_QUOTES, 'UTF-8') ?></div>
-            <h3 style="margin:.6rem 0 .4rem;"><?= htmlspecialchars($av['titre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
-            <p style="color:#64748b; line-height:1.6; font-size:.92rem;"><?= htmlspecialchars($av['texte'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
-  </section>
-  <?php endif; ?>
-
-  <section class="section section--gris" id="candidature">
-    <div class="conteneur">
-      <div class="section__entete">
-        <p class="section__sur">CANDIDATURE <span class="section__trait"></span> 07</p>
-        <h2 class="section__titre"><?= htmlspecialchars($tw['formulaire']['titre'] ?? 'Candidature complète', ENT_QUOTES, 'UTF-8') ?></h2>
-        <p class="section__texte"><?= htmlspecialchars($tw['formulaire']['sousTitre'] ?? 'Remplissez ce formulaire : il est envoyé à notre équipe, à notre Google Form et à notre Gmail.', ENT_QUOTES, 'UTF-8') ?></p>
-        <?php if (empty($gform['actionUrl'])): ?>
-          <p style="margin-top:.8rem; background:#fff7ed; border:1px solid #fed7aa; padding:.7rem 1rem; border-radius:4px; font-size:.86rem; color:#9a3412;">ℹ️ Google Form non encore configuré — les candidatures sont enregistrées localement et consultables dans l'admin. <a href="<?= $base ?>/docs/CONFIG_GOOGLE_FORM.md" target="_blank" style="text-decoration:underline;">Voir comment connecter votre Google Form / Gmail</a>.</p>
-        <?php else: ?>
-          <p style="margin-top:.8rem; background:#f0fdf4; border:1px solid #bbf7d0; padding:.7rem 1rem; border-radius:4px; font-size:.86rem; color:#166534;">✅ Connecté à Google Form → chaque candidature alimente automatiquement votre Google Sheets et déclenche une notification Gmail vers <?= htmlspecialchars($gform['gmailDestination'] ?? $identite['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>.</p>
-        <?php endif; ?>
-      </div>
-
-      <div class="grille-contact">
-        <div class="contact-infos">
-          <div class="info-bloc"><div class="info-bloc__icone">📞</div><div><div class="info-bloc__titre">Appeler</div><a class="info-bloc__valeur" href="tel:+243976459970" data-champ="telephone" data-lien="tel">+243 976 459 970</a><p style="font-size:.82rem;color:#64748b;margin-top:.3rem;">Lun–Sam 08h00–18h00 · Réponse rapide</p><a class="btn btn--petit" href="tel:+243976459970" style="margin-top:.6rem;">📞 Appeler maintenant</a></div></div>
-          <div class="info-bloc"><div class="info-bloc__icone">✉️</div><div><div class="info-bloc__titre">E-mail RH</div><a class="info-bloc__valeur" href="mailto:contact@linksmartec.com" data-champ="email" data-lien="mailto">contact@linksmartec.com</a><p style="font-size:.82rem;color:#64748b;">Candidatures &amp; partenariats</p></div></div>
-          <div class="info-bloc"><div class="info-bloc__icone">📍</div><div><div class="info-bloc__titre">Adresse</div><div class="info-bloc__valeur" data-champ="ville">Goma, Nord-Kivu, RDC</div><div class="info-bloc__valeur" data-champ="adresse">Avenue du Lac, Goma</div></div></div>
-          <div class="info-bloc"><div class="info-bloc__icone">🔗</div><div><div class="info-bloc__titre">Google Form / Gmail</div><p style="font-size:.85rem;color:#475569;line-height:1.6;">Chaque envoi est : 1) enregistré, 2) envoyé directement à fabricenzarubara@gmail.com, 3) consultable dans l'admin (Google Form optionnel). Configurez l'URL Form Response dans l'admin pour activer le flux complet.</p></div></div>
+    <!-- 01 · AVANTAGES -->
+    <section class="section" id="avantages">
+      <div class="conteneur">
+        <div class="section__entete">
+          <p class="section__sur">POURQUOI NOUS REJOINDRE <span class="section__trait"></span> 01</p>
+          <h2 class="section__titre">Un environnement conçu pour faire grandir <em>vos compétences.</em></h2>
+          <p class="section__texte">Chez LK-TECH, chaque collaborateur contribue directement à la réussite technique des ouvrages et solutions livrés à nos clients.</p>
         </div>
 
-        <form class="formulaire formulaire--candidature" id="formulaire-candidature" novalidate>
-          <div class="alerte alerte--succes" id="cand-succes" role="status"></div>
-          <div class="alerte alerte--erreur" id="cand-erreur" role="alert"></div>
-
-          <div class="ligne-2">
-            <div class="champ">
-              <label for="cand-civilite">Civilité</label>
-              <select id="cand-civilite" name="civilite">
-                <option value="M.">M.</option>
-                <option value="Mme">Mme</option>
-                <option value="Autre">Autre</option>
-              </select>
-            </div>
-            <div class="champ">
-              <label for="cand-domaine">Domaine / Pôle *</label>
-              <select id="cand-domaine" name="domaine" required>
-                <option value="">— Choisir —</option>
-                <option value="Génie Civil">Génie Civil</option>
-                <option value="Architecture & Design">Architecture & Design</option>
-                <option value="Informatique">Informatique</option>
-                <option value="Énergie renouvelable">Énergie renouvelable</option>
-                <option value="Autre">Autre</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="ligne-2">
-            <div class="champ"><label for="cand-nom">Nom *</label><input id="cand-nom" name="nom" type="text" required placeholder="Votre nom" autocomplete="family-name"></div>
-            <div class="champ"><label for="cand-prenom">Prénom *</label><input id="cand-prenom" name="prenom" type="text" required placeholder="Votre prénom" autocomplete="given-name"></div>
-          </div>
-
-          <div class="ligne-2">
-            <div class="champ"><label for="cand-email">E-mail *</label><input id="cand-email" name="email" type="email" required placeholder="vous@exemple.com" autocomplete="email"></div>
-            <div class="champ"><label for="cand-tel">Téléphone *</label><input id="cand-tel" name="telephone" type="tel" required placeholder="+243 ..." autocomplete="tel"></div>
-          </div>
-
-          <div class="ligne-2">
-            <div class="champ"><label for="cand-ville">Ville / Pays</label><input id="cand-ville" name="ville" type="text" placeholder="Goma, RDC"></div>
-            <div class="champ"><label for="cand-naissance">Date de naissance</label><input id="cand-naissance" name="dateNaissance" type="date"></div>
-          </div>
-
-          <div class="ligne-2">
-            <div class="champ">
-              <label for="cand-type">Type de collaboration *</label>
-              <select id="cand-type" name="typeCollaboration" required>
-                <option value="">— Choisir —</option>
-                <option value="Emploi">Emploi (CDI/CDD)</option>
-                <option value="Stage">Stage</option>
-                <option value="Freelance / Consultant">Freelance / Consultant</option>
-                <option value="Partenariat">Partenariat</option>
-                <option value="Autre">Autre</option>
-              </select>
-            </div>
-            <div class="champ">
-              <label for="cand-exp">Expérience</label>
-              <select id="cand-exp" name="experience">
-                <option value="">— Choisir —</option>
-                <option value="0-1 an">0-1 an</option>
-                <option value="1-3 ans">1-3 ans</option>
-                <option value="3-5 ans">3-5 ans</option>
-                <option value="5+ ans">5+ ans</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="ligne-2">
-            <div class="champ">
-              <label for="cand-dispo">Disponibilité</label>
-              <select id="cand-dispo" name="disponibilite">
-                <option value="">— Choisir —</option>
-                <option value="Immédiate">Immédiate</option>
-                <option value="1 mois">1 mois</option>
-                <option value="3 mois">3 mois</option>
-                <option value="À discuter">À discuter</option>
-              </select>
-            </div>
-            <div class="champ"><label for="cand-liencv">Lien CV / Portfolio</label><input id="cand-liencv" name="lienCv" type="url" placeholder="https://drive.google.com/... ou LinkedIn"></div>
-          </div>
-
-          <div class="champ"><label for="cand-message">Motivation / Message *</label><textarea id="cand-message" name="message" rows="5" required placeholder="Présentez-vous, vos compétences et pourquoi vous souhaitez rejoindre LK-TECH…"></textarea></div>
-
-          <div class="champ champ--check">
-            <label class="check-label" style="display:flex; gap:.6rem; align-items:flex-start; font-size:.85rem; line-height:1.5; color:#475569;">
-              <input type="checkbox" name="consentement" required style="margin-top:.3rem;"> <span>J'accepte que mes données soient utilisées pour traiter ma candidature et transmises à notre Google Form / Gmail conformément à la politique de confidentialité. *</span>
-            </label>
-          </div>
-
-          <button class="btn btn--bloc" type="submit" id="cand-envoyer">Envoyer ma candidature <span aria-hidden="true">↗</span></button>
-          <p style="margin:.6rem 0 0; font-size:.78rem; color:#64748b; text-align:center;">Vos données sont envoyées à notre équipe, à notre Google Form et notifiées par e-mail (Gmail). Aucune utilisation commerciale.</p>
-        </form>
+        <div class="cand-avantages">
+          <?php foreach ($avantages as $av): ?>
+            <article class="cand-avantage">
+              <div class="cand-avantage__icone" aria-hidden="true"><?= htmlspecialchars($av['icone'] ?? '★', ENT_QUOTES, 'UTF-8') ?></div>
+              <h3><?= htmlspecialchars($av['titre'] ?? '', ENT_QUOTES, 'UTF-8') ?></h3>
+              <p><?= htmlspecialchars($av['texte'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+            </article>
+          <?php endforeach; ?>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <!-- 02 · NOS 4 PÔLES QUI RECRUTENT -->
+    <section class="section section--gris" id="poles-recrutement">
+      <div class="conteneur">
+        <div class="section__entete">
+          <p class="section__sur">NOS DOMAINES DE RECRUTEMENT <span class="section__trait"></span> 02</p>
+          <h2 class="section__titre">Quatre pôles d’excellence, <em>une même exigence.</em></h2>
+          <p class="section__texte">Sélectionnez le pôle correspondant à votre spécialité pour pré-remplir directement votre formulaire de candidature.</p>
+        </div>
+
+        <div class="cand-poles">
+          <?php foreach ($polesRecrutement as $pole): ?>
+            <article class="cand-pole">
+              <div>
+                <div class="cand-pole__entete">
+                  <span class="cand-pole__num"><?= htmlspecialchars($pole['num'], ENT_QUOTES, 'UTF-8') ?></span>
+                  <span class="cand-pole__icone" aria-hidden="true"><?= htmlspecialchars($pole['icone'], ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <h3><?= htmlspecialchars($pole['titre'], ENT_QUOTES, 'UTF-8') ?></h3>
+                <p><?= htmlspecialchars($pole['texte'], ENT_QUOTES, 'UTF-8') ?></p>
+                <div class="cand-tags" aria-label="Profils recherchés">
+                  <?php foreach ($pole['profils'] as $profil): ?>
+                    <span class="cand-tag"><?= htmlspecialchars($profil, ENT_QUOTES, 'UTF-8') ?></span>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+              <div class="cand-pole__pied">
+                <a class="cand-pole__action" href="#candidature" data-choisir-domaine="<?= htmlspecialchars($pole['valeur'], ENT_QUOTES, 'UTF-8') ?>">
+                  Postuler dans ce pôle <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · MODES DE COLLABORATION & PROCESSUS -->
+    <section class="section" id="processus">
+      <div class="conteneur">
+        <div class="section__entete">
+          <p class="section__sur">PARCOURS CANDIDAT <span class="section__trait"></span> 03</p>
+          <h2 class="section__titre">Un processus simple, <em>transparent et structuré.</em></h2>
+          <p class="section__texte">Choisissez votre format de collaboration et suivez les quatre étapes clés de notre recrutement.</p>
+        </div>
+
+        <div class="cand-modes" aria-label="Modes de collaboration">
+          <button type="button" class="cand-mode" data-choisir-type="Emploi">
+            <span class="cand-mode__badge">Format 01</span>
+            <strong>Emploi (CDI / CDD)</strong>
+            <span>Intégrez durablement nos équipes techniques et projets structurants à Goma.</span>
+          </button>
+          <button type="button" class="cand-mode" data-choisir-type="Stage">
+            <span class="cand-mode__badge">Format 02</span>
+            <strong>Stage académique &amp; pro</strong>
+            <span>Apprenez sur le terrain aux côtés de nos ingénieurs, architectes et développeurs.</span>
+          </button>
+          <button type="button" class="cand-mode" data-choisir-type="Freelance / Consultant">
+            <span class="cand-mode__badge">Format 03</span>
+            <strong>Freelance / Consultant</strong>
+            <span>Intervenez sur des missions ciblées d’expertise, d’étude ou de développement.</span>
+          </button>
+          <button type="button" class="cand-mode" data-choisir-type="Partenariat">
+            <span class="cand-mode__badge">Format 04</span>
+            <strong>Partenariat technique</strong>
+            <span>Unissons nos savoir-faire pour répondre ensemble à des marchés d’envergure.</span>
+          </button>
+        </div>
+
+        <div class="cand-etapes">
+          <article class="cand-etape">
+            <span class="cand-etape__num">01</span>
+            <h3>Dépôt du dossier</h3>
+            <p>Remplissez le formulaire ci-dessous avec votre parcours, vos motivations et un lien vers votre CV ou portfolio.</p>
+          </article>
+          <article class="cand-etape">
+            <span class="cand-etape__num">02</span>
+            <h3>Analyse sous 48 h</h3>
+            <p>Votre candidature est examinée conjointement par le responsable du pôle concerné et la direction.</p>
+          </article>
+          <article class="cand-etape">
+            <span class="cand-etape__num">03</span>
+            <h3>Entretien &amp; échange</h3>
+            <p>Rencontre dans nos bureaux à Goma ou en visioconférence autour de vos réalisations et d’un cas concret.</p>
+          </article>
+          <article class="cand-etape">
+            <span class="cand-etape__num">04</span>
+            <h3>Intégration</h3>
+            <p>Proposition claire, accueil au sein de l’équipe et démarrage accompagné sur nos outils et projets.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · FORMULAIRE DE CANDIDATURE -->
+    <section class="section section--gris" id="candidature">
+      <div class="conteneur">
+        <div class="section__entete">
+          <p class="section__sur">DÉPOSER VOTRE DOSSIER <span class="section__trait"></span> 04</p>
+          <h2 class="section__titre"><?= htmlspecialchars($tw['formulaire']['titre'] ?? 'Candidature complète', ENT_QUOTES, 'UTF-8') ?></h2>
+          <p class="section__texte"><?= htmlspecialchars($tw['formulaire']['sousTitre'] ?? 'Complétez les trois étapes ci-dessous. Votre dossier est transmis directement à notre équipe de recrutement.', ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
+
+        <div class="cand-dossier__grille">
+          <!-- Colonne latérale RH -->
+          <aside class="cand-sidebar" aria-label="Coordonnées recrutement">
+            <div class="cand-rh-carte">
+              <p class="cand-rh-carte__sur">CONTACT RECRUTEMENT</p>
+              <h3>Besoin d’un renseignement ?</h3>
+              <p>Notre équipe est joignable du lundi au samedi de 08h00 à 18h00 pour toute question relative aux postes, stages ou partenariats.</p>
+
+              <div class="cand-rh-liste">
+                <div class="cand-rh-item">
+                  <span class="cand-rh-item__icone" aria-hidden="true">📞</span>
+                  <div>
+                    <small>Téléphone direct</small>
+                    <a href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>" data-champ="telephone" data-lien="tel"><?= htmlspecialchars($telephoneBrut, ENT_QUOTES, 'UTF-8') ?></a>
+                  </div>
+                </div>
+                <div class="cand-rh-item">
+                  <span class="cand-rh-item__icone" aria-hidden="true">✉️</span>
+                  <div>
+                    <small>E-mail RH &amp; Direction</small>
+                    <a href="mailto:<?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?>" data-champ="email" data-lien="mailto"><?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?></a>
+                  </div>
+                </div>
+                <div class="cand-rh-item">
+                  <span class="cand-rh-item__icone" aria-hidden="true">📍</span>
+                  <div>
+                    <small>Siège &amp; Bureaux</small>
+                    <strong data-champ="ville"><?= htmlspecialchars($villeContact, ENT_QUOTES, 'UTF-8') ?></strong>
+                  </div>
+                </div>
+              </div>
+
+              <a class="btn btn--accent btn--bloc" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>">📞 Appeler maintenant</a>
+            </div>
+
+            <div class="cand-checklist">
+              <h4>Conseils pour votre dossier</h4>
+              <ul class="cand-points">
+                <li>Précisez le pôle qui correspond le mieux à votre profil</li>
+                <li>Ajoutez un lien Google Drive, Dropbox, GitHub ou LinkedIn accessible</li>
+                <li>Décrivez vos réalisations concrètes ou projets académiques</li>
+                <li>Indiquez clairement votre disponibilité de démarrage</li>
+              </ul>
+            </div>
+          </aside>
+
+          <!-- Formulaire structuré en 3 étapes -->
+          <form class="formulaire formulaire--candidature" id="formulaire-candidature" novalidate>
+            <div class="alerte alerte--succes" id="cand-succes" role="status" hidden></div>
+            <div class="alerte alerte--erreur" id="cand-erreur" role="alert" hidden></div>
+
+            <!-- Étape 1 -->
+            <div class="form-groupe">
+              <div class="form-groupe__entete">
+                <span class="form-groupe__num" aria-hidden="true">1</span>
+                <h3 class="form-groupe__titre">Identité &amp; coordonnées</h3>
+              </div>
+
+              <div class="ligne-2">
+                <div class="champ">
+                  <label for="cand-civilite">Civilité</label>
+                  <select id="cand-civilite" name="civilite">
+                    <option value="M.">Monsieur (M.)</option>
+                    <option value="Mme">Madame (Mme)</option>
+                    <option value="Autre">Autre</option>
+                  </select>
+                </div>
+                <div class="champ">
+                  <label for="cand-ville">Ville / Pays</label>
+                  <input id="cand-ville" name="ville" type="text" placeholder="Ex. : Goma, RDC" autocomplete="address-level2">
+                </div>
+              </div>
+
+              <div class="ligne-2">
+                <div class="champ">
+                  <label for="cand-nom">Nom *</label>
+                  <input id="cand-nom" name="nom" type="text" required placeholder="Votre nom" autocomplete="family-name">
+                </div>
+                <div class="champ">
+                  <label for="cand-prenom">Prénom *</label>
+                  <input id="cand-prenom" name="prenom" type="text" required placeholder="Votre prénom" autocomplete="given-name">
+                </div>
+              </div>
+
+              <div class="ligne-2">
+                <div class="champ">
+                  <label for="cand-email">Adresse e-mail *</label>
+                  <input id="cand-email" name="email" type="email" required placeholder="vous@exemple.com" autocomplete="email">
+                </div>
+                <div class="champ">
+                  <label for="cand-tel">Téléphone / WhatsApp *</label>
+                  <input id="cand-tel" name="telephone" type="tel" required placeholder="+243 …" autocomplete="tel">
+                </div>
+              </div>
+
+              <div class="champ">
+                <label for="cand-naissance">Date de naissance (optionnel)</label>
+                <input id="cand-naissance" name="dateNaissance" type="date">
+              </div>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="form-groupe">
+              <div class="form-groupe__entete">
+                <span class="form-groupe__num" aria-hidden="true">2</span>
+                <h3 class="form-groupe__titre">Pôle visé &amp; profil professionnel</h3>
+              </div>
+
+              <div class="ligne-2">
+                <div class="champ">
+                  <label for="cand-domaine">Domaine / Pôle souhaité *</label>
+                  <select id="cand-domaine" name="domaine" required>
+                    <option value="">— Sélectionner un pôle —</option>
+                    <option value="Génie Civil">Génie Civil &amp; BTP</option>
+                    <option value="Architecture & Design">Architecture &amp; Design</option>
+                    <option value="Informatique">Informatique &amp; Digital</option>
+                    <option value="Énergie renouvelable">Énergie renouvelable</option>
+                    <option value="Autre">Autre / Support transversal</option>
+                  </select>
+                </div>
+                <div class="champ">
+                  <label for="cand-type">Type de collaboration *</label>
+                  <select id="cand-type" name="typeCollaboration" required>
+                    <option value="">— Sélectionner un format —</option>
+                    <option value="Emploi">Emploi (CDI / CDD)</option>
+                    <option value="Stage">Stage académique ou professionnel</option>
+                    <option value="Freelance / Consultant">Freelance / Consultant</option>
+                    <option value="Partenariat">Partenariat technique</option>
+                    <option value="Autre">Autre</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ligne-2">
+                <div class="champ">
+                  <label for="cand-exp">Années d’expérience</label>
+                  <select id="cand-exp" name="experience">
+                    <option value="">— Sélectionner —</option>
+                    <option value="0-1 an">Débutant / 0 à 1 an</option>
+                    <option value="1-3 ans">1 à 3 ans</option>
+                    <option value="3-5 ans">3 à 5 ans</option>
+                    <option value="5+ ans">Plus de 5 ans</option>
+                  </select>
+                </div>
+                <div class="champ">
+                  <label for="cand-dispo">Disponibilité</label>
+                  <select id="cand-dispo" name="disponibilite">
+                    <option value="">— Sélectionner —</option>
+                    <option value="Immédiate">Immédiate</option>
+                    <option value="1 mois">Sous 1 mois</option>
+                    <option value="3 mois">Sous 3 mois</option>
+                    <option value="À discuter">À convenir</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="champ">
+                <label for="cand-liencv">Lien CV / Portfolio (Google Drive, LinkedIn, GitHub…)</label>
+                <input id="cand-liencv" name="lienCv" type="url" placeholder="https://drive.google.com/… ou https://linkedin.com/in/…">
+              </div>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="form-groupe">
+              <div class="form-groupe__entete">
+                <span class="form-groupe__num" aria-hidden="true">3</span>
+                <h3 class="form-groupe__titre">Présentation &amp; motivation</h3>
+              </div>
+
+              <div class="champ">
+                <label for="cand-message">Votre parcours et vos motivations *</label>
+                <textarea id="cand-message" name="message" rows="5" required placeholder="Présentez votre parcours, vos compétences clés, vos réalisations et ce que vous souhaitez apporter chez LK-TECH…"></textarea>
+              </div>
+
+              <div class="champ champ--check">
+                <label class="check-label">
+                  <input type="checkbox" name="consentement" required>
+                  <span>J’accepte que mes informations soient traitées de manière confidentielle par LK-TECH dans le cadre de l’étude de ma candidature. *</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn btn--accent btn--bloc" type="submit" id="cand-envoyer">
+              <?= htmlspecialchars($tw['formulaire']['boutonTexte'] ?? 'Envoyer ma candidature', ENT_QUOTES, 'UTF-8') ?> <span aria-hidden="true">↗</span>
+            </button>
+            <p class="form-note">Vos données sont strictement réservées au recrutement LK-TECH. Aucune utilisation commerciale.</p>
+            <p class="form-note" id="cand-gform-direct" <?= empty($gform['actionUrl']) ? 'hidden' : '' ?>>
+              Vous pouvez également remplir ce dossier via notre <a href="<?= htmlspecialchars(!empty($gform['actionUrl']) ? str_replace('/formResponse', '/viewform', (string) $gform['actionUrl']) : '#', ENT_QUOTES, 'UTF-8') ?>" id="lien-google-form" target="_blank" rel="noopener" style="color:var(--accent-sombre);font-weight:700;text-decoration:underline;">formulaire Google Form externe ↗</a>.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =============================== PIED =============================== -->
   <footer class="pied">
     <div class="conteneur">
       <div class="pied__grille">
         <div>
-          <img class="pied__logo" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
-          <div class="pied__nom">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description"><?= htmlspecialchars($contenu['pied']['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
+          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
+          <p class="pied__texte" id="pied-description"><?= htmlspecialchars($contenu['pied']['description'] ?? 'LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes.', ENT_QUOTES, 'UTF-8') ?></p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>
           <div class="pied__liens">
             <a href="<?= $base ?>/">Accueil</a>
-            <a href="<?= $base ?>/a-propos">À propos</a>
+            <a href="<?= $base ?>/#specialites">Expertises</a>
+            <a href="<?= $base ?>/#logiciels">Logiciels</a>
             <a href="<?= $base ?>/opportunites.php">Opportunités</a>
+            <a href="<?= $base ?>/a-propos">À propos</a>
             <a href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
             <a href="<?= $base ?>/#contact">Contact</a>
           </div>
         </div>
         <div>
           <h4 class="pied__titre">Nos spécialités</h4>
-          <div class="pied__liens" id="pied-specialites"></div>
+          <div class="pied__liens" id="pied-specialites">
+            <span>Génie Civil</span>
+            <span>Architecture &amp; Design</span>
+            <span>Informatique</span>
+            <span>Énergie renouvelable</span>
+          </div>
         </div>
         <div>
           <h4 class="pied__titre">Coordonnées</h4>
           <div class="pied__liens">
-            <span data-champ="ville">Goma, Nord-Kivu, RDC</span>
-            <a data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
-            <a data-champ="email" data-lien="mailto" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a>
-            <span data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
+            <span data-champ="ville"><?= htmlspecialchars($villeContact, ENT_QUOTES, 'UTF-8') ?></span>
+            <a data-champ="telephone" data-lien="tel" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($telephoneBrut, ENT_QUOTES, 'UTF-8') ?></a>
+            <a data-champ="email" data-lien="mailto" href="mailto:<?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?></a>
+            <span data-champ="rccm">RCCM : <?= htmlspecialchars((string) ($identite['rccm'] ?? 'CD-GOM-01-2024-A-002698'), ENT_QUOTES, 'UTF-8') ?></span>
           </div>
+          <div class="pied__liens" id="reseaux-sociaux" style="margin-top:1rem"></div>
         </div>
       </div>
       <div class="pied__bas">
-        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
+        <span id="pied-copyright">© <?= date('Y') ?> LK-TECH — Tous droits réservés.</span>
         <span>Goma, République démocratique du Congo</span>
       </div>
     </div>
   </footer>
 
+  <!-- Barre d'appel rapide (mobile) -->
   <div class="barre-appel" aria-label="Actions rapides">
-    <a class="barre-appel__btn barre-appel__btn--tel" href="tel:+243976459970">📞 Appeler</a>
-    <a class="barre-appel__btn barre-appel__btn--cta" href="#candidature">Postuler ↗</a>
+    <a class="barre-appel__btn barre-appel__btn--tel" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>">📞 Appeler</a>
+    <a class="barre-appel__btn barre-appel__btn--cta" href="#candidature">Postuler ↓</a>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script>window.LK_BASE="<?= $base ?>"; window.LK_SECOURS="<?= $base ?>/assets/data/site.json";</script>
-  <script src="<?= $base ?>/assets/i18n/traductions.js"></script>
-  <script src="<?= $base ?>/assets/js/site.js"></script>
-  <script src="<?= $base ?>/assets/js/candidature.js"></script>
+  <script>window.LK_BASE = "<?= $base ?>"; window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
+  <script src="<?= $base ?>/assets/i18n/traductions.js?v=20261126"></script>
+  <script src="<?= $base ?>/assets/js/site.js?v=20261126"></script>
+  <script src="<?= $base ?>/assets/js/candidature.js?v=20261126"></script>
 </body>
 </html>
