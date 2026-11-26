@@ -15,6 +15,9 @@ $contenu = lk_store()->contenu();
 $identite = $contenu['identite'] ?? [];
 $reglages = lk_store()->reglages();
 $annoncesVitrine = lk_store()->listerAnnonces(['limit'=>6]);
+require_once __DIR__ . '/app/UtilisateurAuth.php';
+$utilisateurConnecte = null;
+try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisateur(); } catch (Throwable $e) {}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -262,13 +265,18 @@ $annoncesVitrine = lk_store()->listerAnnonces(['limit'=>6]);
     </div>
   </section>
 
-  <!-- =================== OPPORTUNITÉS VITRINE ========================= -->
+  <!-- =================== OPPORTUNITÉS & COLLABORATIONS ========================= -->
   <section class="section section--gris" id="opportunites">
     <div class="conteneur">
       <div class="section__entete">
-        <p class="section__sur">COMMUNAUTÉ <span class="section__trait"></span> 06</p>
-        <h2 class="section__titre">Opportunités de <em>la communauté</em></h2>
-        <p class="section__texte">Projets, offres d'emploi et services postés par les membres — collaborez et trouvez votre prochaine opportunité.</p>
+        <p class="section__sur">OPPORTUNITÉS &amp; COLLABORATIONS <span class="section__trait"></span> 06</p>
+        <h2 class="section__titre">Appels à projets &amp; <em>Offres d'emploi</em></h2>
+        <p class="section__texte">Postulez aux offres en cours ou créez votre compte pour soumettre un appel à projet et suivre vos candidatures.</p>
+        <?php if($utilisateurConnecte): ?>
+          <p style="margin-top:.8rem;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:.6rem 1rem;border-radius:8px;display:inline-block;font-size:.9rem"><strong>Connecté :</strong> <?= htmlspecialchars($utilisateurConnecte['nom'] ?? $utilisateurConnecte['email']) ?> · <a href="<?= $base ?>/mon-espace.php" style="color:#065f46;text-decoration:underline">Mon espace</a></p>
+        <?php else: ?>
+          <p style="margin-top:.8rem;font-size:.9rem"><a href="<?= $base ?>/connexion.php" style="color:#16233F;font-weight:700">Se connecter</a> · <a href="<?= $base ?>/inscription.php" style="color:#2e9e5b;font-weight:700">Créer un compte</a></p>
+        <?php endif; ?>
       </div>
       <div style="display:flex;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap">
         <a href="<?= $base ?>/opportunites.php" class="btn btn--petit" style="background:#16233F;color:#fff">Voir toutes les opportunités ↗</a>
