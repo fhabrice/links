@@ -33,11 +33,15 @@ export async function PUT(requete) {
       .map((f) => texte(f, 160))
       .filter(Boolean)
       .slice(0, 12),
-    prix: Number(l.prix) || 0,
+    prix: l.prix == null || String(l.prix).trim() === '' ? null : Number(l.prix),
     devise: l.devise === 'CDF' ? 'CDF' : 'USD',
     typePrix: texte(l.typePrix, 60),
     actif: l.actif !== false
   }));
+
+  if (items.some((l) => l.prix !== null && (!Number.isFinite(l.prix) || l.prix < 0))) {
+    return json({ erreur: 'Le prix doit être positif ou nul, ou laissé vide pour un devis.' }, { code: 400 });
+  }
 
   if (items.some((l) => !l.nom)) {
     return json(

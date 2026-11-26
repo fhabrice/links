@@ -931,3 +931,7 @@ body:has(.barre-appel) { padding-bottom: 78px; }
 #collaborations .carte h3 { font-size: 1.2rem; line-height: 1.35; }
 #collaborations .carte p { color: #56645f; line-height: 1.75; }
 #collaborations .lien-fleche { margin-top: auto; }
+
+.pied__invitation { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,.15); }
+.pied__invitation h2 { color: #fff; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.pied__invitation p { margin-top: .5rem; color: #b7c5d9; }

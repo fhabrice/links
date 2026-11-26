@@ -232,6 +232,12 @@ final class Api
             $actuel = $this->store->contenu();
             $nouveau = $corps['contenu'] ?? $corps;
             $fusionne = fusionner($actuel, is_array($nouveau) ? $nouveau : []);
+            // La vitrine est une section remplaçable : ne pas ressusciter l'ancienne
+            // clé « liste » lors de la sauvegarde au format partagé « items ».
+            if (isset($nouveau['logiciels']['items']) && is_array($nouveau['logiciels']['items'])) {
+                $fusionne['logiciels'] = $nouveau['logiciels'];
+                unset($fusionne['logiciels']['liste']);
+            }
             $enregistre = $this->store->ecrireContenu($fusionne);
             $this->store->journaliser('contenu-modifie', ['utilisateur' => $utilisateur['identifiant'] ?? '']);
 

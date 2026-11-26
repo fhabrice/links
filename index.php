@@ -36,7 +36,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126-logiciels">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -247,13 +247,9 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
     <div class="conteneur">
       <?php
         $logiciels = $contenu['logiciels'] ?? [];
-        if (empty($logiciels['liste'])) {
-            $def = @json_decode((string) @file_get_contents(__DIR__ . '/app/defaults.json'), true);
-            if (!empty($def['contenu']['logiciels'])) {
-                $logiciels = $def['contenu']['logiciels'];
-            }
-        }
-        $listeLogiciels = array_values(array_filter($logiciels['liste'] ?? [], fn($l) => !empty($l['actif'])));
+        // « items » est partagé avec Next.js ; lire aussi l'ancien format « liste ».
+        $catalogue = $logiciels['liste'] ?? $logiciels['items'] ?? [];
+        $listeLogiciels = array_values(array_filter($catalogue, fn($l) => ($l['actif'] ?? true) !== false));
       ?>
       <div class="section__entete">
         <p class="section__sur">SOLUTIONS LOGICIELLES <span class="section__trait"></span> 05</p>
@@ -266,13 +262,13 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
           <article class="carte" style="display:flex;flex-direction:column;justify-content:space-between;background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(15,23,42,.08);box-shadow:0 8px 24px rgba(15,23,42,.04);">
             <div>
               <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
-                <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0284c7;background:#e0f2fe;padding:4px 10px;border-radius:999px;"><?= e($log['categorie'] ?? 'Logiciel') ?></span>
+                <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0284c7;background:#e0f2fe;padding:4px 10px;border-radius:999px;"><?= e($log['categorie'] ?? 'Logiciel LK-TECH') ?></span>
                 <?php if (!empty($log['badge'])): ?>
                   <span style="font-size:.75rem;font-weight:600;color:#475569;"><?= e($log['badge']) ?></span>
                 <?php endif; ?>
               </div>
               <h3 style="margin:0 0 8px;font-size:1.25rem;color:#0f172a;"><?= e($log['nom'] ?? '') ?></h3>
-              <p style="margin:0 0 12px;font-weight:600;color:#334155;font-size:.95rem;"><?= e($log['resume'] ?? '') ?></p>
+              <p style="margin:0 0 12px;font-weight:600;color:#334155;font-size:.95rem;"><?= e($log['pitch'] ?? $log['resume'] ?? '') ?></p>
               <p style="margin:0 0 16px;color:#475569;font-size:.9rem;line-height:1.55;"><?= e($log['explication'] ?? '') ?></p>
               <?php if (!empty($log['fonctionnalites']) && is_array($log['fonctionnalites'])): ?>
                 <ul style="margin:0 0 20px;padding-left:18px;color:#334155;font-size:.88rem;line-height:1.6;">
@@ -284,7 +280,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(15,23,42,.08);">
               <div>
-                <strong style="font-size:1.15rem;color:#0f172a;"><?= e((string)($log['prix'] ?? '0')) ?> $US</strong>
+                <strong style="font-size:1.15rem;color:#0f172a;"><?= isset($log['prix']) && $log['prix'] !== '' ? e((string)$log['prix'] . ' ' . ($log['devise'] ?? 'USD')) : 'Sur devis' ?></strong>
                 <?php if (!empty($log['typePrix'])): ?>
                   <span style="display:block;font-size:.75rem;color:#64748b;"><?= e($log['typePrix']) ?></span>
                 <?php endif; ?>
@@ -293,6 +289,9 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
             </div>
           </article>
         <?php endforeach; ?>
+        <?php if (!$listeLogiciels): ?>
+          <p>Notre catalogue évolue. <a href="#contact">Contactez-nous pour découvrir les solutions disponibles.</a></p>
+        <?php endif; ?>
       </div>
     </div>
   </section>
@@ -531,20 +530,25 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
 
   <!-- =============================== PIED =============================== -->
 
-  <footer class="pied">
+  <footer class="pied" aria-label="Pied de page LK-TECH">
     <div class="conteneur">
+      <div class="pied__invitation">
+        <div><h2>Un logiciel ou un projet en tête ?</h2><p>Échangeons sur la solution adaptée à vos besoins.</p></div>
+        <a class="btn btn--accent" href="#contact">Contacter LK-TECH ↗</a>
+      </div>
       <div class="pied__grille">
         <div>
           <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
           <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description">LK-TECH réunit construction, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.</p>
+          <p class="pied__texte" id="pied-description"><?= e($contenu['pied']['description'] ?? 'Depuis Goma, LK-TECH accompagne vos projets en construction, architecture, numérique et énergie.') ?></p>
         </div>
         <div>
           <h4 class="pied__titre">Navigation</h4>
           <div class="pied__liens">
             <a href="#accueil">Accueil</a>
             <a href="#specialites">Spécialités</a>
-            <a href="#logiciels">Logiciels</a>
+            <a href="#logiciels">Nos logiciels</a>
+            <a href="#collaborations">Investir &amp; collaborer</a>
             <a href="<?= $base ?>/opportunites.php">Appels à projets &amp; Emplois</a>
             <a href="#services">Services</a>
             <a href="<?= $base ?>/a-propos">À propos</a>
@@ -555,7 +559,11 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
         </div>
         <div>
           <h4 class="pied__titre">Nos spécialités</h4>
-          <div class="pied__liens" id="pied-specialites"></div>
+          <div class="pied__liens" id="pied-specialites">
+            <?php foreach ($contenu['specialites'] ?? [] as $specialite): ?>
+              <a href="#specialites"><?= e($specialite['titre'] ?? '') ?></a>
+            <?php endforeach; ?>
+          </div>
         </div>
         <div>
           <h4 class="pied__titre">Coordonnées</h4>
@@ -570,7 +578,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
         </div>
       </div>
       <div class="pied__bas">
-        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
+        <span id="pied-copyright">© <?= date('Y') ?> <?= e($identite['nom'] ?? 'LK-TECH') ?> — <?= e($contenu['pied']['mentions'] ?? 'Tous droits réservés.') ?></span>
         <span>Goma, République démocratique du Congo</span>
       </div>
     </div>

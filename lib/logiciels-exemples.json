@@ -1,0 +1,41 @@
+[
+  {
+    "id": "safisaha",
+    "nom": "SAFISAHA",
+    "icone": "💻",
+    "badge": "Conçu par LK-TECH",
+    "pitch": "Découvrez SAFISAHA avec notre équipe.",
+    "explication": "Contactez LK-TECH pour découvrir ce logiciel, ses usages et les possibilités d’accompagnement selon votre projet.",
+    "fonctionnalites": [],
+    "prix": null,
+    "devise": "USD",
+    "typePrix": "",
+    "actif": true
+  },
+  {
+    "id": "lito-finance",
+    "nom": "LITO FINANCE",
+    "icone": "📊",
+    "badge": "Conçu par LK-TECH",
+    "pitch": "Découvrez LITO FINANCE avec notre équipe.",
+    "explication": "Contactez LK-TECH pour découvrir ce logiciel, ses usages et les possibilités d’accompagnement selon votre projet.",
+    "fonctionnalites": [],
+    "prix": null,
+    "devise": "USD",
+    "typePrix": "",
+    "actif": true
+  },
+  {
+    "id": "youpendimmoselect",
+    "nom": "Youpendimmoselect",
+    "icone": "🏠",
+    "badge": "Conçu par LK-TECH",
+    "pitch": "Découvrez Youpendimmoselect avec notre équipe.",
+    "explication": "Contactez LK-TECH pour découvrir ce logiciel, ses usages et les possibilités d’accompagnement selon votre projet.",
+    "fonctionnalites": [],
+    "prix": null,
+    "devise": "USD",
+    "typePrix": "",
+    "actif": true
+  }
+]

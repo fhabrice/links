@@ -145,6 +145,7 @@ $reglages = lk_store()->reglages();
         <button data-vue="specialites">🎯 Spécialités</button>
         <button data-vue="apropos">ℹ️ À propos</button>
         <button data-vue="produits">🛍️ Produits</button>
+        <button data-vue="logiciels">💻 Nos logiciels</button>
         <button data-vue="services">🧰 Services</button>
         <button data-vue="approche">🧭 Approche</button>
         <button data-vue="messages">✉️ Messages <span id="puce-messages" class="puce puce--inactif" hidden>0</span></button>
@@ -394,6 +395,23 @@ $reglages = lk_store()->reglages();
         </section>
 
         <!-- ------------------------------ SERVICES ----------------------------- -->
+        <section class="vue" id="vue-logiciels">
+          <h1 class="titre-vue">Vitrine des logiciels</h1>
+          <p>Ajoutez, remplacez ou masquez les logiciels présentés sur l’accueil. Les changements sont publiés après enregistrement.</p>
+          <div class="panneau">
+            <div class="champ"><label for="l-titre">Titre de la section</label><input id="l-titre" maxlength="200"></div>
+            <div class="champ"><label for="l-soustitre">Présentation</label><textarea id="l-soustitre" rows="2" maxlength="600"></textarea></div>
+            <div class="champ"><label for="l-bouton">Texte du bouton de contact</label><input id="l-bouton" maxlength="80"></div>
+          </div>
+          <div class="barre-actions">
+            <button class="btn btn--fantome" id="ajouter-logiciel" type="button">Ajouter un logiciel</button>
+            <button class="btn btn--fantome" id="exemples-logiciels" type="button">Charger les 3 logiciels LK-TECH</button>
+            <button class="btn" id="enregistrer-logiciels" type="button">Enregistrer la vitrine</button>
+          </div>
+          <p>La sélection LK-TECH contient SAFISAHA, LITO FINANCE et Youpendimmoselect. Son chargement remplace la liste affichée après confirmation. Toutes les fiches restent modifiables ; laissez le prix vide pour afficher « Sur devis ».</p>
+          <div id="zones-logiciels"></div>
+        </section>
+
         <section class="vue" id="vue-services">
           <h2 class="admin-titre">Services</h2>
           <p class="admin-sous-titre">Les piliers d'expertise présentés sur le site.</p>
@@ -487,6 +505,7 @@ $reglages = lk_store()->reglages();
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>window.LK_BASE = "<?= $base ?>";</script>
-  <script src="<?= $base ?>/assets/js/admin.js"></script>
+  <script>window.LK_LOGICIELS_EXEMPLES = <?= json_encode(json_decode((string) file_get_contents(__DIR__ . '/../lib/logiciels-exemples.json'), true), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>;</script>
+  <script src="<?= $base ?>/assets/js/admin.js?v=20261126-logiciels"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { lireContenu, lireReglages, piloteActif } from '../lib/store';
+import { lireContenu, lireReglages } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
 import MenuNavigation from './components/MenuNavigation';
 
@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 const ICONES = { code: '</>', btp: '⌂', architecture: '◧', energie: '⚡', solaire: '☀️' };
 
 function formaterPrix(produit) {
+  if (produit.prix == null || produit.prix === '') return 'Sur devis';
   try {
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
@@ -20,16 +21,16 @@ function formaterPrix(produit) {
 }
 
 export default async function Accueil() {
-  const [contenu, reglages, pilote] = await Promise.all([
+  const [contenu, reglages] = await Promise.all([
     lireContenu(),
-    lireReglages(),
-    piloteActif()
+    lireReglages()
   ]);
 
   const identite = contenu.identite || {};
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};
   const logiciels = contenu.logiciels || {};
+  const logicielsPublies = (logiciels.items || []).filter((l) => l.actif !== false);
   const tw = contenu.travaillerAvecNous || {};
   const pied = contenu.pied || {};
 
@@ -167,9 +168,7 @@ export default async function Accueil() {
               'Des logiciels conçus par LK-TECH, avec pour chacun une explication complète.'}
           </p>
           <div className="logiciels-grille">
-            {(logiciels.items || [])
-              .filter((l) => l.actif !== false)
-              .map((l) => (
+            {logicielsPublies.map((l) => (
                 <article className="carte carte-logiciel" key={l.id}>
                   <div className="logiciel-entete">
                     <span className="logiciel-icone" aria-hidden="true">
@@ -202,8 +201,8 @@ export default async function Accueil() {
                   </div>
                 </article>
               ))}
-            {!(logiciels.items || []).length && (
-              <p className="vide">Les logiciels arrivent bientôt.</p>
+            {!logicielsPublies.length && (
+              <p className="vide">Notre catalogue évolue. Contactez-nous pour découvrir les solutions disponibles.</p>
             )}
           </div>
         </div>
@@ -374,8 +373,12 @@ export default async function Accueil() {
         </div>
       </section>
 
-      <footer className="pied">
+      <footer className="pied" aria-label="Pied de page LK-TECH">
         <div className="conteneur">
+          <div className="pied__invitation">
+            <div><h2>Un logiciel ou un projet en tête ?</h2><p>Échangeons sur la solution adaptée à vos besoins.</p></div>
+            <a className="bouton bouton-vert" href="#contact">Contacter LK-TECH ↗</a>
+          </div>
           <div className="pied__grille">
             <div>
               <img className="pied__logo" src={identite.logoClair || '/assets/img/logo-clair.svg'} alt="Logo LK-TECH" width="46" height="46" />
@@ -387,7 +390,8 @@ export default async function Accueil() {
               <div className="pied__liens">
                 <Link href="/">Accueil</Link>
                 <Link href="/#specialites">Spécialités</Link>
-                <Link href="/#logiciels">Logiciels</Link>
+                <Link href="/#logiciels">Nos logiciels</Link>
+                <Link href="/#collaborations">Investir &amp; collaborer</Link>
                 <Link href="/#apropos">À propos</Link>
                 <Link href="/travailler-avec-nous">Travailler avec nous</Link>
                 <Link href="/#contact">Contact</Link>
@@ -414,7 +418,7 @@ export default async function Accueil() {
           </div>
           <div className="pied__bas">
             <span>© {new Date().getFullYear()} LK-TECH — {pied.mentions || 'Tous droits réservés.'}</span>
-            <span>Goma, République démocratique du Congo {reglages.maintenance ? '· Mode maintenance' : ''} · {pilote === 'supabase' ? 'Supabase connecté' : 'Stockage local'}</span>
+            <span>Goma, République démocratique du Congo {reglages.maintenance ? '· Mode maintenance' : ''}</span>
           </div>
         </div>
       </footer>

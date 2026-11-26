@@ -116,6 +116,7 @@
     remplirAPropos();
     remplirProduits();
     remplirServices();
+    remplirLogiciels();
     remplirApproche();
     remplirMessages();
     remplirReglages();
@@ -588,6 +589,77 @@
     toast('Services enregistrés ✔');
   }
 
+  /* ------------------------ vitrine des logiciels ------------------------ */
+
+  function remplirLogiciels() {
+    const logiciels = etat.contenu.logiciels ||= {};
+    // Convertir les anciennes fiches sans perdre leurs textes ni leurs prix.
+    if (Array.isArray(logiciels.liste)) {
+      logiciels.items = logiciels.liste.map((l) => ({ ...l, pitch: l.pitch ?? l.resume ?? '' }));
+      delete logiciels.liste;
+    }
+    logiciels.items ||= [];
+    $('#l-titre').value = logiciels.titre || 'Nos logiciels';
+    $('#l-soustitre').value = logiciels.sousTitre || '';
+    $('#l-bouton').value = logiciels.texteBouton || 'Demander une démo';
+    $('#zones-logiciels').innerHTML = logiciels.items.map((l, index) => `
+      <div class="panneau" data-logiciel="${index}">
+        <h2>${echapper(l.nom || 'Nouveau logiciel')}</h2>
+        <div class="grille-2">
+          <div class="champ"><label>Nom du logiciel<input data-cle="nom" maxlength="120" value="${echapper(l.nom)}" required></label></div>
+          <div class="champ"><label>Icône (emoji)<input data-cle="icone" maxlength="8" value="${echapper(l.icone || '💾')}"></label></div>
+          <div class="champ"><label>Badge<input data-cle="badge" maxlength="60" value="${echapper(l.badge)}"></label></div>
+          <div class="champ"><label>Prix (vide : sur devis)<input data-cle="prix" type="number" min="0" step="any" value="${echapper(l.prix ?? '')}"></label></div>
+          <div class="champ"><label>Devise<select data-cle="devise"><option value="USD" ${l.devise !== 'CDF' ? 'selected' : ''}>USD</option><option value="CDF" ${l.devise === 'CDF' ? 'selected' : ''}>CDF</option></select></label></div>
+          <div class="champ"><label>Type de licence<input data-cle="typePrix" maxlength="60" value="${echapper(l.typePrix)}"></label></div>
+        </div>
+        <div class="champ"><label>Accroche<input data-cle="pitch" maxlength="160" value="${echapper(l.pitch)}"></label></div>
+        <div class="champ"><label>Présentation<textarea data-cle="explication" rows="3" maxlength="2500">${echapper(l.explication)}</textarea></label></div>
+        <div class="champ"><label>Fonctionnalités (une par ligne)<textarea data-cle="fonctionnalites" rows="3">${echapper((l.fonctionnalites || []).join('\n'))}</textarea></label></div>
+        <div class="champ"><label><input data-cle="actif" type="checkbox" ${l.actif !== false ? 'checked' : ''}> Visible sur l’accueil</label></div>
+        <button class="btn btn--fantome btn--petit" type="button" data-retirer-logiciel="${index}">Retirer ce logiciel</button>
+      </div>`).join('') || '<p>Aucun logiciel. Ajoutez une fiche ou chargez la sélection LK-TECH.</p>';
+    $$('#zones-logiciels [data-retirer-logiciel]').forEach((b) => b.addEventListener('click', () => {
+      if (!confirm('Retirer ce logiciel de la vitrine ? Enregistrez ensuite pour confirmer la suppression.')) return;
+      collecterLogiciels();
+      logiciels.items.splice(Number(b.dataset.retirerLogiciel), 1);
+      remplirLogiciels();
+    }));
+  }
+
+  function collecterLogiciels() {
+    const logiciels = etat.contenu.logiciels;
+    logiciels.titre = $('#l-titre').value.trim();
+    logiciels.sousTitre = $('#l-soustitre').value.trim();
+    logiciels.texteBouton = $('#l-bouton').value.trim();
+    $$('#zones-logiciels [data-logiciel]').forEach((panneau) => {
+      const l = logiciels.items[Number(panneau.dataset.logiciel)];
+      panneau.querySelectorAll('[data-cle]').forEach((champ) => {
+        const cle = champ.dataset.cle;
+        l[cle] = cle === 'actif' ? champ.checked
+          : cle === 'prix' ? (champ.value.trim() === '' ? null : Number(champ.value))
+          : cle === 'fonctionnalites' ? champ.value.split('\n').map((v) => v.trim()).filter(Boolean)
+          : champ.value.trim();
+      });
+    });
+  }
+
+  async function enregistrerLogiciels() {
+    for (const champ of $$('#zones-logiciels input')) {
+      if (!champ.reportValidity()) return;
+    }
+    collecterLogiciels();
+    if (etat.contenu.logiciels.items.some((l) => !l.nom)) throw new Error('Le nom de chaque logiciel est requis.');
+    const bouton = $('#enregistrer-logiciels');
+    bouton.disabled = true;
+    try {
+      await api('/api/admin/contenu', { method: 'PUT', body: { contenu: etat.contenu } });
+      toast('Vitrine enregistrée : actualisez l’accueil pour voir les changements.');
+    } finally {
+      bouton.disabled = false;
+    }
+  }
+
   /* ------------------------------- approche ------------------------------ */
 
   function remplirApproche() {
@@ -805,6 +877,21 @@
       remplirServices();
     });
     $('#enregistrer-services').addEventListener('click', () => enregistrerServices().catch((e) => toast(e.message)));
+
+    // Logiciels : toutes les fiches sont éditables et remplaçables.
+    $('#ajouter-logiciel').addEventListener('click', () => {
+      collecterLogiciels();
+      etat.contenu.logiciels.items.push({ id: `log-${Date.now()}`, nom: '', icone: '💾', badge: 'Conçu par LK-TECH', fonctionnalites: [], prix: null, devise: 'USD', actif: true });
+      remplirLogiciels();
+      $('#zones-logiciels [data-logiciel]:last-child input').focus();
+    });
+    $('#exemples-logiciels').addEventListener('click', () => {
+      if (!confirm('Remplacer la liste par SAFISAHA, LITO FINANCE et Youpendimmoselect ? Enregistrez ensuite pour publier.')) return;
+      collecterLogiciels();
+      etat.contenu.logiciels.items = structuredClone(window.LK_LOGICIELS_EXEMPLES || []);
+      remplirLogiciels();
+    });
+    $('#enregistrer-logiciels').addEventListener('click', () => enregistrerLogiciels().catch((e) => toast(e.message)));
 
     // Approche
     $('#ajouter-etape').addEventListener('click', () => {

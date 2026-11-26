@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { api } from './api-client';
+import exemples from '../../lib/logiciels-exemples.json';
 
 const FORM_VIDE = {
   nom: '',
@@ -50,18 +51,24 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
     setErreur('');
     setRetour(null);
     setEnvoi(true);
-    const { ok, donnees } = await api('/api/admin/logiciels', {
-      method: 'PUT',
-      body: JSON.stringify({ logiciels: construire(itemsMaj) })
-    });
-    setEnvoi(false);
-    if (!ok) {
-      setErreur(donnees.erreur || 'Enregistrement impossible.');
+    try {
+      const { ok, donnees } = await api('/api/admin/logiciels', {
+        method: 'PUT',
+        body: JSON.stringify({ logiciels: construire(itemsMaj) })
+      });
+      if (!ok) {
+        setErreur(donnees.erreur || 'Enregistrement impossible.');
+        return false;
+      }
+      setRetour({ statut: 'ok', texte: `✅ ${message}` });
+      rafraichir();
+      return true;
+    } catch {
+      setErreur('Connexion impossible. Réessayez : vos modifications sont conservées.');
       return false;
+    } finally {
+      setEnvoi(false);
     }
-    setRetour({ statut: 'ok', texte: `✅ ${message}` });
-    rafraichir();
-    return true;
   }
 
   function enregistrerSection(evenement) {
@@ -90,7 +97,7 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
         .split('\n')
         .map((f) => f.trim())
         .filter(Boolean),
-      prix: Number(donnees.prix) || 0,
+      prix: String(donnees.prix ?? '').trim() === '' ? null : Number(donnees.prix),
       devise: donnees.devise === 'CDF' ? 'CDF' : 'USD',
       typePrix: String(donnees.typePrix || '').trim(),
       actif: donnees.actif === 'on'
@@ -140,11 +147,11 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
 
   function basculer(item) {
     const itemsMaj = items.map((i) =>
-      i.id === item.id ? { ...i, actif: !i.actif } : i
+      i.id === item.id ? { ...i, actif: i.actif === false } : i
     );
     envoyer(
       itemsMaj,
-      item.actif
+      item.actif !== false
         ? `« ${item.nom} » dépublié (masqué du site).`
         : `« ${item.nom} » publié !`
     );
@@ -159,6 +166,7 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
   }
 
   const champ = (cle) => ({
+    name: cle,
     value: form[cle],
     onChange: (e) => setForm({ ...form, [cle]: e.target.value })
   });
@@ -204,6 +212,18 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
         </form>
       </div>
 
+      <div className="admin-section">
+        <h3>Charger la sélection LK-TECH</h3>
+        <p className="aide-section">SAFISAHA, LITO FINANCE et Youpendimmoselect sont des fiches de départ : modifiez leur nom, leur présentation, leurs fonctionnalités et leur tarif. Ce bouton remplace le catalogue actuel uniquement après confirmation.</p>
+        <button className="bouton bouton-clair" disabled={envoi} onClick={async () => {
+          if (!confirm('Remplacer les logiciels actuels par SAFISAHA, LITO FINANCE et Youpendimmoselect ?')) return;
+          if (await envoyer(structuredClone(exemples), 'Sélection LK-TECH chargée.')) {
+            setEditionId(null);
+            setForm(FORM_VIDE);
+          }
+        }}>Charger les 3 logiciels LK-TECH</button>
+      </div>
+
       {/* ---------- Formulaire d'ajout / édition ---------- */}
       <div className="admin-section" id="logiciel-formulaire">
         <h3>
@@ -220,15 +240,15 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
           <div className="grille-2">
             <div className="champ">
               <label>Nom *</label>
-              <input {...champ('nom')} required maxLength={120} placeholder="GomaGest…" />
+              <input {...champ('nom')} required maxLength={120} placeholder="SAFISAHA, LITO FINANCE…" />
             </div>
             <div className="champ">
               <label>Icône (emoji)</label>
               <input {...champ('icone')} maxLength={8} placeholder="📦" />
             </div>
             <div className="champ">
-              <label>Prix</label>
-              <input {...champ('prix')} type="number" min="0" step="1" placeholder="240" />
+              <label>Prix (laisser vide pour « Sur devis »)</label>
+              <input {...champ('prix')} type="number" min="0" step="1" placeholder="Vide : sur devis" />
             </div>
             <div className="champ">
               <label>Devise</label>
@@ -283,6 +303,7 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
             <label className="logiciel-check">
               <input
                 type="checkbox"
+                name="actif"
                 checked={form.actif}
                 onChange={(e) => setForm({ ...form, actif: e.target.checked })}
               />{' '}
@@ -335,7 +356,7 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
                     {l.pitch && <div className="logiciel-pitch">{l.pitch}</div>}
                   </td>
                   <td>
-                    {l.prix} {l.devise}
+                    {l.prix == null || l.prix === '' ? 'Sur devis' : `${l.prix} ${l.devise}`}
                     {l.typePrix && (
                       <div className="logiciel-type">{l.typePrix}</div>
                     )}

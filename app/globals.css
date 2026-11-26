@@ -2074,3 +2074,16 @@ textarea.json-zone {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+.pied__invitation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+}
+.pied__invitation h2 { color: #fff; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.pied__invitation p { margin-top: .5rem; color: #b7c5d9; }
