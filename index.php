@@ -14,6 +14,7 @@ $base = base_url();
 $contenu = lk_store()->contenu();
 $identite = $contenu['identite'] ?? [];
 $reglages = lk_store()->reglages();
+$annoncesVitrine = lk_store()->listerAnnonces(['limit'=>6]);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -258,6 +259,42 @@ $reglages = lk_store()->reglages();
           </article>
         <?php endforeach; ?>
       </div>
+    </div>
+  </section>
+
+  <!-- =================== OPPORTUNITÉS VITRINE ========================= -->
+  <section class="section section--gris" id="opportunites">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">COMMUNAUTÉ <span class="section__trait"></span> 06</p>
+        <h2 class="section__titre">Opportunités de <em>la communauté</em></h2>
+        <p class="section__texte">Projets, offres d'emploi et services postés par les membres — collaborez et trouvez votre prochaine opportunité.</p>
+      </div>
+      <div style="display:flex;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap">
+        <a href="<?= $base ?>/opportunites.php" class="btn btn--petit" style="background:#16233F;color:#fff">Voir toutes les opportunités ↗</a>
+        <a href="<?= $base ?>/inscription.php" class="btn btn--fantome btn--petit">Publier une annonce</a>
+        <a href="<?= $base ?>/mon-espace.php" class="btn btn--fantome btn--petit">Mon espace</a>
+      </div>
+      <?php if(empty($annoncesVitrine)): ?>
+        <p style="background:#fff;border:1px dashed #cbd5e1;padding:1.5rem;border-radius:12px;text-align:center;color:#64748b">Aucune opportunité pour l'instant. <a href="<?= $base ?>/inscription.php">Soyez le premier à poster !</a></p>
+      <?php else: ?>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem">
+        <?php foreach($annoncesVitrine as $a): ?>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+            <span style="font-size:.7rem;padding:.25rem .6rem;border-radius:999px;font-weight:800;text-transform:uppercase;<?php
+              echo ($a['type']==='projet'?'background:#dbeafe;color:#1e40af':($a['type']==='emploi'?'background:#dcfce7;color:#166534':'background:#fef3c7;color:#92400e'));
+            ?>"><?= htmlspecialchars($a['type']) ?></span>
+            <span style="font-size:.78rem;color:#94a3b8"><?= htmlspecialchars($a['localisation']??'') ?></span>
+          </div>
+          <h3 style="font-size:1rem;margin:.4rem 0"><?= htmlspecialchars($a['titre']) ?></h3>
+          <p style="color:#475569;font-size:.9rem;line-height:1.5"><?= nl2br(htmlspecialchars(mb_substr($a['description'],0,140))) ?>...</p>
+          <?php if(!empty($a['budget'])): ?><p style="font-size:.85rem;margin-top:.5rem"><b><?= $a['type']==='emploi'?'Salaire':'Budget' ?>:</b> <?= htmlspecialchars($a['budget']) ?></p><?php endif; ?>
+          <p style="font-size:.8rem;color:#94a3b8;margin-top:.5rem">Par <?= htmlspecialchars($a['auteurNom']??'Membre') ?> · <?= htmlspecialchars(date('d/m/Y', strtotime($a['creeLe']))) ?></p>
+        </div>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
     </div>
   </section>
 

@@ -15,6 +15,11 @@ DirectoryIndex index.php index.html
     # Adresses sans extension
     RewriteRule ^a-propos/?$ a-propos.php [L,QSA]
     RewriteRule ^admin/?$ admin/index.php [L,QSA]
+    RewriteRule ^opportunites/?$ opportunites.php [L,QSA]
+    RewriteRule ^inscription/?$ inscription.php [L,QSA]
+    RewriteRule ^connexion/?$ connexion.php [L,QSA]
+    RewriteRule ^mon-espace/?$ mon-espace.php [L,QSA]
+    RewriteRule ^verifier-email/?$ verifier-email.php [L,QSA]
 
     # API : /api/... → api/index.php
     RewriteCond %{REQUEST_FILENAME} !-f
