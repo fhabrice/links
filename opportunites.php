@@ -11,19 +11,20 @@ if ($filtre) $annonces = array_filter($annonces, fn($a)=>($a['type']??'')===$fil
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Opportunités — LK-TECH</title>
-<link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
 <style>.badge{font-size:.7rem;padding:.25rem .6rem;border-radius:999px;font-weight:800;text-transform:uppercase}.badge-projet{background:#dbeafe;color:#1e40af}.badge-emploi{background:#dcfce7;color:#166534}.badge-service{background:#fef3c7;color:#92400e}</style>
 </head>
 <body>
 <header style="background:#fff;border-bottom:1px solid #e2e8f0;padding:1rem">
-<div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
+<div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem">
 <a href="<?= $base ?>/" style="font-weight:800;color:#16233F;text-decoration:none">← LK-TECH</a>
-<div>
-<a href="<?= $base ?>/opportunites.php" style="margin-right:1rem">Tout</a>
-<a href="?type=projet" style="margin-right:.5rem">Projets</a>
-<a href="?type=emploi" style="margin-right:.5rem">Emplois</a>
-<a href="?type=service" style="margin-right:1rem">Services</a>
+<div style="display:flex;align-items:center;flex-wrap:wrap;gap:.75rem">
+<a href="<?= $base ?>/opportunites.php">Tout</a>
+<a href="?type=projet">Projets</a>
+<a href="?type=emploi">Emplois</a>
+<a href="?type=service">Services</a>
+<a href="<?= $base ?>/travailler-avec-nous.php" style="color:#2e9e5b;font-weight:700">Travailler avec nous</a>
 <a href="<?= $base ?>/inscription.php" style="background:#16233F;color:#fff;padding:.5rem 1rem;border-radius:8px;text-decoration:none">Publier</a>
 </div>
 </div>

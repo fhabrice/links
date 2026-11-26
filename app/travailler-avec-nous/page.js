@@ -1,116 +1,473 @@
 import Link from 'next/link';
 import { lireContenu } from '../../lib/store';
 import FormulaireTravaillerAvecNous from '../components/FormulaireTravaillerAvecNous';
+import MenuNavigation from '../components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Travailler avec nous | LK-TECH — Recrutement & collaboration',
-  description: 'Rejoignez LK-TECH à Goma : génie civil, architecture & design, informatique, énergie. Envoyez votre candidature, transmise à notre Google Form et Gmail.'
+  title: 'Travailler avec nous | LK-TECH — Carrières & Recrutement',
+  description:
+    'Rejoignez LK-TECH à Goma : carrières, stages, freelances et partenariats en génie civil, architecture & design, informatique et énergie renouvelable.'
 };
+
+const AVANTAGES_DEFAUT = [
+  {
+    icone: '🏗️',
+    titre: 'Projets d’impact concret',
+    texte:
+      'Participez à des chantiers, infrastructures et solutions numériques qui transforment durablement Goma et l’Est de la RDC.'
+  },
+  {
+    icone: '💡',
+    titre: 'Équipe pluridisciplinaire',
+    texte:
+      'Collaborez au quotidien avec des ingénieurs civils, architectes, développeurs logiciels et spécialistes en énergie solaire.'
+  },
+  {
+    icone: '🌱',
+    titre: 'Progression & mentorat',
+    texte:
+      'Bénéficiez d’un encadrement technique rigoureux, de formations terrain et de perspectives d’évolution au sein de nos 4 pôles.'
+  }
+];
+
+const POLES_RECRUTEMENT = [
+  {
+    num: 'PÔLE 01',
+    icone: '🏗️',
+    valeur: 'Génie Civil',
+    titre: 'Génie Civil & BTP',
+    texte:
+      'Études techniques, dimensionnement d’ouvrages, suivi d’exécution, gros œuvre, second œuvre et réhabilitation de bâtiments.',
+    profils: ['Ingénieur civil', 'Conducteur de travaux', 'Chef de chantier', 'Métreur / Technicien BTP']
+  },
+  {
+    num: 'PÔLE 02',
+    icone: '📐',
+    valeur: 'Architecture & Design',
+    titre: 'Architecture & Design',
+    texte:
+      'Conception architecturale bioclimatique, plans 2D/3D, modélisation BIM, aménagement intérieur et maîtrise d’œuvre esthétique.',
+    profils: ['Architecte', 'Projeteur 3D / BIM', 'Designer d’intérieur', 'Dessinateur bâtiment']
+  },
+  {
+    num: 'PÔLE 03',
+    icone: '💻',
+    valeur: 'Informatique',
+    titre: 'Informatique & Solutions Digitales',
+    texte:
+      'Développement d’applications web/mobiles et progiciels métiers, réseaux d’entreprise, serveurs, cloud et cybersécurité.',
+    profils: ['Développeur Full-Stack', 'Ingénieur systèmes & réseaux', 'Technicien IT', 'UI/UX Designer']
+  },
+  {
+    num: 'PÔLE 04',
+    icone: '☀️',
+    valeur: 'Énergie renouvelable',
+    titre: 'Énergie Renouvelable & Électricité',
+    texte:
+      'Audit énergétique, dimensionnement photovoltaïque, installation de systèmes solaires hybrides, autonomie et maintenance.',
+    profils: ['Ingénieur énergéticien', 'Technicien solaire PV', 'Électricien bâtiment', 'Chargé de maintenance']
+  }
+];
 
 export default async function TravaillerAvecNous() {
   const contenu = await lireContenu();
   const identite = contenu.identite || {};
   const tw = contenu.travaillerAvecNous || {};
+  const gform = tw.googleForm || {};
+
+  const telephoneBrut = identite.telephone || '+243 976 459 970';
+  const telephoneLien = telephoneBrut.replace(/\s+/g, '');
+  const emailContact = identite.email || 'contact@linksmartec.com';
+  const villeContact = identite.ville || 'Goma, Nord-Kivu, RDC';
+  const avantages = (tw.avantages || []).length > 0 ? tw.avantages : AVANTAGES_DEFAUT;
 
   return (
     <>
       <header className="entete">
-        <div className="conteneur entete__inner">
-          <Link href="/" className="marque" aria-label="Accueil LK-TECH">
-            <img className="marque__logo" src={identite.logo || '/assets/img/logo.svg'} alt="" width="39" height="46" />
-            <span className="marque__texte"><span className="marque__nom">LK<i className="tiret">-</i>TECH</span><span className="marque__slogan">LINKS MARTECH</span></span>
+        <div className="conteneur">
+          <Link href="/" className="logo" aria-label="Accueil LK-TECH">
+            <img
+              className="logo-marque"
+              src={identite.logoClair || '/assets/img/logo-clair.svg'}
+              alt=""
+              width="34"
+              height="39"
+            />
+            <span className="logo-texte">
+              LK<span>-TECH</span>
+            </span>
           </Link>
-          <nav className="nav">
-            <Link className="nav__lien" href="/">Accueil</Link>
-            <Link className="nav__lien" href="/a-propos">À propos</Link>
-            <Link className="nav__lien" href="/opportunites">Opportunités</Link>
-            <Link className="nav__lien" href="/travailler-avec-nous">Travailler avec nous</Link>
-          </nav>
-          <div className="entete__actions">
-            <a className="btn btn--petit btn--fantome" href={`tel:${(identite.telephone||'+243976459970').replace(/\s/g,'')}`}>📞 Appeler</a>
-            <Link className="btn btn--petit" href="/#contact">Contact</Link>
+          <div className="entete-actions">
+            <MenuNavigation />
+            <a className="btn btn--fantome btn--petit" href={`tel:${telephoneLien}`} title="Appeler LK-TECH">
+              📞 Appeler
+            </a>
+            <a className="btn btn--accent btn--petit" href="#candidature">
+              Postuler ↓
+            </a>
           </div>
         </div>
       </header>
 
-      <section className="page-entete">
-        <div className="conteneur">
-          <nav className="fil-ariane"><Link href="/">Accueil</Link> <span>›</span> <span>Travailler avec nous</span></nav>
-          <p className="section__sur">{tw.surTitre || 'REJOIGNEZ L’AVENTURE'}</p>
-          <h1 className="page-entete__titre">{tw.titre || 'Travailler avec nous'}</h1>
-          <p className="page-entete__texte">{tw.soustitre || tw.sousTitre || 'Envie de construire, coder ou électrifier l’avenir avec nous ?'}</p>
-        </div>
-      </section>
+      <main>
+        {/* 00 · HERO CARRIÈRES */}
+        <section className="cand-hero">
+          <div className="conteneur">
+            <nav className="fil-ariane" aria-label="Fil d'Ariane">
+              <Link href="/">Accueil</Link> <span aria-hidden="true">›</span> <span>Travailler avec nous</span>
+            </nav>
 
-      <section className="section">
-        <div className="conteneur">
-          <p style={{maxWidth:'48rem', color:'#475569', lineHeight:1.7}}>{tw.texte}</p>
-          {(tw.avantages||[]).length>0 && (
-            <div className="grille" style={{marginTop:'2rem'}}>
-              {tw.avantages.map(a=>(
-                <div key={a.titre} className="carte" style={{textAlign:'left'}}>
-                  <div style={{fontSize:'1.5rem'}}>{a.icone}</div>
+            <div className="cand-hero__grille">
+              <div>
+                <span className="cand-badge">
+                  {tw.surTitre || 'CARRIÈRES & COLLABORATIONS · GOMA, RDC'}
+                </span>
+                <h1 className="cand-hero__titre">
+                  Construisez l’avenir <em>avec LK-TECH.</em>
+                </h1>
+                <p className="cand-hero__soustitre">
+                  {tw.soustitre ||
+                    tw.sousTitre ||
+                    'Envie de bâtir, concevoir, coder ou électrifier des projets durables ? Rejoignez nos équipes.'}
+                </p>
+                <p className="cand-hero__texte">
+                  {tw.texte ||
+                    'Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, ingénieur confirmé, stagiaire ou consultant freelance, déposez votre candidature en quelques minutes.'}
+                </p>
+
+                <div className="cand-hero__actions">
+                  <a className="btn btn--accent" href="#candidature">
+                    Déposer ma candidature <span aria-hidden="true">↓</span>
+                  </a>
+                  <a className="btn btn--contour-clair" href="#poles-recrutement">
+                    Découvrir nos 4 pôles <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+
+              <aside className="cand-hero__carte" aria-label="Synthèse recrutement LK-TECH">
+                <p className="cand-hero__carte-sur">ENGAGEMENT RH · LK-TECH</p>
+                <h2>Pourquoi nous rejoindre ?</h2>
+                <div className="cand-chiffres">
+                  <div className="cand-chiffre">
+                    <strong>4 pôles</strong>
+                    <span>Métiers complémentaires</span>
+                  </div>
+                  <div className="cand-chiffre">
+                    <strong>48 h</strong>
+                    <span>Délai moyen d’analyse</span>
+                  </div>
+                  <div className="cand-chiffre">
+                    <strong>4 formats</strong>
+                    <span>CDI, Stage, Freelance, Partenariat</span>
+                  </div>
+                  <div className="cand-chiffre">
+                    <strong>Goma</strong>
+                    <span>Rayonnement Nord-Kivu &amp; RDC</span>
+                  </div>
+                </div>
+                <ul className="cand-points">
+                  <li>Chantiers et projets numériques à fort impact local</li>
+                  <li>Encadrement par des ingénieurs et architectes expérimentés</li>
+                  <li>Culture de rigueur, d’innovation et de transparence</li>
+                  <li>Traitement confidentiel et retour personnalisé sur chaque dossier</li>
+                </ul>
+                <div className="cand-hero__carte-pied">
+                  <span aria-hidden="true">✉️</span>
+                  <span>Réception directe par notre cellule recrutement &amp; direction technique.</span>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* 01 · AVANTAGES */}
+        <section className="section" id="avantages">
+          <div className="conteneur">
+            <div className="section__entete">
+              <p className="section__sur">
+                POURQUOI NOUS REJOINDRE <span className="section__trait"></span> 01
+              </p>
+              <h2 className="section__titre">
+                Un environnement conçu pour faire grandir <em>vos compétences.</em>
+              </h2>
+              <p className="section__texte">
+                Chez LK-TECH, chaque collaborateur contribue directement à la réussite technique des ouvrages et solutions livrés à nos clients.
+              </p>
+            </div>
+
+            <div className="cand-avantages">
+              {avantages.map((a) => (
+                <article key={a.titre} className="cand-avantage">
+                  <div className="cand-avantage__icone" aria-hidden="true">
+                    {a.icone || '★'}
+                  </div>
                   <h3>{a.titre}</h3>
                   <p>{a.texte}</p>
-                </div>
+                </article>
               ))}
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section className="section section--gris" id="candidature">
-        <div className="conteneur">
-          <div className="section__entete">
-            <p className="section__sur">CANDIDATURE</p>
-            <h2 className="section__titre">{tw.formulaire?.titre || 'Candidature complète'}</h2>
-            <p className="section__texte">{tw.formulaire?.sousTitre || 'Remplissez ce formulaire : il est envoyé à notre équipe, à notre Google Form et à notre Gmail.'}</p>
-          </div>
-          <div className="grille-contact">
-            <div className="contact-infos">
-              <div className="info-bloc"><div className="info-bloc__icone">📞</div><div><div className="info-bloc__titre">Appeler</div><a className="info-bloc__valeur" href={`tel:${(identite.telephone||'+243976459970').replace(/\s/g,'')}`}>{identite.telephone||'+243 976 459 970'}</a><p style={{fontSize:'.82rem',color:'#64748b',marginTop:'.4rem'}}>Lun–Sam 08h–18h</p></div></div>
-              <div className="info-bloc"><div className="info-bloc__icone">✉️</div><div><div className="info-bloc__titre">E-mail RH</div><a className="info-bloc__valeur" href={`mailto:${identite.email||'contact@linksmartec.com'}`}>{identite.email||'contact@linksmartec.com'}</a></div></div>
-              <div className="info-bloc"><div className="info-bloc__icone">📍</div><div><div className="info-bloc__titre">Adresse</div><div className="info-bloc__valeur">{identite.ville||'Goma, Nord-Kivu, RDC'}</div></div></div>
-              <div className="info-bloc"><div className="info-bloc__icone">🔗</div><div><div className="info-bloc__titre">Google Form</div><p style={{fontSize:'.85rem',color:'#475569'}}>{tw.googleForm?.actionUrl ? 'Connecté → réponses dans Google Sheets + Gmail' : 'À configurer dans l’admin (voir documentation). En attendant, les candidatures sont enregistrées localement et visibles dans l’admin.'}</p></div></div>
+        {/* 02 · NOS 4 PÔLES QUI RECRUTENT */}
+        <section className="section section--gris" id="poles-recrutement">
+          <div className="conteneur">
+            <div className="section__entete">
+              <p className="section__sur">
+                NOS DOMAINES DE RECRUTEMENT <span className="section__trait"></span> 02
+              </p>
+              <h2 className="section__titre">
+                Quatre pôles d’excellence, <em>une même exigence.</em>
+              </h2>
+              <p className="section__texte">
+                Sélectionnez le pôle correspondant à votre spécialité pour pré-remplir directement votre formulaire de candidature.
+              </p>
             </div>
-            <FormulaireTravaillerAvecNous />
+
+            <div className="cand-poles">
+              {POLES_RECRUTEMENT.map((pole) => (
+                <article key={pole.valeur} className="cand-pole">
+                  <div>
+                    <div className="cand-pole__entete">
+                      <span className="cand-pole__num">{pole.num}</span>
+                      <span className="cand-pole__icone" aria-hidden="true">
+                        {pole.icone}
+                      </span>
+                    </div>
+                    <h3>{pole.titre}</h3>
+                    <p>{pole.texte}</p>
+                    <div className="cand-tags" aria-label="Profils recherchés">
+                      {pole.profils.map((p) => (
+                        <span key={p} className="cand-tag">
+                          {p}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="cand-pole__pied">
+                    <a
+                      className="cand-pole__action"
+                      href="#candidature"
+                      data-choisir-domaine={pole.valeur}
+                    >
+                      Postuler dans ce pôle <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* 03 · MODES DE COLLABORATION & PROCESSUS */}
+        <section className="section" id="processus">
+          <div className="conteneur">
+            <div className="section__entete">
+              <p className="section__sur">
+                PARCOURS CANDIDAT <span className="section__trait"></span> 03
+              </p>
+              <h2 className="section__titre">
+                Un processus simple, <em>transparent et structuré.</em>
+              </h2>
+              <p className="section__texte">
+                Choisissez votre format de collaboration et suivez les quatre étapes clés de notre recrutement.
+              </p>
+            </div>
+
+            <div className="cand-modes" aria-label="Modes de collaboration">
+              <button type="button" className="cand-mode" data-choisir-type="Emploi">
+                <span className="cand-mode__badge">Format 01</span>
+                <strong>Emploi (CDI / CDD)</strong>
+                <span>Intégrez durablement nos équipes techniques et projets structurants à Goma.</span>
+              </button>
+              <button type="button" className="cand-mode" data-choisir-type="Stage">
+                <span className="cand-mode__badge">Format 02</span>
+                <strong>Stage académique &amp; pro</strong>
+                <span>Apprenez sur le terrain aux côtés de nos ingénieurs, architectes et développeurs.</span>
+              </button>
+              <button type="button" className="cand-mode" data-choisir-type="Freelance / Consultant">
+                <span className="cand-mode__badge">Format 03</span>
+                <strong>Freelance / Consultant</strong>
+                <span>Intervenez sur des missions ciblées d’expertise, d’étude ou de développement.</span>
+              </button>
+              <button type="button" className="cand-mode" data-choisir-type="Partenariat">
+                <span className="cand-mode__badge">Format 04</span>
+                <strong>Partenariat technique</strong>
+                <span>Unissons nos savoir-faire pour répondre ensemble à des marchés d’envergure.</span>
+              </button>
+            </div>
+
+            <div className="cand-etapes">
+              <article className="cand-etape">
+                <span className="cand-etape__num">01</span>
+                <h3>Dépôt du dossier</h3>
+                <p>
+                  Remplissez le formulaire ci-dessous avec votre parcours, vos motivations et un lien vers votre CV ou portfolio.
+                </p>
+              </article>
+              <article className="cand-etape">
+                <span className="cand-etape__num">02</span>
+                <h3>Analyse sous 48 h</h3>
+                <p>
+                  Votre candidature est examinée conjointement par le responsable du pôle concerné et la direction.
+                </p>
+              </article>
+              <article className="cand-etape">
+                <span className="cand-etape__num">03</span>
+                <h3>Entretien &amp; échange</h3>
+                <p>
+                  Rencontre dans nos bureaux à Goma ou en visioconférence autour de vos réalisations et d’un cas concret.
+                </p>
+              </article>
+              <article className="cand-etape">
+                <span className="cand-etape__num">04</span>
+                <h3>Intégration</h3>
+                <p>
+                  Proposition claire, accueil au sein de l’équipe et démarrage accompagné sur nos outils et projets.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* 04 · FORMULAIRE DE CANDIDATURE */}
+        <section className="section section--gris" id="candidature">
+          <div className="conteneur">
+            <div className="section__entete">
+              <p className="section__sur">
+                DÉPOSER VOTRE DOSSIER <span className="section__trait"></span> 04
+              </p>
+              <h2 className="section__titre">{tw.formulaire?.titre || 'Candidature complète'}</h2>
+              <p className="section__texte">
+                {tw.formulaire?.sousTitre ||
+                  'Complétez les trois étapes ci-dessous. Votre dossier est transmis directement à notre équipe de recrutement.'}
+              </p>
+            </div>
+
+            <div className="cand-dossier__grille">
+              <aside className="cand-sidebar" aria-label="Coordonnées recrutement">
+                <div className="cand-rh-carte">
+                  <p className="cand-rh-carte__sur">CONTACT RECRUTEMENT</p>
+                  <h3>Besoin d’un renseignement ?</h3>
+                  <p>
+                    Notre équipe est joignable du lundi au samedi de 08h00 à 18h00 pour toute question relative aux postes, stages ou partenariats.
+                  </p>
+
+                  <div className="cand-rh-liste">
+                    <div className="cand-rh-item">
+                      <span className="cand-rh-item__icone" aria-hidden="true">
+                        📞
+                      </span>
+                      <div>
+                        <small>Téléphone direct</small>
+                        <a href={`tel:${telephoneLien}`}>{telephoneBrut}</a>
+                      </div>
+                    </div>
+                    <div className="cand-rh-item">
+                      <span className="cand-rh-item__icone" aria-hidden="true">
+                        ✉️
+                      </span>
+                      <div>
+                        <small>E-mail RH &amp; Direction</small>
+                        <a href={`mailto:${emailContact}`}>{emailContact}</a>
+                      </div>
+                    </div>
+                    <div className="cand-rh-item">
+                      <span className="cand-rh-item__icone" aria-hidden="true">
+                        📍
+                      </span>
+                      <div>
+                        <small>Siège &amp; Bureaux</small>
+                        <strong>{villeContact}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a className="btn btn--accent btn--bloc" href={`tel:${telephoneLien}`}>
+                    📞 Appeler maintenant
+                  </a>
+                </div>
+
+                <div className="cand-checklist">
+                  <h4>Conseils pour votre dossier</h4>
+                  <ul className="cand-points">
+                    <li>Précisez le pôle qui correspond le mieux à votre profil</li>
+                    <li>Ajoutez un lien Google Drive, Dropbox, GitHub ou LinkedIn accessible</li>
+                    <li>Décrivez vos réalisations concrètes ou projets académiques</li>
+                    <li>Indiquez clairement votre disponibilité de démarrage</li>
+                  </ul>
+                  {gform.actionUrl && (
+                    <p style={{ marginTop: '1rem', fontSize: '0.82rem', color: '#475569' }}>
+                      ✅ Formulaire synchronisé avec Google Form.
+                    </p>
+                  )}
+                </div>
+              </aside>
+
+              <FormulaireTravaillerAvecNous
+                boutonTexte={tw.formulaire?.boutonTexte || 'Envoyer ma candidature'}
+              />
+            </div>
+          </div>
+        </section>
+      </main>
 
       <footer className="pied">
         <div className="conteneur">
           <div className="pied__grille">
             <div>
-              <img className="pied__logo" src={identite.logoClair || '/assets/img/logo-clair.svg'} alt="" width="46" height="46" />
-              <div className="pied__nom">LK<i className="tiret">-</i>TECH</div>
-              <p className="pied__texte">{contenu.pied?.description}</p>
+              <img
+                className="pied__logo"
+                src={identite.logoClair || '/assets/img/logo-clair.svg'}
+                alt="Logo LK-TECH"
+                width="44"
+                height="44"
+              />
+              <div className="pied__nom">
+                LK<i className="tiret">-</i>TECH
+              </div>
+              <p className="pied__texte">
+                {contenu.pied?.description ||
+                  'LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes.'}
+              </p>
             </div>
             <div>
               <h4 className="pied__titre">Navigation</h4>
               <div className="pied__liens">
                 <Link href="/">Accueil</Link>
-                <Link href="/#specialites">Expertises</Link>
-                <Link href="/opportunites">Opportunités</Link>
+                <Link href="/#specialites">Spécialités</Link>
+                <Link href="/#logiciels">Logiciels</Link>
+                <Link href="/#apropos">À propos</Link>
                 <Link href="/travailler-avec-nous">Travailler avec nous</Link>
-                <Link href="/a-propos">À propos</Link>
                 <Link href="/#contact">Contact</Link>
+                <Link href="/admin">🔒 Admin</Link>
               </div>
             </div>
             <div>
               <h4 className="pied__titre">Nos spécialités</h4>
               <div className="pied__liens">
-                {(contenu.specialites||[]).map(s=><span key={s.id}>{s.titre}</span>)}
+                {(contenu.specialites || []).map((s) => (
+                  <span key={s.id}>{s.titre}</span>
+                ))}
+                {!(contenu.specialites || []).length && (
+                  <>
+                    <span>Génie Civil</span>
+                    <span>Architecture &amp; Design</span>
+                    <span>Informatique</span>
+                    <span>Énergie renouvelable</span>
+                  </>
+                )}
               </div>
             </div>
             <div>
               <h4 className="pied__titre">Coordonnées</h4>
               <div className="pied__liens">
-                <span>{identite.ville}</span>
-                <a href={`tel:${(identite.telephone||'').replace(/\s/g,'')}`}>{identite.telephone}</a>
-                <a href={`mailto:${identite.email}`}>{identite.email}</a>
-                <span>{identite.rccm && `RCCM : ${identite.rccm}`}</span>
+                <span>{villeContact}</span>
+                <a href={`tel:${telephoneLien}`}>{telephoneBrut}</a>
+                <a href={`mailto:${emailContact}`}>{emailContact}</a>
+                {identite.rccm && <span>RCCM : {identite.rccm}</span>}
               </div>
             </div>
           </div>
@@ -120,6 +477,15 @@ export default async function TravaillerAvecNous() {
           </div>
         </div>
       </footer>
+
+      <div className="barre-appel" aria-label="Actions rapides">
+        <a className="barre-appel__btn barre-appel__btn--tel" href={`tel:${telephoneLien}`}>
+          📞 Appeler
+        </a>
+        <a className="barre-appel__btn barre-appel__btn--cta" href="#candidature">
+          Postuler ↓
+        </a>
+      </div>
     </>
   );
 }

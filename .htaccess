@@ -16,6 +16,7 @@ DirectoryIndex index.php index.html
     RewriteRule ^a-propos/?$ a-propos.php [L,QSA]
     RewriteRule ^admin/?$ admin/index.php [L,QSA]
     RewriteRule ^opportunites/?$ opportunites.php [L,QSA]
+    RewriteRule ^travailler-avec-nous/?$ travailler-avec-nous.php [L,QSA]
     RewriteRule ^inscription/?$ inscription.php [L,QSA]
     RewriteRule ^connexion/?$ connexion.php [L,QSA]
     RewriteRule ^mon-espace/?$ mon-espace.php [L,QSA]

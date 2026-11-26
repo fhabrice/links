@@ -30,8 +30,8 @@ $reglages = lk_store()->reglages();
   <link rel="canonical" href="https://www.linksmartec.com/a-propos.php">
   <link rel="icon" type="image/svg+xml" href="<?= $base ?>/assets/img/favicon.svg" id="favicon">
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
+  <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
 </head>
 <body>
 
@@ -67,23 +67,22 @@ $reglages = lk_store()->reglages();
         </span>
       </a>
 
-      <nav class="nav" id="nav">
+      <nav class="nav" id="nav" aria-label="Navigation principale">
         <a class="nav__lien" href="<?= $base ?>/">Accueil</a>
         <a class="nav__lien" href="<?= $base ?>/#specialites">Expertises</a>
         <a class="nav__lien" href="<?= $base ?>/#services">Solutions</a>
-        <a class="nav__lien" href="<?= $base ?>/#approche">Notre méthode</a>
-        <a class="nav__lien" href="<?= $base ?>/#boutique">Boutique</a>
-        <a class="nav__lien" href="<?= $base ?>/a-propos">À propos</a>
+        <a class="nav__lien" href="<?= $base ?>/#logiciels">Logiciels</a>
         <a class="nav__lien" href="<?= $base ?>/opportunites.php">Opportunités</a>
+        <a class="nav__lien nav__lien--actif" href="<?= $base ?>/a-propos" aria-current="page">À propos</a>
         <a class="nav__lien" href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
         <a class="nav__lien" href="<?= $base ?>/#contact">Contact</a>
       </nav>
 
       <div class="entete__actions">
         <a class="btn btn--fantome btn--petit" href="tel:+243976459970" title="Appeler">📞 Appeler</a>
-        <a class="btn btn--fantome btn--petit" href="<?= $base ?>/travailler-avec-nous.php" style="border-color:#2e9e5b;">Travailler avec nous</a>
+        <a class="btn btn--recrutement btn--petit" href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
         <a class="btn btn--petit" id="btn-portail" href="<?= $base ?>/#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
-        <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
+        <button class="burger" id="burger" type="button" aria-label="Ouvrir le menu" aria-controls="nav" aria-expanded="false">☰</button>
       </div>
     </div>
   </header>
@@ -207,9 +206,11 @@ $reglages = lk_store()->reglages();
           <h4 class="pied__titre">Navigation</h4>
           <div class="pied__liens">
             <a href="<?= $base ?>/">Accueil</a>
-            <a href="<?= $base ?>/#boutique">Boutique</a>
+            <a href="<?= $base ?>/#logiciels">Logiciels</a>
             <a href="<?= $base ?>/#services">Services</a>
+            <a href="<?= $base ?>/opportunites.php">Opportunités</a>
             <a href="<?= $base ?>/a-propos">À propos</a>
+            <a href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
             <a href="<?= $base ?>/#contact">Contact</a>
           </div>
         </div>
@@ -240,7 +241,7 @@ $reglages = lk_store()->reglages();
 
   <script>window.LK_BASE = "<?= $base ?>";</script>
   <script>window.LK_SECOURS = "<?= $base ?>/assets/data/site.json";</script>
-  <script src="<?= $base ?>/assets/i18n/traductions.js"></script>
-  <script src="<?= $base ?>/assets/js/site.js"></script>
+  <script src="<?= $base ?>/assets/i18n/traductions.js?v=20261126"></script>
+  <script src="<?= $base ?>/assets/js/site.js?v=20261126"></script>
 </body>
 </html>

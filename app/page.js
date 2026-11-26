@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { lireContenu, lireReglages, piloteActif } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
-import FormulaireTravaillerAvecNous from './components/FormulaireTravaillerAvecNous';
 import MenuNavigation from './components/MenuNavigation';
 
 export const dynamic = 'force-dynamic';
@@ -54,13 +53,10 @@ export default async function Accueil() {
             </span>
           </div>
           <div className="entete-actions">
+            <MenuNavigation />
             <a className="btn btn--fantome btn--petit" href={`tel:${(identite.telephone || '+243976459970').replace(/\s/g,'')}`} title="Appeler LK-TECH">
               📞 Appeler
             </a>
-            <Link className="btn btn--fantome btn--petit" href="/travailler-avec-nous" style={{borderColor:'#2e9e5b'}}>
-              Travailler avec nous
-            </Link>
-            <MenuNavigation />
             <Link href="/admin" className="nav-admin" title="Espace d'administration">
               🔒 Admin
             </Link>
@@ -227,47 +223,121 @@ export default async function Accueil() {
       <section className="section section--gris" id="travailler-avec-nous">
         <div className="conteneur">
           <div className="section__entete">
-            <p className="section__sur">REJOIGNEZ L’AVENTURE</p>
+            <p className="section__sur">CARRIÈRES &amp; COLLABORATIONS <span className="section__trait"></span></p>
             <h2 className="section__titre">Travailler <em>avec nous</em></h2>
-            <p className="section__texte">{tw.soustitre || tw.sousTitre || 'Envie de construire, coder ou électrifier l’avenir avec nous ? Rejoignez LK-TECH à Goma.'}</p>
-            <p style={{marginTop:'.6rem', color:'#475569', maxWidth:'48rem', lineHeight:1.7}}>{tw.texte}</p>
+            <p className="section__texte">{tw.soustitre || tw.sousTitre || 'Envie de construire, concevoir, coder ou électrifier l’avenir avec nous ? Rejoignez LK-TECH à Goma.'}</p>
           </div>
 
-          {(tw.avantages||[]).length>0 && (
-            <div className="grille" style={{marginBottom:'2rem'}}>
-              {tw.avantages.map(a=>(
-                <div key={a.titre} className="carte">
-                  <div style={{fontSize:'1.5rem'}}>{a.icone}</div>
+          {(tw.avantages || []).length > 0 && (
+            <div className="cand-avantages" style={{ marginBottom: '1.5rem' }}>
+              {tw.avantages.map((a) => (
+                <article key={a.titre} className="cand-avantage">
+                  <div className="cand-avantage__icone" aria-hidden="true">{a.icone}</div>
                   <h3>{a.titre}</h3>
                   <p>{a.texte}</p>
-                </div>
+                </article>
               ))}
             </div>
           )}
 
-          <div className="grille" style={{gridTemplateColumns:'1fr 1.4fr', gap:'2rem'}}>
+          <div className="cand-poles">
+            <article className="cand-pole">
+              <div>
+                <div className="cand-pole__entete">
+                  <span className="cand-pole__num">PÔLE 01</span>
+                  <span className="cand-pole__icone" aria-hidden="true">🏗️</span>
+                </div>
+                <h3>Génie Civil &amp; BTP</h3>
+                <p>Études d’exécution, conduite de travaux, suivi de chantier et réhabilitation d’ouvrages.</p>
+                <div className="cand-tags">
+                  <span className="cand-tag">Ingénieur BTP</span>
+                  <span className="cand-tag">Chef de chantier</span>
+                  <span className="cand-tag">Métreur</span>
+                </div>
+              </div>
+              <div className="cand-pole__pied">
+                <Link className="cand-pole__action" href="/travailler-avec-nous?domaine=G%C3%A9nie%20Civil#candidature">
+                  Postuler dans ce pôle <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </article>
+
+            <article className="cand-pole">
+              <div>
+                <div className="cand-pole__entete">
+                  <span className="cand-pole__num">PÔLE 02</span>
+                  <span className="cand-pole__icone" aria-hidden="true">📐</span>
+                </div>
+                <h3>Architecture &amp; Design</h3>
+                <p>Conception architecturale, plans 2D/3D, modélisation BIM et design d’espaces intérieurs.</p>
+                <div className="cand-tags">
+                  <span className="cand-tag">Architecte</span>
+                  <span className="cand-tag">Projeteur 3D / BIM</span>
+                  <span className="cand-tag">Designer</span>
+                </div>
+              </div>
+              <div className="cand-pole__pied">
+                <Link className="cand-pole__action" href="/travailler-avec-nous?domaine=Architecture%20%26%20Design#candidature">
+                  Postuler dans ce pôle <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </article>
+
+            <article className="cand-pole">
+              <div>
+                <div className="cand-pole__entete">
+                  <span className="cand-pole__num">PÔLE 03</span>
+                  <span className="cand-pole__icone" aria-hidden="true">💻</span>
+                </div>
+                <h3>Informatique &amp; Digital</h3>
+                <p>Développement web/mobile, logiciels de gestion, administration systèmes, réseaux et cybersécurité.</p>
+                <div className="cand-tags">
+                  <span className="cand-tag">Développeur Full-Stack</span>
+                  <span className="cand-tag">Réseaux &amp; Cloud</span>
+                  <span className="cand-tag">Support IT</span>
+                </div>
+              </div>
+              <div className="cand-pole__pied">
+                <Link className="cand-pole__action" href="/travailler-avec-nous?domaine=Informatique#candidature">
+                  Postuler dans ce pôle <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </article>
+
+            <article className="cand-pole">
+              <div>
+                <div className="cand-pole__entete">
+                  <span className="cand-pole__num">PÔLE 04</span>
+                  <span className="cand-pole__icone" aria-hidden="true">☀️</span>
+                </div>
+                <h3>Énergie Renouvelable</h3>
+                <p>Dimensionnement solaire photovoltaïque, systèmes hybrides, installation électrique et maintenance.</p>
+                <div className="cand-tags">
+                  <span className="cand-tag">Technicien Solaire PV</span>
+                  <span className="cand-tag">Électricien</span>
+                  <span className="cand-tag">Ingénieur énergie</span>
+                </div>
+              </div>
+              <div className="cand-pole__pied">
+                <Link className="cand-pole__action" href="/travailler-avec-nous?domaine=%C3%89nergie%20renouvelable#candidature">
+                  Postuler dans ce pôle <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </article>
+          </div>
+
+          <div className="cand-accueil-cta">
             <div>
-              <div className="carte" style={{textAlign:'left'}}>
-                <h3>📞 Appeler</h3>
-                <p>Une question avant de postuler ? Appelez-nous directement.</p>
-                <a className="bouton bouton-vert" href={`tel:${(identite.telephone||'+243976459970').replace(/\s/g,'')}`}>
-                  {identite.telephone || '+243 976 459 970'}
-                </a>
-                <p style={{fontSize:'.82rem', color:'#64748b', marginTop:'.6rem'}}>Lun–Sam 08h00–18h00 · Réponse rapide</p>
-              </div>
-              <div className="carte" style={{marginTop:'1rem'}}>
-                <h3>🔗 Google Form / Gmail</h3>
-                <p style={{fontSize:'.88rem', color:'#475569', lineHeight:1.6}}>
-                  Chaque candidature est : 1) enregistrée, 2) envoyée directement à fabricenzarubara@gmail.com, 3) consultable dans l'admin.
-                  {tw.googleForm?.actionUrl ? ` Envoyé à ${tw.emailDestination || tw.googleForm?.gmailDestination || 'fabricenzarubara@gmail.com'}` : ' À configurer dans l’admin.'}
-                </p>
-                <Link href="/travailler-avec-nous" className="bouton bouton-fantome" style={{marginTop:'.6rem'}}>Page dédiée ↗</Link>
-              </div>
+              <h3>Prêt à rejoindre l’aventure LK-TECH ?</h3>
+              <p>Accédez à notre espace recrutement complet pour découvrir notre processus et déposer votre dossier en 3 étapes.</p>
             </div>
-            <div>
-              <h3 style={{marginBottom:'1rem'}}>{tw.formulaire?.titre || 'Candidature complète'}</h3>
-              <p style={{color:'#64748b', marginBottom:'1rem', fontSize:'.9rem'}}>{tw.formulaire?.sousTitre || 'Remplissez ce formulaire : il est envoyé à notre équipe, à notre Google Form et à notre Gmail.'}</p>
-              <FormulaireTravaillerAvecNous />
+            <div className="cand-accueil-cta__actions">
+              <Link className="btn btn--accent" href="/travailler-avec-nous#candidature">
+                Déposer ma candidature <span aria-hidden="true">↗</span>
+              </Link>
+              <a className="btn btn--contour-clair" href={`tel:${(identite.telephone || '+243976459970').replace(/\s/g, '')}`}>
+                📞 {identite.telephone || '+243 976 459 970'}
+              </a>
             </div>
           </div>
         </div>
@@ -285,10 +355,10 @@ export default async function Accueil() {
               <h4 className="pied__titre">Navigation</h4>
               <div className="pied__liens">
                 <Link href="/">Accueil</Link>
-                <Link href="/#specialites">Expertises</Link>
+                <Link href="/#specialites">Spécialités</Link>
+                <Link href="/#logiciels">Logiciels</Link>
+                <Link href="/#apropos">À propos</Link>
                 <Link href="/travailler-avec-nous">Travailler avec nous</Link>
-                <Link href="/a-propos">À propos</Link>
-                <Link href="/opportunites">Opportunités</Link>
                 <Link href="/#contact">Contact</Link>
                 <Link href="/admin">🔒 Admin</Link>
               </div>
