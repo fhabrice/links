@@ -337,51 +337,53 @@ export default function OngletLogiciels({ logiciels, rafraichir }) {
           <p className="vide">Aucun logiciel — publiez le premier ci-dessus.</p>
         )}
         {!!items.length && (
-          <table className="tableau">
-            <thead>
-              <tr>
-                <th>Logiciel</th>
-                <th>Prix</th>
-                <th>Publication</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((l) => (
-                <tr key={l.id}>
-                  <td>
-                    <strong>
-                      {l.icone} {l.nom}
-                    </strong>
-                    {l.pitch && <div className="logiciel-pitch">{l.pitch}</div>}
-                  </td>
-                  <td>
-                    {l.prix == null || l.prix === '' ? 'Sur devis' : `${l.prix} ${l.devise}`}
-                    {l.typePrix && (
-                      <div className="logiciel-type">{l.typePrix}</div>
-                    )}
-                  </td>
-                  <td>{l.actif !== false ? '✅ Publié' : '⏸️ Brouillon'}</td>
-                  <td>
-                    <div className="actions">
-                      <button className="mini-bouton" onClick={() => modifier(l)}>
-                        Modifier
-                      </button>
-                      <button className="mini-bouton" onClick={() => basculer(l)}>
-                        {l.actif !== false ? 'Dépublier' : 'Publier'}
-                      </button>
-                      <button
-                        className="mini-bouton danger"
-                        onClick={() => supprimer(l)}
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </td>
+          <div className="tableau-defilant" role="region" aria-label="Liste des logiciels" tabIndex={0}>
+            <table className="tableau">
+              <thead>
+                <tr>
+                  <th>Logiciel</th>
+                  <th>Prix</th>
+                  <th>Publication</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {items.map((l) => (
+                  <tr key={l.id}>
+                    <td>
+                      <strong>
+                        {l.icone} {l.nom}
+                      </strong>
+                      {l.pitch && <div className="logiciel-pitch">{l.pitch}</div>}
+                    </td>
+                    <td>
+                      {l.prix == null || l.prix === '' ? 'Sur devis' : `${l.prix} ${l.devise}`}
+                      {l.typePrix && (
+                        <div className="logiciel-type">{l.typePrix}</div>
+                      )}
+                    </td>
+                    <td>{l.actif !== false ? '✅ Publié' : '⏸️ Brouillon'}</td>
+                    <td>
+                      <div className="actions">
+                        <button className="mini-bouton" onClick={() => modifier(l)}>
+                          Modifier
+                        </button>
+                        <button className="mini-bouton" onClick={() => basculer(l)}>
+                          {l.actif !== false ? 'Dépublier' : 'Publier'}
+                        </button>
+                        <button
+                          className="mini-bouton danger"
+                          onClick={() => supprimer(l)}
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </>

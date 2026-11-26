@@ -87,6 +87,7 @@ $reglages = lk_store()->reglages();
     .lien-discret:hover { color: var(--primaire); }
     .badge-pilote { display: inline-flex; align-items: center; gap: .45rem; font-size: .78rem; font-weight: 700; padding: .35rem .7rem; border-radius: 999px; background: rgba(255,255,255,.12); }
   </style>
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
 
@@ -106,7 +107,7 @@ $reglages = lk_store()->reglages();
 
       <div class="champ" style="margin-bottom:1rem">
         <label for="identifiant">Identifiant</label>
-        <input id="identifiant" name="identifiant" type="text" autocomplete="username" required value="admin">
+        <input id="identifiant" name="identifiant" type="text" autocomplete="username" required autocapitalize="none" spellcheck="false">
       </div>
       <div class="champ" style="margin-bottom:1.25rem">
         <label for="motDePasse">Mot de passe</label>
@@ -115,7 +116,7 @@ $reglages = lk_store()->reglages();
 
       <button class="btn btn--bloc" type="submit" id="bouton-connexion">Se connecter</button>
       <p class="lien-discret" style="margin-top:1rem;text-align:center">
-        Première connexion : <strong>admin</strong> / <strong>linksmartech</strong> — à changer ensuite.
+        Accès réservé aux personnes autorisées. Utilisez vos identifiants personnels.
       </p>
       <p class="lien-discret" style="text-align:center"><a href="<?= $base ?>/">← Retour au site</a></p>
     </form>
@@ -129,7 +130,7 @@ $reglages = lk_store()->reglages();
           <img src="<?= $base ?>/assets/img/logo.svg" alt="">
           <span>LK<i style="color:#3FBF74;font-style:normal">-</i>TECH · Admin</span>
         </div>
-        <div style="display:flex;align-items:center;gap:.75rem">
+        <div class="admin-entete-actions">
           <span class="badge-pilote" id="badge-pilote">Stockage : …</span>
           <a class="btn btn--fantome btn--petit" href="<?= $base ?>/" target="_blank" rel="noopener" style="--btn-texte:#fff;border-color:rgba(255,255,255,.3)">Voir le site</a>
           <button class="btn btn--accent btn--petit" id="bouton-deconnexion">Déconnexion</button>
@@ -138,7 +139,7 @@ $reglages = lk_store()->reglages();
     </header>
 
     <div class="admin-corps">
-      <nav class="admin-menu" id="menu-admin">
+      <nav class="admin-menu" id="menu-admin" aria-label="Rubriques de l’administration">
         <button data-vue="tableau" class="actif">📊 Tableau de bord</button>
         <button data-vue="identite">🏷️ Identité &amp; logo</button>
         <button data-vue="hero">🖼️ Bannière d'accueil</button>
@@ -387,10 +388,12 @@ $reglages = lk_store()->reglages();
           </div>
 
           <div class="panneau">
+            <div class="tableau-defilant" role="region" aria-label="Liste des produits" tabindex="0">
             <table class="tableau">
               <thead><tr><th></th><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>État</th><th></th></tr></thead>
               <tbody id="corps-produits"></tbody>
             </table>
+            </div>
           </div>
         </section>
 
@@ -506,6 +509,6 @@ $reglages = lk_store()->reglages();
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>window.LK_BASE = "<?= $base ?>";</script>
   <script>window.LK_LOGICIELS_EXEMPLES = <?= json_encode(json_decode((string) file_get_contents(__DIR__ . '/../lib/logiciels-exemples.json'), true), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>;</script>
-  <script src="<?= $base ?>/assets/js/admin.js?v=20261126-logiciels"></script>
+  <script src="<?= $base ?>/assets/js/admin.js?v=20261126-responsive"></script>
 </body>
 </html>

@@ -1,15 +1,21 @@
 <?php
-// reset-admin.php — à mettre dans public_html/linksmartec.com/ puis ouvrir https://linksmartec.com/reset-admin.php
-// Supprime ce fichier juste après usage !
+// Outil de maintenance local uniquement (CLI), désactivé par HTTP.
 declare(strict_types=1);
+// Cet outil de maintenance ne doit jamais être accessible depuis un navigateur.
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit;
+}
+
+$nouveau = getenv('ADMIN_PASSWORD') ?: '';
+if (strlen($nouveau) < 12) {
+    fwrite(STDERR, "Définissez ADMIN_PASSWORD avec au moins 12 caractères pour cette opération locale.\n");
+    exit(1);
+}
 require __DIR__ . '/app/bootstrap.php';
-
 $store = lk_store();
-$nouveau = '1989'; // ton nouveau code
-
 $securite = $store->securite();
 $hash = password_hash($nouveau, PASSWORD_DEFAULT);
-
 if (empty($securite['utilisateurs'])) {
     $securite['utilisateurs'] = [[
         'id' => 'usr-' . bin2hex(random_bytes(6)),
@@ -21,16 +27,9 @@ if (empty($securite['utilisateurs'])) {
 } else {
     foreach ($securite['utilisateurs'] as &$u) {
         $u['motDePasse'] = $hash;
-        $u['identifiant'] = 'admin';
     }
     unset($u);
 }
 $store->ecrireSecurite($securite);
-
-// Nettoie le bloqueur de tentatives
 @unlink($store->dossierData() . '/tentatives.json');
-@unlink($store->dossierData() . '/security.json');
-
-echo "OK — mot de passe admin changé à : <b>1989</b><br>Identifiant : <b>admin</b><br><br>";
-echo "⚠️ Supprime ce fichier reset-admin.php tout de suite !<br>";
-echo "<a href='admin/'>Aller à l'admin</a>";
+fwrite(STDOUT, "Accès administrateur réinitialisé. Aucun mot de passe n’est affiché.\n");

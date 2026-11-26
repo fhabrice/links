@@ -27,6 +27,8 @@ try {
   php.mkdir('/site');
   copy('app');
   copy('lib');
+  copy('admin');
+  copy('reset-admin.php');
   for (const page of pages) copy(page);
   php.mkdir('/site/config');
   // Même si le poste de test possède des variables MySQL, ne jamais les utiliser.
@@ -56,6 +58,17 @@ try {
   for (const base of ['', '/sous-dossier']) {
     for (const page of pages) await render(page, base);
   }
+  const admin = await php.run({scriptPath: '/site/admin/index.php', $_SERVER: {SCRIPT_NAME: '/admin/index.php'}});
+  assert.equal(admin.exitCode, 0, admin.errors);
+  assert.ok(admin.text.includes('type="password"'));
+  assert.doesNotMatch(admin.text, /Première connexion\s*:/);
+  assert.doesNotMatch(admin.text, /value="admin"/);
+  const beforeReset = php.readFileAsText('/site/data/security.json');
+  const reset = await php.run({scriptPath: '/site/reset-admin.php'});
+  assert.equal(reset.httpStatusCode, 404);
+  assert.equal(reset.text, '');
+  assert.equal(php.readFileAsText('/site/data/security.json'), beforeReset);
+
   let html = await render('index.php');
   for (const name of ['SAFISAHA', 'LITO FINANCE', 'Youpendimmoselect']) {
     assert.match(html, new RegExp(`<h3[^>]*>${name}</h3>`), `${name}: carte exposée sans JavaScript`);

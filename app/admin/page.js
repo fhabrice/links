@@ -153,7 +153,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <div className="onglets">
+          <div className="onglets admin-onglets" aria-label="Rubriques de l’administration">
             {ONGLETS.map(([cle, libelle]) => (
               <button
                 key={cle}

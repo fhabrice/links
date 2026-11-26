@@ -14,6 +14,7 @@ if ($filtre) $annonces = array_filter($annonces, fn($a)=>($a['type']??'')===$fil
 <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
 <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
 <style>.badge{font-size:.7rem;padding:.25rem .6rem;border-radius:999px;font-weight:800;text-transform:uppercase}.badge-projet{background:#dbeafe;color:#1e40af}.badge-emploi{background:#dcfce7;color:#166534}.badge-service{background:#fef3c7;color:#92400e}</style>
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
 <header style="background:#fff;border-bottom:1px solid #e2e8f0;padding:1rem">
@@ -32,7 +33,7 @@ if ($filtre) $annonces = array_filter($annonces, fn($a)=>($a['type']??'')===$fil
 <div style="max-width:1100px;margin:2rem auto;padding:0 1rem">
 <h1 style="font-size:1.7rem;font-weight:800">Opportunités de la communauté</h1>
 <p style="color:#64748b">Projets, offres d'emploi et services postés par les membres.</p>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:1.5rem">
+<div class="annonces-grille">
 <?php foreach($annonces as $a): ?>
 <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">

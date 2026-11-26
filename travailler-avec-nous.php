@@ -86,6 +86,7 @@ $polesRecrutement = [
   <link rel="apple-touch-icon" href="<?= $base ?>/assets/img/logo.svg">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css?v=20261126">
   <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
   <a class="lien-evitement" href="#contenu-principal">Aller au contenu</a>

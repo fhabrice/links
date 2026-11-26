@@ -12,10 +12,11 @@ $identite = $contenu['identite'] ?? [];
 <title>Inscription — <?= htmlspecialchars($identite['nom']??'LK-TECH',ENT_QUOTES,'UTF-8') ?></title>
 <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
 <link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126-footer-fix">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
-<div style="min-height:100vh;display:grid;place-items:center;padding:2rem;background:#f1f5f9">
-<form id="form-ins" style="background:#fff;padding:2rem;border-radius:16px;width:min(420px,100%);box-shadow:0 8px 30px rgba(0,0,0,.08)">
+<div style="min-height:100vh;display:grid;place-items:center;padding:clamp(1rem,4vw,2rem);background:#f1f5f9">
+<form id="form-ins" style="background:#fff;padding:clamp(1rem,4vw,2rem);border-radius:16px;width:min(420px,100%);box-shadow:0 8px 30px rgba(0,0,0,.08)">
 <h1 style="font-size:1.4rem;font-weight:800;margin-bottom:.3rem">Créer votre compte</h1>
 <p style="color:#64748b;font-size:.9rem;margin-bottom:1.5rem">Rejoignez la communauté LK-TECH pour poster vos projets.</p>
 <div id="msg" style="display:none;padding:.7rem 1rem;border-radius:8px;margin-bottom:1rem;font-size:.9rem"></div>
