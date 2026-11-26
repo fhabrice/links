@@ -50,6 +50,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
     "knowsAbout": ["Informatique", "Développement logiciel", "Réseaux", "Génie Civil", "Architecture", "BTP", "Énergie renouvelable", "Énergie solaire"]
   }
   </script>
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
   <a class="lien-evitement" href="#contenu-principal">Aller au contenu</a>
@@ -257,11 +258,11 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
         <p class="section__texte"><?= e($logiciels['sousTitre'] ?? 'Des logiciels conçus par LK-TECH pour simplifier la gestion de votre entreprise') ?></p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;">
+      <div class="vitrine-logiciels">
         <?php foreach ($listeLogiciels as $log): ?>
           <article class="carte" style="display:flex;flex-direction:column;justify-content:space-between;background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(15,23,42,.08);box-shadow:0 8px 24px rgba(15,23,42,.04);">
             <div>
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+              <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
                 <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0284c7;background:#e0f2fe;padding:4px 10px;border-radius:999px;"><?= e($log['categorie'] ?? 'Logiciel LK-TECH') ?></span>
                 <?php if (!empty($log['badge'])): ?>
                   <span style="font-size:.75rem;font-weight:600;color:#475569;"><?= e($log['badge']) ?></span>
@@ -278,7 +279,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
                 </ul>
               <?php endif; ?>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(15,23,42,.08);">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(15,23,42,.08);">
               <div>
                 <strong style="font-size:1.15rem;color:#0f172a;"><?= isset($log['prix']) && $log['prix'] !== '' ? e((string)$log['prix'] . ' ' . ($log['devise'] ?? 'USD')) : 'Sur devis' ?></strong>
                 <?php if (!empty($log['typePrix'])): ?>
@@ -317,7 +318,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       <?php if(empty($annoncesVitrine)): ?>
         <p style="background:#fff;border:1px dashed #cbd5e1;padding:1.5rem;border-radius:12px;text-align:center;color:#64748b">Aucune opportunité pour l'instant. <a href="<?= $base ?>/inscription.php">Soyez le premier à poster !</a></p>
       <?php else: ?>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem">
+      <div class="annonces-grille">
         <?php foreach($annoncesVitrine as $a): ?>
         <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">

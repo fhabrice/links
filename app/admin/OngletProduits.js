@@ -107,41 +107,43 @@ export default function OngletProduits({ rafraichir }) {
 
       {!produits.length && <p className="vide">Aucun produit.</p>}
       {!!produits.length && (
-        <table className="tableau">
-          <thead>
-            <tr>
-              <th>Nom</th>
-              <th>Catégorie</th>
-              <th>Prix</th>
-              <th>Stock</th>
-              <th>État</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {produits.map((p) => (
-              <tr key={p.id}>
-                <td>{p.nom}</td>
-                <td>{p.filtre || '—'}</td>
-                <td>
-                  {p.prix} {p.devise}
-                </td>
-                <td>{p.stock}</td>
-                <td>{p.actif ? '✅ Actif' : '⏸️ Inactif'}</td>
-                <td>
-                  <div className="actions">
-                    <button className="mini-bouton" onClick={() => basculerActif(p)}>
-                      {p.actif ? 'Désactiver' : 'Activer'}
-                    </button>
-                    <button className="mini-bouton danger" onClick={() => supprimer(p)}>
-                      Supprimer
-                    </button>
-                  </div>
-                </td>
+        <div className="tableau-defilant" role="region" aria-label="Liste des produits" tabIndex={0}>
+          <table className="tableau">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>État</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {produits.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.nom}</td>
+                  <td>{p.filtre || '—'}</td>
+                  <td>
+                    {p.prix} {p.devise}
+                  </td>
+                  <td>{p.stock}</td>
+                  <td>{p.actif ? '✅ Actif' : '⏸️ Inactif'}</td>
+                  <td>
+                    <div className="actions">
+                      <button className="mini-bouton" onClick={() => basculerActif(p)}>
+                        {p.actif ? 'Désactiver' : 'Activer'}
+                      </button>
+                      <button className="mini-bouton danger" onClick={() => supprimer(p)}>
+                        Supprimer
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import './globals.css';
+import '../assets/css/responsive.css';
 
 export const metadata = {
   title: 'LK-TECH | Construire, digitaliser et connecter vos projets',

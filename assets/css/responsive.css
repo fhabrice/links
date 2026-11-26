@@ -1,0 +1,137 @@
+/* Adaptations communes aux sites PHP et Next.js, y compris l’administration.
+   Le défilement horizontal reste local aux menus et aux tableaux. */
+:where(main, section, article, aside, nav, form, fieldset, header, footer,
+  .conteneur, .carte, .panneau, .admin-section, .admin-zone, .item-bloc) {
+  min-width: 0;
+}
+body { overflow-wrap: anywhere; }
+img, video, iframe { max-width: 100%; }
+:where(h1, h2, h3, h4, p, a, label, .stat, .badge, .badge-pilote) {
+  overflow-wrap: anywhere;
+}
+:where(input, textarea, select, button) { max-width: 100%; }
+:where(.grille, .grille-2, .hero-grille, .hero__grille, .grille-contact,
+  .apropos-grille, .cand-hero__grille, .pied__grille) > * { min-width: 0; }
+:where(.btn, .bouton, .mini-bouton) {
+  white-space: normal;
+  text-align: center;
+}
+:where(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid #2e9e5b;
+  outline-offset: 3px;
+}
+.vitrine-logiciels, .annonces-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.espace-entete {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.espace-actions, .espace-ligne, .admin-entete-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem;
+  min-width: 0;
+}
+.espace-ligne { margin-bottom: 1rem; }
+.espace-ligne > * { flex: 1 1 12rem; min-width: 0; }
+.admin-entete__inner { flex-wrap: wrap; }
+.admin-corps { grid-template-columns: 250px minmax(0, 1fr); }
+.admin-zone { width: 100%; }
+.tableau-defilant {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-radius: 8px;
+}
+.tableau-defilant .tableau { min-width: 640px; }
+.tableau-defilant td { overflow-wrap: anywhere; }
+.tableau-defilant .actions { min-width: 9rem; }
+.admin-menu { min-width: 0; }
+.admin-onglets { max-width: 100%; }
+
+/* Sur grand écran PHP, placer le menu complet sur sa propre ligne. */
+@media (min-width: 1081px) {
+  .entete__inner { flex-wrap: wrap; }
+  .entete__inner > .nav {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem 1.25rem;
+  }
+}
+@media (max-width: 1080px) {
+  .entete__inner { gap: .75rem; }
+  .entete__actions { flex-wrap: wrap; }
+  .entete__actions .btn--recrutement { display: none; }
+  .nav.ouvert {
+    max-height: 65vh;
+    max-height: 65dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+}
+@media (max-width: 960px) {
+  .hero-grille { grid-template-columns: minmax(0, 1fr); }
+  .entete-actions { gap: .5rem; flex-wrap: wrap; }
+}
+@media (max-width: 900px) {
+  .admin-corps { grid-template-columns: minmax(0, 1fr); }
+  .admin-menu { max-width: 100%; overscroll-behavior-x: contain; }
+  .admin-menu button { flex: 0 0 auto; width: auto; }
+}
+@media (max-width: 620px) {
+  .entete__inner, .entete > .conteneur { flex-wrap: wrap; gap: .6rem; }
+  .entete__actions, .entete-actions { width: 100%; justify-content: space-between; }
+  .entete__actions .btn, .entete-actions .btn { font-size: .8rem; }
+  .burger { flex: none; min-width: 44px; min-height: 44px; }
+  .nav.ouvert { max-height: calc(100dvh - 160px); }
+  .hero h1 { font-size: clamp(2rem, 9vw, 3rem); }
+  .hero__bas { flex-wrap: wrap; gap: .75rem; }
+  .hero-visuel img { height: auto; }
+  .grille-2, .stats, .grille-stats { grid-template-columns: minmax(0, 1fr); }
+  .grille, .logiciels-grille { grid-template-columns: minmax(0, 1fr); }
+  .logiciel-pied, .logiciel-entete { flex-wrap: wrap; gap: .75rem; }
+  .logiciel-pied .bouton { width: 100%; }
+  .admin-zone { padding: 1.25rem 1rem 3rem; }
+  .panneau, .admin-section, .carte-login, .connexion-carte {
+    padding: clamp(1rem, 4vw, 1.5rem);
+  }
+  .admin-entete { position: static; }
+  .admin-entete-actions { width: 100%; }
+  .admin-onglets {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: .25rem .25rem .75rem;
+    overscroll-behavior-x: contain;
+  }
+  .admin-onglets .onglet { flex: 0 0 auto; }
+  :where(.champ, .admin-section) :where(input, textarea, select) { font-size: 16px; }
+  :where(.btn, .bouton, .mini-bouton, .onglet, .admin-menu button) { min-height: 44px; }
+  .barre-appel__btn { min-width: 0; padding: .75rem .5rem; text-align: center; }
+  .pied__invitation .btn, .pied__invitation .bouton { width: 100%; }
+}
+@media (max-width: 799px) {
+  .barre-appel { padding-bottom: calc(.75rem + env(safe-area-inset-bottom, 0px)); }
+  body:has(.barre-appel) { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Les champs de fichier ont une largeur intrinsèque élevée sur mobile. */
+.grille-2 > *, .panneau > *, .admin-section > *, .item-bloc > * { min-width: 0; }
+input[type="file"] { width: 100%; min-width: 0; }
+
+.actions-message { display: flex; flex-wrap: wrap; gap: .4rem; min-width: 0; }

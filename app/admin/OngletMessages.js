@@ -39,48 +39,50 @@ export default function OngletMessages() {
     );
 
   return (
-    <table className="tableau">
-      <thead>
-        <tr>
-          <th>De</th>
-          <th>Sujet</th>
-          <th>Message</th>
-          <th>Reçu le</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {messages.map((m) => (
-          <tr key={m.id} className={m.lu ? '' : 'non-lu'}>
-            <td>
-              {m.nom}
-              <br />
-              <small style={{ color: '#6b7686' }}>{m.email}</small>
-              {m.telephone ? (
-                <>
-                  <br />
-                  <small style={{ color: '#6b7686' }}>{m.telephone}</small>
-                </>
-              ) : null}
-            </td>
-            <td>{m.sujet}</td>
-            <td style={{ maxWidth: 320 }}>
-              {m.message.length > 120 ? `${m.message.slice(0, 120)}…` : m.message}
-            </td>
-            <td>{new Date(m.recu_le || m.recuLe).toLocaleString('fr-FR')}</td>
-            <td>
-              <div className="actions">
-                <button className="mini-bouton" onClick={() => basculerLu(m)}>
-                  {m.lu ? 'Marquer non lu' : 'Marquer lu'}
-                </button>
-                <button className="mini-bouton danger" onClick={() => supprimer(m)}>
-                  Supprimer
-                </button>
-              </div>
-            </td>
+    <div className="tableau-defilant" role="region" aria-label="Messages reçus" tabIndex={0}>
+      <table className="tableau">
+        <thead>
+          <tr>
+            <th>De</th>
+            <th>Sujet</th>
+            <th>Message</th>
+            <th>Reçu le</th>
+            <th>Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {messages.map((m) => (
+            <tr key={m.id} className={m.lu ? '' : 'non-lu'}>
+              <td>
+                {m.nom}
+                <br />
+                <small style={{ color: '#6b7686' }}>{m.email}</small>
+                {m.telephone ? (
+                  <>
+                    <br />
+                    <small style={{ color: '#6b7686' }}>{m.telephone}</small>
+                  </>
+                ) : null}
+              </td>
+              <td>{m.sujet}</td>
+              <td style={{ maxWidth: 320 }}>
+                {m.message.length > 120 ? `${m.message.slice(0, 120)}…` : m.message}
+              </td>
+              <td>{new Date(m.recu_le || m.recuLe).toLocaleString('fr-FR')}</td>
+              <td>
+                <div className="actions">
+                  <button className="mini-bouton" onClick={() => basculerLu(m)}>
+                    {m.lu ? 'Marquer non lu' : 'Marquer lu'}
+                  </button>
+                  <button className="mini-bouton danger" onClick={() => supprimer(m)}>
+                    Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

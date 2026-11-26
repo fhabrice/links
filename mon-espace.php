@@ -20,12 +20,13 @@ $mesAnnonces = lk_store()->listerAnnonces(['userId'=>$user['id'],'admin'=>true,'
 .badge-projet{background:#dbeafe;color:#1e40af}.badge-emploi{background:#dcfce7;color:#166534}.badge-service{background:#fef3c7;color:#92400e}
 .badge{font-size:.7rem;padding:.2rem .5rem;border-radius:999px;font-weight:800;text-transform:uppercase}
 </style>
+<link rel="stylesheet" href="<?= $base ?>/assets/css/responsive.css?v=20261126-1">
 </head>
 <body>
 <header style="background:#16233F;color:#fff;padding:1rem">
-<div style="max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
+<div class="espace-entete">
 <span>👤 <?= htmlspecialchars($user['nom']) ?> — <?= htmlspecialchars($user['email']) ?></span>
-<div><a href="<?= $base ?>/" style="color:#fff;margin-right:1rem">Accueil</a><a href="<?= $base ?>/opportunites.php" style="color:#fff;margin-right:1rem">Voir vitrine</a><button onclick="fetch('<?= $base ?>/api/index.php?chemin=/api/deconnexion',{method:'POST'}).then(()=>location.href='<?= $base ?>/')" style="background:#fff;color:#16233F;border:0;padding:.4rem .8rem;border-radius:8px;cursor:pointer">Déconnexion</button></div>
+<div class="espace-actions"><a href="<?= $base ?>/" style="color:#fff;margin-right:1rem">Accueil</a><a href="<?= $base ?>/opportunites.php" style="color:#fff;margin-right:1rem">Voir vitrine</a><button onclick="fetch('<?= $base ?>/api/index.php?chemin=/api/deconnexion',{method:'POST'}).then(()=>location.href='<?= $base ?>/')" style="background:#fff;color:#16233F;border:0;padding:.4rem .8rem;border-radius:8px;cursor:pointer">Déconnexion</button></div>
 </div>
 </header>
 <div style="max-width:1000px;margin:1.5rem auto;padding:0 1rem">
@@ -36,13 +37,13 @@ $mesAnnonces = lk_store()->listerAnnonces(['userId'=>$user['id'],'admin'=>true,'
 <h3>Publier une annonce</h3>
 <div id="msg2" style="display:none;padding:.6rem 1rem;border-radius:8px;margin-bottom:1rem;font-size:.9rem"></div>
 <form id="form-annonce">
-<div style="display:flex;gap:1rem;margin-bottom:1rem">
+<div class="espace-ligne">
 <select name="type" style="padding:.6rem;border:1px solid #e2e8f0;border-radius:8px"><option value="projet">Projet</option><option value="emploi">Offre d'emploi</option><option value="service">Offre de service</option></select>
 <input name="localisation" placeholder="Localisation (ex: Goma)" style="flex:1;padding:.6rem;border:1px solid #e2e8f0;border-radius:8px">
 </div>
 <input name="titre" placeholder="Titre (ex: Recherche maçon pour chantier 2 pièces)" required style="width:100%;padding:.7rem;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:1rem">
 <textarea name="description" placeholder="Description détaillée (20+ caractères)" required style="width:100%;padding:.7rem;border:1px solid #e2e8f0;border-radius:8px;min-height:100px;margin-bottom:1rem"></textarea>
-<div style="display:flex;gap:1rem;margin-bottom:1rem">
+<div class="espace-ligne">
 <input name="budget" placeholder="Budget / Rémunération (ex: 500 USD)" style="flex:1;padding:.6rem;border:1px solid #e2e8f0;border-radius:8px">
 <input name="contactTel" placeholder="Téléphone de contact" style="flex:1;padding:.6rem;border:1px solid #e2e8f0;border-radius:8px">
 </div>

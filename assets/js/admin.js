@@ -731,7 +731,7 @@
                 ${new Date(message.recuLe).toLocaleString('fr-FR')} · ${echapper(message.sujet || '')}
               </div>
             </div>
-            <div style="display:flex;gap:.4rem">
+            <div class="actions-message">
               <a class="btn btn--petit btn--fantome" href="mailto:${echapper(message.email)}?subject=Réponse LK-TECH">Répondre</a>
               <button class="btn btn--petit btn--fantome" data-lu="${echapper(message.id)}">${message.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
               <button class="btn btn--petit btn--fantome" data-effacer="${echapper(message.id)}" style="color:var(--danger)">Supprimer</button>
