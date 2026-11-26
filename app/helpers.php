@@ -7,6 +7,12 @@
 
 declare(strict_types=1);
 
+/** Échappe une valeur destinée au HTML (texte ou attribut entre guillemets). */
+function e($valeur): string
+{
+    return htmlspecialchars((string) ($valeur ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
 /** Adresse de base de l'application : '' à la racine, '/dossier' dans un sous-dossier. */
 function base_url(): string
 {

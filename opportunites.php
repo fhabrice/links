@@ -56,4 +56,5 @@ async function signaler(id){
  alert('Signalée. Merci pour votre vigilance.');
 }
 </script>
+<?php require __DIR__ . '/app/partials/footer.php'; ?>
 </body></html>

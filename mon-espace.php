@@ -14,7 +14,7 @@ $mesAnnonces = lk_store()->listerAnnonces(['userId'=>$user['id'],'admin'=>true,'
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mon espace — <?= htmlspecialchars($user['nom'],ENT_QUOTES,'UTF-8') ?></title>
 <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126-footer-fix">
 <style>
 .annonce-carte{border:1px solid #e2e8f0;border-radius:12px;padding:1rem;background:#fff}
 .badge-projet{background:#dbeafe;color:#1e40af}.badge-emploi{background:#dcfce7;color:#166534}.badge-service{background:#fef3c7;color:#92400e}
@@ -84,4 +84,5 @@ async function supprimerAnnonce(id){
  location.reload();
 }
 </script>
+<?php require __DIR__ . '/app/partials/footer.php'; ?>
 </body></html>

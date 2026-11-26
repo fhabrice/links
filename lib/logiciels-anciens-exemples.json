@@ -1,0 +1,79 @@
+{
+  "titre": "Nos logiciels",
+  "sousTitre": "Des logiciels conçus par LK-TECH pour les entreprises et institutions de la région — et d'autres solutions sur mesure sur demande.",
+  "texteBouton": "Demander une démo",
+  "items": [
+    {
+      "id": "gomagest",
+      "nom": "GomaGest",
+      "icone": "📦",
+      "badge": "Conçu par LK-TECH",
+      "pitch": "Gestion de stock & point de vente",
+      "explication": "GomaGest est notre logiciel de gestion de stock et de point de vente, pensé pour les commerces de Goma et de l'Est de la RDC. Il fonctionne même sans connexion internet et synchronise les ventes dès que le réseau revient : plus de cahiers perdus, plus de ruptures inattendues.",
+      "fonctionnalites": [
+        "Stock et ventes en temps réel",
+        "Factures et tickets imprimables",
+        "Mode hors-ligne, synchronisation automatique",
+        "Rapports journaliers par caissier"
+      ],
+      "prix": 240,
+      "devise": "USD",
+      "typePrix": "licence à l'unité",
+      "actif": true
+    },
+    {
+      "id": "batisuivi",
+      "nom": "BatiSuivi",
+      "icone": "🏗️",
+      "badge": "Conçu par LK-TECH",
+      "pitch": "Pilotage de chantiers BTP",
+      "explication": "BatiSuivi digitalise le suivi de vos chantiers : devis, planning, avancement photo par photo et rapports hebdomadaires partagés avec le client. Idéal pour les entreprises de construction qui veulent garder la main sur les coûts et les délais.",
+      "fonctionnalites": [
+        "Devis et avenants en quelques clics",
+        "Planning et jalons par chantier",
+        "Photos datées de l'avancement",
+        "Rapport client automatique"
+      ],
+      "prix": 390,
+      "devise": "USD",
+      "typePrix": "licence annuelle",
+      "actif": true
+    },
+    {
+      "id": "solarwatch",
+      "nom": "SolarWatch",
+      "icone": "☀️",
+      "badge": "Conçu par LK-TECH",
+      "pitch": "Supervision des installations solaires",
+      "explication": "SolarWatch surveille vos kits solaires et centrales : production, état des batteries, alertes de panne. Vous savez en un coup d'œil si une installation tourne bien, à Goma comme à 300 km de là.",
+      "fonctionnalites": [
+        "Production et consommation en direct",
+        "Alertes SMS ou WhatsApp",
+        "Historique par installation",
+        "Maintenance préventive"
+      ],
+      "prix": 290,
+      "devise": "USD",
+      "typePrix": "licence annuelle",
+      "actif": true
+    },
+    {
+      "id": "ecolesuivi",
+      "nom": "EcoleSuivi",
+      "icone": "🎓",
+      "badge": "Conçu par LK-TECH",
+      "pitch": "Gestion scolaire simplifiée",
+      "explication": "EcoleSuivi accompagne les écoles dans la gestion des inscriptions, des notes, des paiements de frais et des conseils de classe. Les parents reçoivent le bulletin et l'appel des frais directement sur leur téléphone.",
+      "fonctionnalites": [
+        "Inscriptions et matricules",
+        "Notes, bulletins et conseils de classe",
+        "Frais scolaires et reçus",
+        "Espace parent par SMS/WhatsApp"
+      ],
+      "prix": 350,
+      "devise": "USD",
+      "typePrix": "licence annuelle",
+      "actif": true
+    }
+  ]
+}

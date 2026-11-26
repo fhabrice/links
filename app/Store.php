@@ -126,6 +126,7 @@ final class Store
         if ($this->pdo !== null) {
             $brut = $this->lireDocument('contenu') ?? [];
             $fusion = fusionner($defaut, $brut);
+            $fusion = $this->actualiserExemplesLogiciels($fusion);
             if ($fusion !== $brut) {
                 $this->ecrireDocument('contenu', $fusion);
             }
@@ -134,10 +135,22 @@ final class Store
 
         $brut = lire_json($this->dossierData . '/content.json', []);
         $fusion = fusionner($defaut, $brut);
+        $fusion = $this->actualiserExemplesLogiciels($fusion);
         if ($fusion !== $brut) {
             ecrire_json($this->dossierData . '/content.json', $fusion);
         }
         return $fusion;
+    }
+
+    /** Met à jour les anciens exemples, jamais un catalogue personnalisé ou vidé. */
+    private function actualiserExemplesLogiciels(array $contenu): array
+    {
+        $ancien = lire_json($this->racine . '/lib/logiciels-anciens-exemples.json', null);
+        // == ignore uniquement l'ordre des clés JSON ; les valeurs doivent coïncider.
+        if ($ancien !== null && ($contenu['logiciels'] ?? null) == $ancien) {
+            $contenu['logiciels'] = $this->defauts['contenu']['logiciels'];
+        }
+        return $contenu;
     }
 
     public function ecrireContenu(array $contenu): array
