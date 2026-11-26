@@ -27,10 +27,13 @@ DirectoryIndex index.php index.html
     RewriteRule ^api/(.*)$ api/index.php [L,QSA]
 
     # Sécurité : on n'accède jamais directement aux données ni au code
-    RewriteRule ^(app|data|config)/ - [F,L]
+    RewriteRule ^(app|data|config|lib)/ - [F,L]
 
     # Version Node.js (facultative, dossier node/) et outils : jamais servis
     RewriteRule ^(node|tools)/ - [F,L]
+
+    # Ne pas exposer les archives de déploiement contenant les sources.
+    RewriteRule \.zip$ - [F,L,NC]
 
     # Fichiers cachés (.git, .env, .htaccess…) : jamais servis
     # (.well-known reste accessible pour les certificats HTTPS)

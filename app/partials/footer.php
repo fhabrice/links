@@ -1,7 +1,7 @@
 <?php
 /** Pied de page public, rendu côté serveur même sans JavaScript. */
 $footerBase = base_url();
-$footerContenu = lk_store()->contenu();
+$footerContenu = contenu_public(lk_store()->contenu());
 $footerIdentite = $footerContenu['identite'] ?? [];
 $footerLogo = $footerIdentite['logoClair'] ?? '/assets/img/logo-clair.svg';
 if (str_starts_with($footerLogo, '/') && !str_starts_with($footerLogo, '//')

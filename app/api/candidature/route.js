@@ -32,7 +32,7 @@ export async function POST(requete) {
   const enregistre = await ajouterCandidature(candidature);
   await journaliser('candidature-recue', { id: enregistre.id, email: candidature.email, domaine: candidature.domaine });
 
-  // Envoi direct par e-mail à fabricenzarubara@gmail.com (non bloquant)
+  // Envoi au destinataire privé configuré côté serveur (non bloquant)
   let emailResult = { ok: false, raison: 'non-tente' };
   let transfert = { ok: false, raison: 'non-tente' };
   try {
@@ -41,7 +41,7 @@ export async function POST(requete) {
     transfert = await transfererVersGoogleForm(enregistre, contenu);
   } catch {}
 
-  return json({ ok: true, id: enregistre.id, message: 'Candidature enregistrée et envoyée à fabricenzarubara@gmail.com.', email: emailResult, googleForm: transfert }, { code: 201 });
+  return json({ ok: true, id: enregistre.id, message: 'Votre candidature a bien été enregistrée. Notre équipe examinera votre dossier.', email: { ok: Boolean(emailResult.ok) }, googleForm: { ok: Boolean(transfert.ok) } }, { code: 201 });
 }
 
 export async function GET() {

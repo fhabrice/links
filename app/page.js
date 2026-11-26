@@ -1,3 +1,4 @@
+import { contenuPublic } from '../lib/contenu-public';
 import Link from 'next/link';
 import { lireContenu, lireReglages } from '../lib/store';
 import FormulaireContact from './components/FormulaireContact';
@@ -22,11 +23,12 @@ function formaterPrix(produit) {
 }
 
 export default async function Accueil() {
-  const [contenu, reglages] = await Promise.all([
+  const [contenuBrut, reglages] = await Promise.all([
     lireContenu(),
     lireReglages()
   ]);
 
+  const contenu = contenuPublic(contenuBrut);
   const identite = contenu.identite || {};
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};

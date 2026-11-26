@@ -11,7 +11,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/app/bootstrap.php';
 
 $base = base_url();
-$contenu = lk_store()->contenu();
+$contenu = contenu_public(lk_store()->contenu());
 $identite = $contenu['identite'] ?? [];
 $reglages = lk_store()->reglages();
 ?>

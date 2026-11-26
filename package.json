@@ -10,7 +10,8 @@
     "start:direct": "next start",
     "test:php": "node tests/php-public-pages.mjs",
     "test:logiciels": "node tests/store-logiciels.cjs",
-    "test:responsive": "node tests/responsive.mjs"
+    "test:responsive": "node tests/responsive.mjs",
+    "test:confidentialite": "node tests/confidentialite-recrutement.cjs"
   },
   "engines": {
     "node": ">=18"

@@ -510,7 +510,7 @@
       "surTitre": "REJOIGNEZ L'AVENTURE",
       "titre": "Travailler avec nous",
       "soustitre": "Envie de construire, coder ou électrifier l'avenir avec nous ? Rejoignez LK-TECH.",
-      "texte": "Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté, remplissez le formulaire ci-dessous : vos informations seront envoyées directement à notre adresse e-mail fabricenzarubara@gmail.com et enregistrées dans notre espace admin. Réponse rapide garantie.",
+      "texte": "Nous recrutons régulièrement des talents en génie civil, architecture & design, informatique et énergie renouvelable. Que vous soyez jeune diplômé, freelance ou professionnel expérimenté, remplissez le formulaire ci-dessous pour transmettre votre candidature à notre équipe. Nous vous recontacterons après examen de votre profil.",
       "avantages": [
         {
           "icone": "🏗️",
@@ -531,33 +531,16 @@
       "boutonAppelerTexte": "📞 Appeler",
       "boutonTravaillerTexte": "Travailler avec nous",
       "googleForm": {
-        "actionUrl": "",
-        "mode": "email-direct",
-        "gmailDestination": "fabricenzarubara@gmail.com",
-        "fieldMap": {
-          "nom": "",
-          "prenom": "",
-          "email": "",
-          "telephone": "",
-          "ville": "",
-          "domaine": "",
-          "typeCollaboration": "",
-          "experience": "",
-          "disponibilite": "",
-          "message": "",
-          "lienCv": ""
-        },
-        "notice": "Par défaut les candidatures arrivent directement par e-mail à fabricenzarubara@gmail.com (aucun Google Form requis). Vous pouvez optionnellement connecter un Google Form pour un suivi Sheets."
+        "actionUrl": ""
       },
       "formulaire": {
         "titre": "Candidature complète",
-        "sousTitre": "Remplissez ce formulaire : vos données sont envoyées directement à fabricenzarubara@gmail.com et sauvegardées dans notre admin.",
+        "sousTitre": "Complétez ce formulaire pour transmettre votre dossier à notre équipe de recrutement.",
         "champsObligatoiresNote": "* Champs obligatoires",
         "boutonTexte": "Envoyer ma candidature",
         "messageSucces": "Merci ! Votre candidature a bien été envoyée. Nous vous recontactons rapidement.",
         "messageErreur": "Veuillez corriger les champs indiqués."
-      },
-      "emailDestination": "fabricenzarubara@gmail.com"
+      }
     }
   },
   "reglages": {
