@@ -42,6 +42,28 @@ final class Store
             recuLe DATETIME NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
 
+        'lm_utilisateurs' => "CREATE TABLE IF NOT EXISTS lm_utilisateurs (
+            id VARCHAR(64) NOT NULL PRIMARY KEY,
+            nom VARCHAR(190) NOT NULL, email VARCHAR(190) NOT NULL, telephone VARCHAR(60) NULL,
+            motDePasse TEXT NOT NULL, emailVerifie TINYINT(1) NOT NULL DEFAULT 0,
+            jetonVerification VARCHAR(128) NULL, jetonExpiration DATETIME NULL,
+            role VARCHAR(20) NOT NULL DEFAULT 'membre',
+            creeLe DATETIME NOT NULL, majLe TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE KEY unique_email (email)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
+        'lm_annonces' => "CREATE TABLE IF NOT EXISTS lm_annonces (
+            id VARCHAR(64) NOT NULL PRIMARY KEY,
+            userId VARCHAR(64) NOT NULL, type ENUM('projet','emploi','service') NOT NULL,
+            titre VARCHAR(190) NOT NULL, description TEXT NOT NULL,
+            budget VARCHAR(100) NULL, localisation VARCHAR(190) NULL,
+            contactEmail VARCHAR(190) NULL, contactTel VARCHAR(60) NULL,
+            statut ENUM('publie','signale','archive') NOT NULL DEFAULT 'publie',
+            vues INT NOT NULL DEFAULT 0, signalements INT NOT NULL DEFAULT 0,
+            creeLe DATETIME NOT NULL, majLe TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_userId (userId), INDEX idx_type (type), INDEX idx_statut (statut)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4",
+
         'lm_journal' => "CREATE TABLE IF NOT EXISTS lm_journal (
             id INT AUTO_INCREMENT PRIMARY KEY,
             date DATETIME NOT NULL, action VARCHAR(120) NULL, details TEXT NULL
@@ -331,6 +353,179 @@ final class Store
         $list = array_values(array_filter($this->candidatures(), static fn (array $c): bool => ($c['id'] ?? null) !== $id));
         ecrire_json($this->dossierData . '/candidatures.json', $list);
         return true;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Utilisateurs communautaires (Inscription / Connexion)               */
+    /* ------------------------------------------------------------------ */
+
+    public function trouverUtilisateurParEmail(string $email): ?array
+    {
+        $email = mb_strtolower(trim($email));
+        if ($this->pdo !== null) {
+            $q = $this->pdo->prepare('SELECT * FROM lm_utilisateurs WHERE email = :email LIMIT 1');
+            $q->execute([':email' => $email]);
+            $row = $q->fetch();
+            return $row ?: null;
+        }
+        $users = lire_json($this->dossierData . '/utilisateurs.json', []);
+        foreach ($users as $u) if (mb_strtolower($u['email'] ?? '') === $email) return $u;
+        return null;
+    }
+
+    public function trouverUtilisateurParId(string $id): ?array
+    {
+        if ($this->pdo !== null) {
+            $q = $this->pdo->prepare('SELECT * FROM lm_utilisateurs WHERE id = :id LIMIT 1');
+            $q->execute([':id' => $id]);
+            $row = $q->fetch();
+            return $row ?: null;
+        }
+        $users = lire_json($this->dossierData . '/utilisateurs.json', []);
+        foreach ($users as $u) if (($u['id'] ?? null) === $id) return $u;
+        return null;
+    }
+
+    public function creerUtilisateur(array $donnees): array
+    {
+        $id = identifiant('usr');
+        $jeton = bin2hex(random_bytes(32));
+        $user = [
+            'id' => $id,
+            'nom' => trim($donnees['nom'] ?? ''),
+            'email' => mb_strtolower(trim($donnees['email'] ?? '')),
+            'telephone' => trim($donnees['telephone'] ?? ''),
+            'motDePasse' => password_hash((string)($donnees['motDePasse'] ?? ''), PASSWORD_DEFAULT),
+            'emailVerifie' => 0,
+            'jetonVerification' => $jeton,
+            'jetonExpiration' => date('Y-m-d H:i:s', time() + 86400),
+            'role' => 'membre',
+            'creeLe' => date('Y-m-d H:i:s'),
+        ];
+        if ($this->pdo !== null) {
+            $q = $this->pdo->prepare('INSERT INTO lm_utilisateurs (id, nom, email, telephone, motDePasse, emailVerifie, jetonVerification, jetonExpiration, role, creeLe) VALUES (:id,:nom,:email,:tel,:mdp,0,:jeton,:exp,:role,NOW())');
+            $q->execute([':id'=>$user['id'],':nom'=>$user['nom'],':email'=>$user['email'],':tel'=>$user['telephone'],':mdp'=>$user['motDePasse'],':jeton'=>$jeton,':exp'=>$user['jetonExpiration'],':role'=>'membre']);
+        } else {
+            $users = lire_json($this->dossierData . '/utilisateurs.json', []);
+            $users[] = $user;
+            ecrire_json($this->dossierData . '/utilisateurs.json', $users);
+        }
+        // Envoi email vérification
+        $lien = base_url() . '/verifier-email.php?token=' . $jeton;
+        $sujet = 'Confirmez votre inscription LK-TECH';
+        $corps = "Bonjour " . $user['nom'] . ",\n\nMerci pour votre inscription sur LK-TECH.\nConfirmez votre email en cliquant :\n" . $lien . "\n\nCe lien expire dans 24h.\n\n— LK-TECH";
+        @mail($user['email'], $sujet, $corps, "From: LK-TECH <no-reply@linksmartec.com>\r\nContent-Type: text/plain; charset=UTF-8\r\n");
+        $this->journaliser('utilisateur-inscription', ['id'=>$id,'email'=>$user['email']]);
+        return $user;
+    }
+
+    public function verifierEmail(string $jeton): bool
+    {
+        $jeton = trim($jeton);
+        if (!$jeton) return false;
+        if ($this->pdo !== null) {
+            $q = $this->pdo->prepare('SELECT id, jetonExpiration FROM lm_utilisateurs WHERE jetonVerification = :j LIMIT 1');
+            $q->execute([':j'=>$jeton]);
+            $row = $q->fetch();
+            if (!$row) return false;
+            if (strtotime($row['jetonExpiration'] ?? '') < time()) return false;
+            $this->pdo->prepare('UPDATE lm_utilisateurs SET emailVerifie = 1, jetonVerification = NULL, jetonExpiration = NULL WHERE id = :id')->execute([':id'=>$row['id']]);
+            $this->journaliser('email-verifie', ['id'=>$row['id']]);
+            return true;
+        }
+        $users = lire_json($this->dossierData . '/utilisateurs.json', []);
+        $ok=false;
+        foreach ($users as $i=>$u) if (($u['jetonVerification'] ?? null) === $jeton) {
+            if (strtotime($u['jetonExpiration'] ?? '') < time()) return false;
+            $users[$i]['emailVerifie']=1; $users[$i]['jetonVerification']=null; $users[$i]['jetonExpiration']=null; $ok=true;
+        }
+        if ($ok) ecrire_json($this->dossierData . '/utilisateurs.json', $users);
+        return $ok;
+    }
+
+    public function verifierMotDePasseUtilisateur(string $email, string $mdp): ?array
+    {
+        $user = $this->trouverUtilisateurParEmail($email);
+        if (!$user) return null;
+        if (!password_verify($mdp, $user['motDePasse'] ?? '')) return null;
+        return $user;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Annonces (Projet / Emploi / Service)                               */
+    /* ------------------------------------------------------------------ */
+
+    public function listerAnnonces(array $opts=[]): array
+    {
+        $type = $opts['type'] ?? null;
+        $statut = $opts['statut'] ?? null;
+        $userId = $opts['userId'] ?? null;
+        $limit = (int)($opts['limit'] ?? 500);
+        if ($this->pdo !== null) {
+            $sql='SELECT a.*, u.nom as auteurNom FROM lm_annonces a LEFT JOIN lm_utilisateurs u ON u.id=a.userId WHERE 1=1';
+            $params=[];
+            if ($type) { $sql.=' AND a.type = :t'; $params[':t']=$type; }
+            if ($statut) { $sql.=' AND a.statut = :s'; $params[':s']=$statut; }
+            elseif (!($opts['admin'] ?? false)) { $sql.=" AND a.statut = 'publie'"; }
+            if ($userId) { $sql.=' AND a.userId = :uid'; $params[':uid']=$userId; }
+            $sql.=' ORDER BY a.creeLe DESC LIMIT '. max(1, min(500,$limit));
+            $q=$this->pdo->prepare($sql); $q->execute($params); return $q->fetchAll();
+        }
+        $all = lire_json($this->dossierData . '/annonces.json', []);
+        $filtre = array_filter($all, fn($a)=> (!$type || ($a['type']??null)===$type) && (!$statut || ($a['statut']??null)===$statut) && (!$userId || ($a['userId']??null)===$userId));
+        if (!($opts['admin'] ?? false)) $filtre=array_filter($filtre, fn($a)=>($a['statut']??'publie')==='publie');
+        usort($filtre, fn($a,$b)=> strcmp($b['creeLe']??'', $a['creeLe']??''));
+        return array_slice(array_values($filtre),0,$limit);
+    }
+
+    public function ajouterAnnonce(string $userId, array $d): array
+    {
+        $annonce = [
+            'id'=>identifiant('ann'),
+            'userId'=>$userId,
+            'type'=> in_array($d['type']??'', ['projet','emploi','service']) ? $d['type'] : 'projet',
+            'titre'=>mb_substr(trim($d['titre']??''),0,190),
+            'description'=>mb_substr(trim($d['description']??''),0,5000),
+            'budget'=>mb_substr(trim($d['budget']??''),0,100),
+            'localisation'=>mb_substr(trim($d['localisation']??''),0,190),
+            'contactEmail'=>mb_substr(trim($d['contactEmail']??''),0,190),
+            'contactTel'=>mb_substr(trim($d['contactTel']??''),0,60),
+            'statut'=>'publie',
+            'vues'=>0,'signalements'=>0,
+            'creeLe'=>date('Y-m-d H:i:s'),
+        ];
+        if ($this->pdo !== null) {
+            $this->pdo->prepare('INSERT INTO lm_annonces (id,userId,type,titre,description,budget,localisation,contactEmail,contactTel,statut,vues,signalements,creeLe) VALUES (:id,:uid,:type,:titre,:desc,:budget,:loc,:email,:tel,:statut,0,0,NOW())')->execute([
+                ':id'=>$annonce['id'],':uid'=>$userId,':type'=>$annonce['type'],':titre'=>$annonce['titre'],':desc'=>$annonce['description'],':budget'=>$annonce['budget'],':loc'=>$annonce['localisation'],':email'=>$annonce['contactEmail'],':tel'=>$annonce['contactTel'],':statut'=>'publie'
+            ]);
+        } else {
+            $all=lire_json($this->dossierData . '/annonces.json', []); array_unshift($all,$annonce); ecrire_json($this->dossierData . '/annonces.json', array_slice($all,0,1000));
+        }
+        $this->journaliser('annonce-cree',['id'=>$annonce['id'],'userId'=>$userId,'type'=>$annonce['type']]);
+        return $annonce;
+    }
+
+    public function signalerAnnonce(string $id): bool
+    {
+        if ($this->pdo !== null) {
+            $this->pdo->prepare('UPDATE lm_annonces SET signalements = signalements + 1, statut = IF(signalements >= 2, "signale", statut) WHERE id = :id')->execute([':id'=>$id]);
+            return true;
+        }
+        $all=lire_json($this->dossierData . '/annonces.json', []); foreach($all as $i=>$a) if(($a['id']??null)===$id){ $all[$i]['signalements']= (int)($a['signalements']??0)+1; if($all[$i]['signalements']>=3) $all[$i]['statut']='signale';}
+        ecrire_json($this->dossierData . '/annonces.json', $all); return true;
+    }
+
+    public function modererAnnonce(string $id, string $statut): bool
+    {
+        $statut = in_array($statut, ['publie','archive','signale']) ? $statut : 'publie';
+        if ($this->pdo !== null) { $this->pdo->prepare('UPDATE lm_annonces SET statut = :s WHERE id = :id')->execute([':s'=>$statut,':id'=>$id]); return true; }
+        $all=lire_json($this->dossierData . '/annonces.json', []); foreach($all as $i=>$a) if(($a['id']??null)===$id) $all[$i]['statut']=$statut; ecrire_json($this->dossierData . '/annonces.json', $all); return true;
+    }
+
+    public function supprimerAnnonce(string $id): bool
+    {
+        if ($this->pdo !== null) { $this->pdo->prepare('DELETE FROM lm_annonces WHERE id = :id')->execute([':id'=>$id]); return true; }
+        $all=array_values(array_filter(lire_json($this->dossierData . '/annonces.json', []), fn($a)=>($a['id']??null)!==$id)); ecrire_json($this->dossierData . '/annonces.json', $all); return true;
     }
 
     public function envoyerCandidatureParEmail(array $candidature): array
