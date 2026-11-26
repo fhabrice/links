@@ -40,7 +40,7 @@
           "badge": "Spécialité Informatique",
           "titre": "Nous concevons vos",
           "titreAccent": "systèmes d'information",
-          "description": "Développement logiciel, réseaux, cloud et maintenance : des solutions numériques fiables, pensées pour les entreprises et institutions congolaises.",
+          "description": "Transformez vos outils numériques en leviers de croissance : applications métier, sites web, réseaux et maintenance. Nous vous aidons à simplifier vos opérations, à mieux exploiter vos données et à accompagner l’évolution de votre activité.",
           "boutonTexte": "Découvrir nos solutions",
           "boutonLien": "#grille-services"
         },
@@ -50,7 +50,7 @@
           "badge": "Spécialité Génie Civil",
           "titre": "Nous bâtissons des",
           "titreAccent": "infrastructures durables",
-          "description": "Études, gros œuvre, second œuvre et réhabilitation : nous réalisons vos bâtiments et ouvrages dans le respect des normes et des délais.",
+          "description": "Donnez une base solide à vos projets résidentiels, commerciaux et institutionnels. Études techniques, construction et réhabilitation : un accompagnement pour éclairer vos choix, anticiper les contraintes du chantier et suivre la réalisation de votre ouvrage.",
           "boutonTexte": "Parler de mon chantier",
           "boutonLien": "#contact"
         },
@@ -60,7 +60,7 @@
           "badge": "Spécialité Architecture & Design",
           "titre": "Nous dessinons vos",
           "titreAccent": "espaces de demain",
-          "description": "Plans 2D/3D, modélisation BIM, design intérieur et suivi esthétique : une architecture fonctionnelle, durable et ancrée dans le contexte local.",
+          "description": "Valorisez votre patrimoine avec des espaces pensés pour leurs usagers. Plans 2D/3D, modélisation BIM et design intérieur vous aident à visualiser le projet, à comparer les options et à concilier esthétique, fonctionnalité et budget.",
           "boutonTexte": "Imaginer mon projet",
           "boutonLien": "#contact"
         },
@@ -70,7 +70,7 @@
           "badge": "Spécialité Énergie renouvelable et environnement",
           "titre": "L'énergie solaire",
           "titreAccent": "pour tous",
-          "description": "Dimensionnement, installation et maintenance de kits solaires et systèmes hybrides : produisez votre propre électricité, sans coupure.",
+          "description": "Faites de l’autonomie énergétique un atout pour votre activité. Étude de consommation, solaire et systèmes hybrides : nous dimensionnons une solution adaptée à vos usages pour réduire votre dépendance au réseau et soutenir la continuité de vos opérations.",
           "boutonTexte": "Demander une étude",
           "boutonLien": "#contact"
         }
@@ -81,25 +81,25 @@
         "id": "informatique",
         "icone": "code",
         "titre": "Informatique",
-        "texte": "Développement, réseaux, cloud et cybersécurité : nous digitalisons vos activités et protégeons vos données."
+        "texte": "Gagnez en efficacité avec des applications, des réseaux et des outils numériques adaptés à vos métiers. Une technologie utile pour vos équipes et vos clients."
       },
       {
         "id": "construction",
         "icone": "btp",
         "titre": "Génie Civil",
-        "texte": "Génie Civil : études techniques, gros œuvre, second œuvre et réhabilitation. Notre branche Architecture & Design assure la conception, les plans et le suivi esthétique de vos ouvrages."
+        "texte": "Construisez et réhabilitez avec une vision claire des besoins techniques. Des études au suivi de chantier, nous accompagnons la concrétisation de votre projet immobilier."
       },
       {
         "id": "architecture",
         "icone": "architecture",
         "titre": "Architecture & Design",
-        "texte": "Branche du département Génie Civil : conception architecturale, plans d’exécution, design intérieur et maîtrise d’œuvre esthétique et technique."
+        "texte": "Projetez-vous avant de bâtir : conception, plans 2D/3D et design intérieur pour des espaces fonctionnels qui valorisent votre bien et respectent vos usages."
       },
       {
         "id": "energie",
         "icone": "solaire",
         "titre": "Énergie renouvelable et environnement",
-        "texte": "Solaire, hybridation et pompage : produisez une énergie propre, fiable et rentable, même hors réseau."
+        "texte": "Préparez votre autonomie énergétique avec des solutions solaires et hybrides dimensionnées selon votre consommation, votre site et vos priorités."
       }
     ],
     "services": [
@@ -148,27 +148,27 @@
     ],
     "approche": {
       "titre": "Une méthode claire, du début à la fin.",
-      "sousTitre": "Une méthode éprouvée, du diagnostic à la pérennisation",
+      "sousTitre": "Des décisions mieux préparées, des étapes lisibles et un accompagnement qui se poursuit après la mise en service.",
       "etapes": [
         {
           "numero": "01",
           "titre": "Diagnostic",
-          "description": "Audit du besoin, visite du site et analyse technique."
+          "description": "Nous clarifions vos objectifs, vos usages et vos contraintes de terrain pour définir les priorités et le périmètre du projet."
         },
         {
           "numero": "02",
           "titre": "Conception",
-          "description": "Devis détaillé, plans et choix du matériel adapté."
+          "description": "Nous traduisons vos besoins en options techniques, plans et devis détaillé pour vous permettre d’arbitrer en connaissance de cause."
         },
         {
           "numero": "03",
           "titre": "Réalisation",
-          "description": "Mise en œuvre par nos équipes, dans le respect des délais."
+          "description": "Nous organisons la mise en œuvre et le suivi technique, avec des échanges sur l’avancement et les ajustements nécessaires."
         },
         {
           "numero": "04",
           "titre": "Accompagnement",
-          "description": "Formation, maintenance et suivi après livraison."
+          "description": "Nous préparons la prise en main de la solution et définissons avec vous les besoins de formation, de maintenance et de suivi."
         }
       ]
     },
@@ -530,13 +530,13 @@
     },
     "contact": {
       "titre": "Votre projet commence ici.",
-      "sousTitre": "Parlez-nous de votre besoin : nous vous aidons à trouver la solution adaptée.",
+      "sousTitre": "Un besoin à résoudre, un projet à développer ou une collaboration à proposer ? Présentez vos objectifs, votre localisation et votre calendrier pour préparer un premier échange utile.",
       "adresse": "Avenue du Lac, Goma, Nord-Kivu, RDC",
       "horaires": "Lundi – Samedi : 08h00 – 18h00",
       "messageSucces": "Merci ! Votre message a bien été envoyé."
     },
     "pied": {
-      "description": "LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes. Basés à Goma, nous avançons avec vous, de la conception à la réalisation.",
+      "description": "Depuis Goma, LK-TECH relie génie civil, architecture, numérique et énergie pour accompagner les projets des particuliers, entreprises et institutions. Clients, investisseurs, partenaires : construisons des solutions utiles au territoire et à vos ambitions.",
       "mentions": "Tous droits réservés."
     },
     "travaillerAvecNous": {

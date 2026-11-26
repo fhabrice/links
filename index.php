@@ -124,10 +124,10 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
         <div class="hero__contenu">
           <span class="badge-pilule" id="hero-badge">Ingénierie &amp; solutions intégrées · Goma, RDC</span>
           <h1 class="hero__titre" id="hero-titre">Construire, digitaliser, <span class="accent">faire avancer vos projets</span>.</h1>
-          <p class="hero__texte" id="hero-texte">De l'étude technique aux solutions numériques et énergétiques, LK-TECH réunit les expertises qui donnent vie à vos ambitions.</p>
+          <p class="hero__texte" id="hero-texte">Vous souhaitez bâtir, développer votre activité ou gagner en autonomie énergétique ? Depuis Goma, LK-TECH associe ingénierie, architecture et numérique pour transformer vos ambitions en projets structurés, adaptés à votre budget et aux réalités du terrain.</p>
           <div class="hero__boutons">
             <a class="btn btn--accent" id="hero-bouton" href="#contact">Parlons de votre projet <span aria-hidden="true">↗</span></a>
-            <a class="btn btn--fantome hero__secondaire" href="#specialites">Découvrir nos expertises <span aria-hidden="true">→</span></a>
+            <a class="btn btn--fantome hero__secondaire" href="#collaborations">Explorer les collaborations <span aria-hidden="true">→</span></a>
           </div>
           <div class="hero__reperes" aria-label="Nos domaines d'activité">
             <span><i></i> Génie Civil</span><span><i></i> Architecture</span><span><i></i> Technologie</span><span><i></i> Énergie</span>
@@ -159,11 +159,43 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       </div>
       <div class="presentation__contenu">
         <p class="section__sur">À PROPOS DE LK-TECH <span class="section__trait"></span> 01</p>
-        <h2 class="section__titre">Un seul partenaire.<br><em>Plusieurs façons d'avancer.</em></h2>
-        <p>Basée à Goma, LK-TECH (Links Martech) associe construction, informatique et énergie renouvelable pour répondre aux besoins des entreprises, institutions et particuliers.</p>
-        <p>Notre approche est simple : écouter, concevoir avec précision et accompagner chaque projet jusqu'à sa réalisation.</p>
+        <h2 class="section__titre">Vos ambitions méritent<br><em>une vision d’ensemble.</em></h2>
+        <p>Un bâtiment bien conçu, des outils numériques efficaces et une énergie adaptée sont autant de leviers pour développer une activité. LK-TECH (Links Martech) réunit ces compétences pour accompagner les particuliers, entreprises, institutions et organisations dans leurs projets à Goma et en RDC.</p>
+        <p>Notre valeur ajoutée : relier les expertises pour vous aider à faire des choix cohérents, de l’étude à la mise en service. Nous partons de vos usages, de vos priorités et des contraintes du site pour construire une réponse technique lisible et un accompagnement adapté.</p>
         <div class="presentation__atouts"><span>✳ &nbsp; Expertise pluridisciplinaire</span><span>✳ &nbsp; Solutions adaptées au terrain</span></div>
         <a class="lien-fleche" href="<?= $base ?>/a-propos">En savoir plus sur nous <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--gris" id="collaborations" aria-labelledby="collaborations-titre">
+    <div class="conteneur">
+      <div class="section__entete">
+        <p class="section__sur">CLIENTS · INVESTISSEURS · PARTENAIRES · TALENTS</p>
+        <h2 class="section__titre" id="collaborations-titre">Votre ambition, <em>notre point de départ.</em></h2>
+        <p class="section__texte">Chaque collaboration commence par un objectif partagé. Découvrez comment avancer avec LK-TECH, selon votre projet et le rôle que vous souhaitez y jouer.</p>
+      </div>
+      <div class="grille-specialites">
+        <article class="carte">
+          <h3>Clients &amp; porteurs de projets</h3>
+          <p>Construire un bâtiment, digitaliser une entreprise ou équiper un site en énergie : bénéficiez d’une lecture technique de vos besoins et d’une proposition adaptée à vos priorités.</p>
+          <a class="lien-fleche" href="#contact">Présenter mon projet <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="carte">
+          <h3>Investisseurs &amp; diaspora</h3>
+          <p>Vous souhaitez explorer un projet immobilier, numérique ou énergétique en RDC ? Échangeons sur sa faisabilité technique, ses besoins et les modalités possibles de collaboration avant tout engagement.</p>
+          <a class="lien-fleche" href="#contact">Échanger sur un investissement <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="carte">
+          <h3>Entreprises &amp; partenaires</h3>
+          <p>Bureaux d’études, fournisseurs, institutions et ONG : rapprochons nos compétences pour répondre à un appel à projets, équiper un site ou concevoir une intervention adaptée aux besoins locaux.</p>
+          <a class="lien-fleche" href="#contact">Proposer un partenariat <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="carte">
+          <h3>Talents &amp; professionnels</h3>
+          <p>Ingénieurs, architectes, développeurs et techniciens : faites connaître votre savoir-faire et vos disponibilités pour contribuer aux projets de LK-TECH.</p>
+          <a class="lien-fleche" href="<?= $base ?>/travailler-avec-nous.php">Faire connaître mes compétences <span aria-hidden="true">↗</span></a>
+        </article>
       </div>
     </div>
   </section>
@@ -174,7 +206,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       <div class="section__entete">
         <p class="section__sur">CE QUE NOUS FAISONS <span class="section__trait"></span> 02</p>
         <h2 class="section__titre">Des expertises qui font <em>la différence.</em></h2>
-        <p class="section__texte">Quatre domaines complémentaires pour concevoir, dessiner, bâtir et faire grandir vos projets. Sélectionnez une expertise pour en savoir plus.</p>
+        <p class="section__texte">Concevoir des espaces utiles, moderniser vos opérations, construire votre patrimoine et préparer votre autonomie énergétique : quatre expertises complémentaires au service de vos objectifs. Explorez les solutions adaptées à votre projet.</p>
       </div>
       <div class="grille-specialites" id="grille-specialites"></div>
     </div>
@@ -204,7 +236,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       <div class="section__entete">
         <p class="section__sur">NOTRE MÉTHODE <span class="section__trait"></span> 04</p>
         <h2 class="section__titre" id="approche-titre">Notre Approche</h2>
-        <p class="section__texte" id="approche-soustitre">Une méthode éprouvée, du diagnostic à la pérennisation</p>
+        <p class="section__texte" id="approche-soustitre">Des décisions mieux préparées, des étapes lisibles et un accompagnement après la mise en service.</p>
       </div>
       <div class="grille-etapes" id="grille-etapes"></div>
     </div>
@@ -271,7 +303,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       <div class="section__entete">
         <p class="section__sur">OPPORTUNITÉS &amp; COLLABORATIONS <span class="section__trait"></span> 06</p>
         <h2 class="section__titre">Appels à projets &amp; <em>Offres d'emploi</em></h2>
-        <p class="section__texte">Postulez aux offres en cours ou créez votre compte pour soumettre un appel à projet et suivre vos candidatures.</p>
+        <p class="section__texte">Entreprises, porteurs de projets et talents : découvrez les annonces, proposez un appel à projet ou trouvez une occasion de mettre vos compétences au service de nouvelles réalisations. Créez votre compte pour publier et suivre vos démarches.</p>
         <?php if($utilisateurConnecte): ?>
           <p style="margin-top:.8rem;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:.6rem 1rem;border-radius:8px;display:inline-block;font-size:.9rem"><strong>Connecté :</strong> <?= htmlspecialchars($utilisateurConnecte['nom'] ?? $utilisateurConnecte['email']) ?> · <a href="<?= $base ?>/mon-espace.php" style="color:#065f46;text-decoration:underline">Mon espace</a></p>
         <?php else: ?>
@@ -308,7 +340,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
 
   <section class="appel appel--accueil">
     <div class="conteneur appel__inner">
-      <div><p class="section__sur">UNE IDÉE À CONCRÉTISER ?</p><h2 class="appel__titre">Construisons la suite, <em>ensemble.</em></h2><p class="appel__texte">Construction, digital ou énergie : échangeons sur les besoins de votre projet.</p></div>
+      <div><p class="section__sur">UNE IDÉE À CONCRÉTISER ?</p><h2 class="appel__titre">Construisons la suite, <em>ensemble.</em></h2><p class="appel__texte">Vous portez un projet, recherchez une expertise technique ou envisagez un partenariat ? Échangeons sur vos objectifs, les ressources nécessaires et les prochaines étapes pour avancer ensemble.</p></div>
       <a class="btn btn--accent" href="#contact">Discuter de mon projet <span aria-hidden="true">↗</span></a>
     </div>
   </section>
@@ -319,7 +351,7 @@ try { $ua = new UtilisateurAuth(lk_store()); $utilisateurConnecte = $ua->utilisa
       <div class="section__entete">
         <p class="section__sur">PARLONS DE VOTRE PROJET <span class="section__trait"></span> 06</p>
         <h2 class="section__titre" id="contact-titre">Votre projet commence <em>ici.</em></h2>
-        <p class="section__texte" id="contact-soustitre">Parlons de votre projet</p>
+        <p class="section__texte" id="contact-soustitre">Un besoin à résoudre, un projet à développer ou une collaboration à proposer ? Présentez vos objectifs, votre localisation et votre calendrier pour préparer un premier échange utile.</p>
       </div>
 
       <div class="grille-contact">

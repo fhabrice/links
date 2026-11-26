@@ -27,9 +27,6 @@ export default async function Accueil() {
   ]);
 
   const identite = contenu.identite || {};
-  const hero = (contenu.hero?.onglets || []).find(
-    (t) => t.id === contenu.hero?.actif
-  ) || contenu.hero?.onglets?.[0];
   const specialites = contenu.specialites || [];
   const aPropos = contenu.apropos || {};
   const logiciels = contenu.logiciels || {};
@@ -67,17 +64,17 @@ export default async function Accueil() {
       <section className="hero">
         <div className="conteneur hero-grille">
           <div className="hero-contenu">
-            {hero?.badge && <span className="badge">{hero.badge}</span>}
+            <span className="badge">Ingénierie &amp; solutions intégrées · Goma, RDC</span>
             <h1>
-              {hero?.titre} <em>{hero?.titreAccent}</em>
+              Construire, digitaliser, <em>faire avancer vos projets.</em>
             </h1>
-            <p>{hero?.description}</p>
+            <p>Vous souhaitez bâtir, développer votre activité ou gagner en autonomie énergétique ? Depuis Goma, LK-TECH associe ingénierie, architecture et numérique pour transformer vos ambitions en projets structurés, adaptés à votre budget et aux réalités du terrain.</p>
             <div className="boutons">
-              <a className="bouton bouton-vert" href="#logiciels">
-                {hero?.boutonTexte || 'Découvrir nos offres'}
+              <a className="bouton bouton-vert" href="#contact">
+                Parlons de votre projet ↗
               </a>
-              <a className="bouton bouton-fantome" href="#contact">
-                Nous contacter
+              <a className="bouton bouton-fantome" href="#collaborations">
+                Explorer les collaborations
               </a>
               <Link className="bouton bouton-fantome" href="/travailler-avec-nous">
                 Travailler avec nous ↗
@@ -111,9 +108,42 @@ export default async function Accueil() {
         </div>
       </section>
 
+  <section className="section section--gris" id="collaborations" aria-labelledby="collaborations-titre">
+    <div className="conteneur">
+      <div className="section__entete">
+        <p className="section__sur">CLIENTS · INVESTISSEURS · PARTENAIRES · TALENTS</p>
+        <h2 className="section__titre" id="collaborations-titre">Votre ambition, <em>notre point de départ.</em></h2>
+        <p className="section__texte">Chaque collaboration commence par un objectif partagé. Découvrez comment avancer avec LK-TECH, selon votre projet et le rôle que vous souhaitez y jouer.</p>
+      </div>
+      <div className="grille">
+        <article className="carte">
+          <h3>Clients &amp; porteurs de projets</h3>
+          <p>Construire un bâtiment, digitaliser une entreprise ou équiper un site en énergie : bénéficiez d’une lecture technique de vos besoins et d’une proposition adaptée à vos priorités.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Présenter mon projet <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Investisseurs &amp; diaspora</h3>
+          <p>Vous souhaitez explorer un projet immobilier, numérique ou énergétique en RDC ? Échangeons sur sa faisabilité technique, ses besoins et les modalités possibles de collaboration avant tout engagement.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Échanger sur un investissement <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Entreprises &amp; partenaires</h3>
+          <p>Bureaux d’études, fournisseurs, institutions et ONG : rapprochons nos compétences pour répondre à un appel à projets, équiper un site ou concevoir une intervention adaptée aux besoins locaux.</p>
+          <a className="accueil-collaboration-lien" href="#contact">Proposer un partenariat <span aria-hidden="true">↗</span></a>
+        </article>
+        <article className="carte">
+          <h3>Talents &amp; professionnels</h3>
+          <p>Ingénieurs, architectes, développeurs et techniciens : faites connaître votre savoir-faire et vos disponibilités pour contribuer aux projets de LK-TECH.</p>
+          <a className="accueil-collaboration-lien" href="/travailler-avec-nous">Faire connaître mes compétences <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+
       <section className="section" id="specialites">
         <div className="conteneur">
-          <h2>Nos spécialités</h2>
+          <h2>Quatre expertises pour faire avancer vos projets</h2>
           <p className="sous-titre">
             {identite.nomLong || 'LK-TECH'} — {identite.slogan}
           </p>
@@ -211,7 +241,8 @@ export default async function Accueil() {
 
       <section className="section contact" id="contact">
         <div className="conteneur">
-          <h2>Parlons de votre projet</h2>
+          <h2>Votre projet commence ici.</h2>
+          <p className="sous-titre">Un besoin à résoudre, un projet à développer ou une collaboration à proposer ? Présentez vos objectifs, votre localisation et votre calendrier pour préparer un premier échange utile.</p>
           <p className="sous-titre">
             {identite.telephone} · {identite.email} · {identite.ville}
           </p>
