@@ -45,6 +45,7 @@ date_default_timezone_set('Africa/Lubumbashi'); // heure locale de la RDC
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/Store.php';
 require_once __DIR__ . '/Auth.php';
+require_once __DIR__ . '/UtilisateurAuth.php';
 require_once __DIR__ . '/Api.php';
 
 if (!defined('LK_RACINE')) {

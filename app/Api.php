@@ -113,6 +113,59 @@ final class Api
             return $this->reponse(['ok' => true, 'id' => $enregistre['id'], 'message' => 'Candidature enregistrée et envoyée à fabricenzarubara@gmail.com.', 'email' => $emailResult, 'googleForm' => $transfert], 201);
         }
 
+        /* ================= ESPACE MEMBRE (Appel à projet) ================= */
+
+        if ($chemin === '/api/inscription' && $methode === 'POST') {
+            $nom = nettoyer($corps['nom'] ?? '', 120);
+            $email = mb_strtolower(trim($corps['email'] ?? ''));
+            $tel = nettoyer($corps['telephone'] ?? '', 40);
+            $mdp = (string)($corps['motDePasse'] ?? '');
+            if ($nom==='' || !email_valide($email) || mb_strlen($mdp) < 6) return $this->reponse(['erreur'=>'Nom, email valide et mot de passe 6+ requis.'],400);
+            if ($this->store->trouverUtilisateurParEmail($email)) return $this->reponse(['erreur'=>'Cet email a déjà un compte.'],409);
+            $user = $this->store->creerUtilisateur(['nom'=>$nom,'email'=>$email,'telephone'=>$tel,'motDePasse'=>$mdp]);
+            return $this->reponse(['ok'=>true,'message'=>'Inscription réussie. Vérifiez votre email.','id'=>$user['id']],201);
+        }
+        if ($chemin === '/api/connexion' && $methode === 'POST') {
+            $email = mb_strtolower(trim($corps['email'] ?? ''));
+            $mdp = (string)($corps['motDePasse'] ?? '');
+            $user = $this->store->verifierMotDePasseUtilisateur($email,$mdp);
+            if (!$user) return $this->reponse(['erreur'=>'Email ou mot de passe incorrect.'],401);
+            if (empty($user['emailVerifie'])) return $this->reponse(['erreur'=>'Confirmez votre email d\'abord (lien envoyé).'],403);
+            $ua = new UtilisateurAuth($this->store);
+            return $this->reponse(['ok'=>true,'utilisateur'=>['id'=>$user['id'],'nom'=>$user['nom'],'email'=>$user['email']]],200,['Set-Cookie'=>$ua->enteteConnexion($user)]);
+        }
+        if ($chemin === '/api/me' && $methode === 'GET') {
+            $ua = new UtilisateurAuth($this->store); $u = $ua->utilisateur();
+            return $this->reponse(['connecte'=>$u!==null,'utilisateur'=>$u ? ['id'=>$u['id'],'nom'=>$u['nom'],'email'=>$u['email']] : null]);
+        }
+        if ($chemin === '/api/deconnexion' && $methode === 'POST') {
+            $ua = new UtilisateurAuth($this->store); return $this->reponse(['ok'=>true],200,['Set-Cookie'=>$ua->enteteDeconnexion()]);
+        }
+        if ($chemin === '/api/annonces' && $methode === 'GET') {
+            return $this->reponse(['annonces'=>$this->store->listerAnnonces(['type'=>$_GET['type']??null,'limit'=>50])]);
+        }
+        if ($chemin === '/api/annonces' && $methode === 'POST') {
+            $ua = new UtilisateurAuth($this->store); $u=$ua->utilisateur();
+            if (!$u) return $this->reponse(['erreur'=>'Connectez-vous d\'abord.'],401);
+            if (empty($u['emailVerifie'])) return $this->reponse(['erreur'=>'Confirmez votre email.'],403);
+            $titre=nettoyer($corps['titre']??'',190); $desc=nettoyer($corps['description']??'',5000);
+            if ($titre==='' || mb_strlen($desc)<20) return $this->reponse(['erreur'=>'Titre + description 20+ requis.'],400);
+            $ann=$this->store->ajouterAnnonce($u['id'],$corps);
+            return $this->reponse(['ok'=>true,'annonce'=>$ann],201);
+        }
+        if (preg_match('#^/api/annonces/([^/]+)/signaler$#',$chemin,$m) && $methode==='POST') {
+            $this->store->signalerAnnonce($m[1]); return $this->reponse(['ok'=>true]);
+        }
+        if (preg_match('#^/api/annonces/([^/]+)$#',$chemin,$m) && $methode==='DELETE') {
+            $ua=new UtilisateurAuth($this->store); $u=$ua->utilisateur();
+            // Proprio ou admin
+            $annon=$this->store->listerAnnonces(['admin'=>true]); $c=null; foreach($annon as $a) if($a['id']===$m[1]) $c=$a;
+            if (!$c) return $this->reponse(['erreur'=>'Introuvable'],404);
+            $admin = $this->auth->utilisateur();
+            if (!$admin && ($c['userId']??'') !== ($u['id']??'')) return $this->reponse(['erreur'=>'Non autorisé'],403);
+            $this->store->supprimerAnnonce($m[1]); return $this->reponse(['ok'=>true]);
+        }
+
         /* ========================= AUTHENTIFICATION ========================= */
 
         if ($chemin === '/api/admin/login' && $methode === 'POST') {
@@ -282,6 +335,21 @@ final class Api
             if ($methode === 'DELETE') {
                 $this->store->supprimerCandidature($id);
                 return $this->reponse(['ok' => true]);
+            }
+        }
+
+        if ($chemin === '/api/admin/annonces' && $methode === 'GET') {
+            return $this->reponse(['annonces' => $this->store->listerAnnonces(['admin'=>true, 'limit'=>500])]);
+        }
+        if (str_starts_with($chemin, '/api/admin/annonces/')) {
+            $id = trim(substr($chemin, strlen('/api/admin/annonces/')), '/');
+            if ($methode === 'PATCH') {
+                $this->store->modererAnnonce($id, (string)($corps['statut'] ?? 'publie'));
+                return $this->reponse(['ok'=>true]);
+            }
+            if ($methode === 'DELETE') {
+                $this->store->supprimerAnnonce($id);
+                return $this->reponse(['ok'=>true]);
             }
         }
 
