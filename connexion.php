@@ -10,7 +10,7 @@ $identite = lk_store()->contenu()['identite'] ?? [];
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Connexion — <?= htmlspecialchars($identite['nom']??'LK-TECH',ENT_QUOTES,'UTF-8') ?></title>
 <link rel="stylesheet" href="<?= $base ?>/assets/css/styles.css">
-<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css">
+<link rel="stylesheet" href="<?= $base ?>/assets/css/refonte.css?v=20261126-footer-fix">
 </head>
 <body>
 <div style="min-height:100vh;display:grid;place-items:center;padding:2rem;background:#f1f5f9">
@@ -38,4 +38,5 @@ document.getElementById('form-log').addEventListener('submit', async e=>{
  }catch(err){ msg.style.display='block'; msg.style.background='#fee2e2'; msg.style.color='#991b1b'; msg.textContent=err.message; btn.disabled=false; btn.textContent='Se connecter'; }
 });
 </script>
+<?php require __DIR__ . '/app/partials/footer.php'; ?>
 </body></html>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { lireContenu } from '../../lib/store';
 import FormulaireTravaillerAvecNous from '../components/FormulaireTravaillerAvecNous';
 import MenuNavigation from '../components/MenuNavigation';
+import PiedDePage from '../components/PiedDePage';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
@@ -414,69 +415,7 @@ export default async function TravaillerAvecNous() {
         </section>
       </main>
 
-      <footer className="pied">
-        <div className="conteneur">
-          <div className="pied__grille">
-            <div>
-              <img
-                className="pied__logo"
-                src={identite.logoClair || '/assets/img/logo-clair.svg'}
-                alt="Logo LK-TECH"
-                width="44"
-                height="44"
-              />
-              <div className="pied__nom">
-                LK<i className="tiret">-</i>TECH
-              </div>
-              <p className="pied__texte">
-                {contenu.pied?.description ||
-                  'LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes.'}
-              </p>
-            </div>
-            <div>
-              <h4 className="pied__titre">Navigation</h4>
-              <div className="pied__liens">
-                <Link href="/">Accueil</Link>
-                <Link href="/#specialites">Spécialités</Link>
-                <Link href="/#logiciels">Logiciels</Link>
-                <Link href="/#apropos">À propos</Link>
-                <Link href="/travailler-avec-nous">Travailler avec nous</Link>
-                <Link href="/#contact">Contact</Link>
-                <Link href="/admin">🔒 Admin</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="pied__titre">Nos spécialités</h4>
-              <div className="pied__liens">
-                {(contenu.specialites || []).map((s) => (
-                  <span key={s.id}>{s.titre}</span>
-                ))}
-                {!(contenu.specialites || []).length && (
-                  <>
-                    <span>Génie Civil</span>
-                    <span>Architecture &amp; Design</span>
-                    <span>Informatique</span>
-                    <span>Énergie renouvelable</span>
-                  </>
-                )}
-              </div>
-            </div>
-            <div>
-              <h4 className="pied__titre">Coordonnées</h4>
-              <div className="pied__liens">
-                <span>{villeContact}</span>
-                <a href={`tel:${telephoneLien}`}>{telephoneBrut}</a>
-                <a href={`mailto:${emailContact}`}>{emailContact}</a>
-                {identite.rccm && <span>RCCM : {identite.rccm}</span>}
-              </div>
-            </div>
-          </div>
-          <div className="pied__bas">
-            <span>© {new Date().getFullYear()} LK-TECH — Tous droits réservés.</span>
-            <span>Goma, République démocratique du Congo</span>
-          </div>
-        </div>
-      </footer>
+      <PiedDePage contenu={contenu} />
 
       <div className="barre-appel" aria-label="Actions rapides">
         <a className="barre-appel__btn barre-appel__btn--tel" href={`tel:${telephoneLien}`}>

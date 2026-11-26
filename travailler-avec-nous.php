@@ -508,52 +508,7 @@ $polesRecrutement = [
   </main>
 
   <!-- =============================== PIED =============================== -->
-  <footer class="pied">
-    <div class="conteneur">
-      <div class="pied__grille">
-        <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
-          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description"><?= htmlspecialchars($contenu['pied']['description'] ?? 'LK-TECH réunit génie civil, architecture & design, technologie et énergie pour transformer vos idées en solutions concrètes.', ENT_QUOTES, 'UTF-8') ?></p>
-        </div>
-        <div>
-          <h4 class="pied__titre">Navigation</h4>
-          <div class="pied__liens">
-            <a href="<?= $base ?>/">Accueil</a>
-            <a href="<?= $base ?>/#specialites">Expertises</a>
-            <a href="<?= $base ?>/#logiciels">Logiciels</a>
-            <a href="<?= $base ?>/opportunites.php">Opportunités</a>
-            <a href="<?= $base ?>/a-propos">À propos</a>
-            <a href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
-            <a href="<?= $base ?>/#contact">Contact</a>
-          </div>
-        </div>
-        <div>
-          <h4 class="pied__titre">Nos spécialités</h4>
-          <div class="pied__liens" id="pied-specialites">
-            <span>Génie Civil</span>
-            <span>Architecture &amp; Design</span>
-            <span>Informatique</span>
-            <span>Énergie renouvelable</span>
-          </div>
-        </div>
-        <div>
-          <h4 class="pied__titre">Coordonnées</h4>
-          <div class="pied__liens">
-            <span data-champ="ville"><?= htmlspecialchars($villeContact, ENT_QUOTES, 'UTF-8') ?></span>
-            <a data-champ="telephone" data-lien="tel" href="tel:<?= htmlspecialchars($telephoneLien, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($telephoneBrut, ENT_QUOTES, 'UTF-8') ?></a>
-            <a data-champ="email" data-lien="mailto" href="mailto:<?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($emailContact, ENT_QUOTES, 'UTF-8') ?></a>
-            <span data-champ="rccm">RCCM : <?= htmlspecialchars((string) ($identite['rccm'] ?? 'CD-GOM-01-2024-A-002698'), ENT_QUOTES, 'UTF-8') ?></span>
-          </div>
-          <div class="pied__liens" id="reseaux-sociaux" style="margin-top:1rem"></div>
-        </div>
-      </div>
-      <div class="pied__bas">
-        <span id="pied-copyright">© <?= date('Y') ?> LK-TECH — Tous droits réservés.</span>
-        <span>Goma, République démocratique du Congo</span>
-      </div>
-    </div>
-  </footer>
+  <?php require __DIR__ . '/app/partials/footer.php'; ?>
 
   <!-- Barre d'appel rapide (mobile) -->
   <div class="barre-appel" aria-label="Actions rapides">

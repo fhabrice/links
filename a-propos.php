@@ -194,48 +194,7 @@ $reglages = lk_store()->reglages();
   </section>
 
   <!-- =============================== PIED =============================== -->
-  <footer class="pied">
-    <div class="conteneur">
-      <div class="pied__grille">
-        <div>
-          <img class="pied__logo" id="logo-pied" src="<?= $base ?>/assets/img/logo-clair.svg" alt="Logo LK-TECH">
-          <div class="pied__nom" id="nom-pied">LK<i class="tiret">-</i>TECH</div>
-          <p class="pied__texte" id="pied-description">LK-TECH (Linksmartech) est une entreprise congolaise spécialisée en informatique, génie civil, architecture & design et énergie renouvelable. Nous accompagnons institutions, entreprises et particuliers de l'étude à la maintenance.</p>
-        </div>
-        <div>
-          <h4 class="pied__titre">Navigation</h4>
-          <div class="pied__liens">
-            <a href="<?= $base ?>/">Accueil</a>
-            <a href="<?= $base ?>/#logiciels">Logiciels</a>
-            <a href="<?= $base ?>/#services">Services</a>
-            <a href="<?= $base ?>/opportunites.php">Opportunités</a>
-            <a href="<?= $base ?>/a-propos">À propos</a>
-            <a href="<?= $base ?>/travailler-avec-nous.php">Travailler avec nous</a>
-            <a href="<?= $base ?>/#contact">Contact</a>
-          </div>
-        </div>
-        <div>
-          <h4 class="pied__titre">Nos spécialités</h4>
-          <div class="pied__liens" id="pied-specialites"></div>
-        </div>
-        <div>
-          <h4 class="pied__titre">Coordonnées</h4>
-          <div class="pied__liens">
-            <span data-champ="ville">Goma, Nord-Kivu, RDC</span>
-            <a data-champ="telephone" data-lien="tel" href="tel:+243976459970">+243 976 459 970</a>
-            <a data-champ="email" data-lien="mailto" href="mailto:contact@linksmartec.com">contact@linksmartec.com</a>
-            <a data-champ="siteWeb" data-lien="web" href="https://www.linksmartec.com">www.linksmartec.com</a>
-            <span data-champ="rccm">RCCM : CD-GOM-01-2024-A-002698</span>
-          </div>
-          <div class="pied__liens" id="reseaux-sociaux" style="margin-top:1rem"></div>
-        </div>
-      </div>
-      <div class="pied__bas">
-        <span id="pied-copyright">© 2026 LK-TECH — Tous droits réservés.</span>
-        <span>Conçu à Goma 🇨🇩</span>
-      </div>
-    </div>
-  </footer>
+  <?php require __DIR__ . '/app/partials/footer.php'; ?>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
