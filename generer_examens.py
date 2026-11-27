@@ -42,7 +42,18 @@ def titre_centre(doc, texte, taille, gras=True, espace_apres=4, espace_avant=0):
 def en_tete(doc, classe, titre_examen):
     titre_centre(doc, SCHOOL, 16, espace_apres=0)
     titre_centre(doc, f"Examen de {MATIERE} — {classe}", 13, espace_apres=2)
+    titre_centre(doc, "EXAMEN PREMIER TRIMESTRE — ANNÉE 2026-2027", 11, espace_apres=2)
     titre_centre(doc, titre_examen, 12, gras=False, espace_apres=8)
+
+
+def bonne_chance(doc):
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(8)
+    r = p.add_run("Bonne chance !")
+    r.font.bold = True
+    r.font.size = Pt(12)
+    r.font.color.rgb = NOIR
 
     # Bloc identité élève (à remplir par l'enfant)
     tbl = doc.add_table(rows=2, cols=4)
@@ -157,6 +168,7 @@ def doc_1ere():
         "Colorie le cœur avec la couleur de ton choix (rouge, rose…).",
     ], 5)
 
+    bonne_chance(doc)
     ajouter_pied(doc)
     doc.save("Examen_Informatique_1ere_Primaire.docx")
 
@@ -220,6 +232,7 @@ def doc_2eme():
         "Donne un nom à ton fichier (exemple : 'MonDessin') et valide.",
     ], 2)
 
+    bonne_chance(doc)
     ajouter_pied(doc)
     doc.save("Examen_Informatique_2eme_Primaire.docx")
 

@@ -41,7 +41,16 @@ def titre_centre(pdf, texte, taille, gras=True, apres=1.5, avant=0):
 def en_tete(pdf, classe, titre_examen):
     titre_centre(pdf, SCHOOL, 13, avant=1)
     titre_centre(pdf, f"Examen de {MATIERE} — {classe}", 10.5, apres=0.5)
+    titre_centre(pdf, "EXAMEN PREMIER TRIMESTRE — ANNÉE 2026-2027", 9.5, apres=0.5)
     titre_centre(pdf, titre_examen, 9, gras=False, apres=2)
+
+
+def bonne_chance(pdf):
+    pdf.ln(2)
+    pdf.set_font("DejaVu", "B", 11)
+    pdf.set_text_color(*NOIR)
+    pdf.cell(0, 6, "Bonne chance !", align="C", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+    pdf.set_text_color(*NOIR)
 
     pdf.set_font("DejaVu", "", 8)
     ligs = [
@@ -110,6 +119,7 @@ def build(classe, titre_examen, texte_consigne, taches, fichier):
     consigne(pdf, texte_consigne)
     for t in taches:
         tache(pdf, *t)
+    bonne_chance(pdf)
     pdf.output(fichier)
     print("Généré :", fichier)
 
